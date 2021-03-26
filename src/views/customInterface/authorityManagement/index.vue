@@ -91,10 +91,10 @@
 <!--                        </template>-->
               <template slot-scope="scope">
                 <el-select v-model="scope.row.edit" multiple placeholder="请选择权限" style="width: 120px">
-                  <el-option label="基础" value="基础"/>
-                  <el-option label="系部审核" value="系部审核员"/>
+                  <el-option label="教师" value="基础"/>
+                  <el-option label="专家评审" value="系部审核员"/>
 <!--                  <el-option label="系部主管" value="系部主管"/>-->
-                  <el-option label="科研处审核" value="科研处审核员"/>
+                  <el-option label="科研处主管" value="科研处审核员"/>
                 </el-select>
                 <el-button type="primary" style="margin-top: 10px" @click="change">确认修改</el-button>
               </template>
