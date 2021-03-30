@@ -8,3 +8,12 @@ export function teacherGetBasicInforma(parems) {
     params: parems
   })
 }
+
+// 教师基本信息修改
+export function teacherEditBasicInfo(parems) {
+  return request({
+    url: '/teacherinfo/updateTeacherBaseInfoById',
+    method: 'post',
+    params: parems
+  })
+}

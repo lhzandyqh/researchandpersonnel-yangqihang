@@ -15,7 +15,7 @@
                     <span style="font-weight: bolder">姓&#8195;&#8195;名：</span>
                   </div>
                   <div class="content">
-                    <span>王老师</span>
+                    <span>{{ personalInfo.fullName }}</span>
                   </div>
                 </div>
               </el-col>
@@ -25,7 +25,7 @@
                     <span style="font-weight: bolder">性&#8195;&#8195;别：</span>
                   </div>
                   <div class="content">
-                    <span>女</span>
+                    <span>{{ personalInfo.sex }}</span>
                   </div>
                 </div>
               </el-col>
@@ -35,7 +35,7 @@
                     <span style="font-weight: bolder">民&#8195;&#8195;族：</span>
                   </div>
                   <div class="content">
-                    <span>汉</span>
+                    <span>{{ personalInfo.nation }}</span>
                   </div>
                 </div>
               </el-col>
@@ -47,7 +47,7 @@
                     <span style="font-weight: bolder">出生年月：</span>
                   </div>
                   <div class="content">
-                    <span>1980-3-2</span>
+                    <span>{{ personalInfo.birthDate }}</span>
                   </div>
                 </div>
               </el-col>
@@ -57,7 +57,7 @@
                     <span style="font-weight: bolder">籍&#8195;&#8195;贯：</span>
                   </div>
                   <div class="content">
-                    <span>北京</span>
+                    <span>{{ personalInfo.nativePlace }}</span>
                   </div>
                 </div>
               </el-col>
@@ -67,7 +67,7 @@
                     <span style="font-weight: bolder">职&#8195;&#8195;别：</span>
                   </div>
                   <div class="content">
-                    <span>讲师</span>
+                    <span>{{ personalInfo.positionClass }}</span>
                   </div>
                 </div>
               </el-col>
@@ -79,7 +79,7 @@
                     <span style="font-weight: bolder">身份证号：</span>
                   </div>
                   <div class="content">
-                    <span>234445198xxxxxxxxx</span>
+                    <span>{{ personalInfo.idCard }}</span>
                   </div>
                 </div>
               </el-col>
@@ -89,7 +89,7 @@
                     <span style="font-weight: bolder">政治面目：</span>
                   </div>
                   <div class="content">
-                    <span>党员</span>
+                    <span>{{ personalInfo.politicalStatus }}</span>
                   </div>
                 </div>
               </el-col>
@@ -99,7 +99,7 @@
                     <span style="font-weight: bolder">入党团时间：</span>
                   </div>
                   <div class="content">
-                    <span>2003-2-3</span>
+                    <span>{{ personalInfo.joinPartyTime }}</span>
                   </div>
                 </div>
               </el-col>
@@ -111,7 +111,7 @@
                     <span style="font-weight: bolder">家庭住址：</span>
                   </div>
                   <div class="content">
-                    <span>北京市朝阳区xxxxxxxxxxxx</span>
+                    <span>{{ personalInfo.address }}</span>
                   </div>
                 </div>
               </el-col>
@@ -121,7 +121,7 @@
                     <span style="font-weight: bolder">手机号码：</span>
                   </div>
                   <div class="content">
-                    <span>12345678943</span>
+                    <span>{{ personalInfo.phone }}</span>
                   </div>
                 </div>
               </el-col>
@@ -131,7 +131,7 @@
                     <span style="font-weight: bolder">Email：</span>
                   </div>
                   <div class="content">
-                    <span>222334424#ddd</span>
+                    <span>{{ personalInfo.email }}</span>
                   </div>
                 </div>
               </el-col>
@@ -143,7 +143,7 @@
                     <span style="font-weight: bolder">任教学科：</span>
                   </div>
                   <div class="content">
-                    <span>计算机教学</span>
+                    <span>{{ personalInfo.subject }}</span>
                   </div>
                 </div>
               </el-col>
@@ -153,7 +153,7 @@
                     <span style="font-weight: bolder">部门：</span>
                   </div>
                   <div class="content">
-                    <span>计算机学院</span>
+                    <span>{{ personalInfo.department }}</span>
                   </div>
                 </div>
               </el-col>
@@ -163,7 +163,7 @@
                     <span style="font-weight: bolder">参加工作时间：</span>
                   </div>
                   <div class="content">
-                    <span>2009.3.1</span>
+                    <span>{{ personalInfo.dateToWork }}</span>
                   </div>
                 </div>
               </el-col>
@@ -175,18 +175,17 @@
                     <span style="font-weight: bolder">工作状态：</span>
                   </div>
                   <div class="content">
-                    <span>任职</span>
+                    <span>{{ personalInfo.workStatus }}</span>
                   </div>
                 </div>
               </el-col>
-
               <el-col :span="8">
                 <div class="single">
                   <div class="biaoqian">
                     <span style="font-weight: bolder">聘用合同起始时间：</span>
                   </div>
                   <div class="content">
-                    <span></span>
+                    <span>{{ personalInfo.contractStartDate }}</span>
                   </div>
                 </div>
               </el-col>
@@ -196,7 +195,7 @@
                     <span style="font-weight: bolder">聘用合同终止时间：</span>
                   </div>
                   <div class="content">
-                    <span></span>
+                    <span>{{ personalInfo.contractEndDate }}</span>
                   </div>
                 </div>
               </el-col>
@@ -575,7 +574,7 @@
                 <span style="font-weight: bolder">姓&#8195;&#8195;名：</span>
               </div>
               <div class="content">
-                <el-input placeholder="请输入内容"/>
+                <el-input v-model="basicForm.fullName" placeholder="请输入内容"/>
               </div>
             </div>
           </el-col>
@@ -585,7 +584,7 @@
                 <span style="font-weight: bolder">性&#8195;&#8195;别：</span>
               </div>
               <div class="content">
-                <el-select v-model="sex" style="width: 185px" placeholder="请选择">
+                <el-select v-model="basicForm.sex" style="width: 185px" placeholder="请选择">
                   <el-option label="男" value="1"/>
                   <el-option label="女" value="0"/>
                 </el-select>
@@ -598,7 +597,7 @@
                 <span style="font-weight: bolder">民&#8195;&#8195;族：</span>
               </div>
               <div class="content">
-                <el-input  placeholder="请输入内容"/>
+                <el-input v-model="basicForm.nation"  placeholder="请输入内容"/>
               </div>
             </div>
           </el-col>
@@ -610,7 +609,7 @@
                 <span style="font-weight: bolder">出生年月：</span>
               </div>
               <div class="content" style="width: 185px">
-                <el-date-picker  type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期" style="width: 100%;"/>
+                <el-date-picker v-model="basicForm.birthDate"  type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期" style="width: 100%;"/>
               </div>
             </div>
           </el-col>
@@ -620,7 +619,7 @@
                 <span style="font-weight: bolder">籍&#8195;&#8195;贯：</span>
               </div>
               <div class="content">
-                <el-input placeholder="请输入内容"/>
+                <el-input v-model="basicForm.nativePlace"  placeholder="请输入内容"/>
               </div>
             </div>
           </el-col>
@@ -630,7 +629,7 @@
                 <span style="font-weight: bolder">职&#8195;&#8195;别：</span>
               </div>
               <div class="content">
-                <el-input placeholder="请输入内容"/>
+                <el-input v-model="basicForm.positionClass" placeholder="请输入内容"/>
               </div>
             </div>
           </el-col>
@@ -642,7 +641,7 @@
                 <span style="font-weight: bolder">身份证号：</span>
               </div>
               <div class="content">
-                <el-input placeholder="请输入内容"/>
+                <el-input v-model="basicForm.idCard" placeholder="请输入内容"/>
               </div>
             </div>
           </el-col>
@@ -652,7 +651,7 @@
                 <span style="font-weight: bolder">政治面目：</span>
               </div>
               <div class="content">
-                <el-input placeholder="请输入内容"/>
+                <el-input v-model="basicForm.politicalStatus" placeholder="请输入内容"/>
               </div>
             </div>
           </el-col>
@@ -662,7 +661,7 @@
                 <span style="font-weight: bolder;">&#8195;&#8195;&#8195;入党团时间：</span>
               </div>
               <div class="content" style="width: 176px;padding: 0 0 ">
-                <el-date-picker type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期" style="width: 100%;"/>
+                <el-date-picker v-model="basicForm.joinPartyTime" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期" style="width: 100%;"/>
               </div>
             </div>
           </el-col>
@@ -674,7 +673,7 @@
                 <span style="font-weight: bolder">家庭住址：</span>
               </div>
               <div class="content">
-                <el-input placeholder="请输入内容"/>
+                <el-input v-model="basicForm.address" placeholder="请输入内容"/>
               </div>
             </div>
           </el-col>
@@ -684,7 +683,7 @@
                 <span style="font-weight: bolder">手机号码：</span>
               </div>
               <div class="content">
-                <el-input  placeholder="请输入内容"/>
+                <el-input v-model="basicForm.phone"  placeholder="请输入内容"/>
               </div>
             </div>
           </el-col>
@@ -694,7 +693,7 @@
                 <span style="font-weight: bolder">Email：</span>
               </div>
               <div class="content" style="width: 200px">
-                <el-input placeholder="请输入内容"/>
+                <el-input v-model="basicForm.email" placeholder="请输入内容"/>
               </div>
             </div>
           </el-col>
@@ -706,7 +705,7 @@
                 <span style="font-weight: bolder">任教学科：</span>
               </div>
               <div class="content">
-                <el-input placeholder="请输入内容"/>
+                <el-input v-model="basicForm.subject" placeholder="请输入内容"/>
               </div>
             </div>
           </el-col>
@@ -716,7 +715,7 @@
                 <span style="font-weight: bolder">部&#8195;&#8195;门：</span>
               </div>
               <div class="content">
-                <el-input placeholder="请输入内容"/>
+                <el-input v-model="basicForm.department"  placeholder="请输入内容"/>
               </div>
             </div>
           </el-col>
@@ -726,7 +725,7 @@
                 <span style="font-weight: bolder">&#8195;&#8195;&#8195;参加工作时间：</span>
               </div>
               <div class="content" style="width: 155px;padding: 0 0">
-                <el-date-picker type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期" style="width: 100%;padding-right: 0px"/>
+                <el-date-picker v-model="basicForm.dateToWork"  type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期" style="width: 100%;padding-right: 0px"/>
               </div>
             </div>
           </el-col>
@@ -738,7 +737,7 @@
                 <span style="font-weight: bolder">工作状态：</span>
               </div>
               <div class="content">
-                <el-input style="width: 185px" placeholder="请输入内容"/>
+                <el-input v-model="basicForm.workStatus" style="width: 185px" placeholder="请输入内容"/>
               </div>
             </div>
           </el-col>
@@ -748,7 +747,7 @@
                 <span style="font-weight: bolder">&#8195;&#8195;&#8195;聘用合同起始时间：</span>
               </div>
               <div class="content" style="width: 130px">
-                <el-date-picker type="month" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期" style="width: 100%;padding-right: 0px"/>
+                <el-date-picker v-model="basicForm.contractStartDate" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期" style="width: 100%;padding-right: 0px"/>
               </div>
             </div>
           </el-col>
@@ -758,7 +757,7 @@
                 <span style="font-weight: bolder">&#8195;&#8195;&#8195;聘用合同终止时间：</span>
               </div>
               <div class="content" style="width: 130px">
-                <el-date-picker type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期" style="width: 100%;padding-right: 0px"/>
+                <el-date-picker v-model="basicForm.contractEndDate" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期" style="width: 100%;padding-right: 0px"/>
               </div>
             </div>
           </el-col>
@@ -773,7 +772,7 @@
 </template>
 
 <script>
-  import { teacherGetBasicInforma } from '@/api/teacherGetData'
+  import { teacherGetBasicInforma, teacherEditBasicInfo } from '@/api/teacherGetData'
 export default {
   name: 'OneTimeCollection',
   mounted(){
@@ -786,15 +785,6 @@ export default {
       dialogVisible: false,
       basicDialogVisible: false,
       editDialogVisible: false,
-      // fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
-      form: {
-        zhiwu: '',
-        begindate: '',
-        overdate: '',
-        danwei: '',
-        people: '',
-        beizhu: ''
-      },
       editform: {
         zhiwu: '',
         begindate: '',
@@ -802,73 +792,26 @@ export default {
         danwei: '',
         people: ''
       },
-      options: [{
-        value: 1,
-        label: '东南',
-        children: [{
-          value: 2,
-          label: '上海',
-          children: [
-            { value: 3, label: '普陀' },
-            { value: 4, label: '黄埔' },
-            { value: 5, label: '徐汇' }
-          ]
-        }, {
-          value: 7,
-          label: '江苏',
-          children: [
-            { value: 8, label: '南京' },
-            { value: 9, label: '苏州' },
-            { value: 10, label: '无锡' }
-          ]
-        }, {
-          value: 12,
-          label: '浙江',
-          children: [
-            { value: 13, label: '杭州' },
-            { value: 14, label: '宁波' },
-            { value: 15, label: '嘉兴' }
-          ]
-        }]
-      }, {
-        value: 17,
-        label: '西北',
-        children: [{
-          value: 18,
-          label: '陕西',
-          children: [
-            { value: 19, label: '西安' },
-            { value: 20, label: '延安' }
-          ]
-        }, {
-          value: 21,
-          label: '新疆维吾尔族自治区',
-          children: [
-            { value: 22, label: '乌鲁木齐' },
-            { value: 23, label: '克拉玛依' }
-          ]
-        }]
-      }],
       form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+
+      },
+      basicForm: {
+
+      },
+      personalInfo: {
+        // fullName: ''
       }
     }
   },
   methods: {
     getBasic: function(){
       const prams = {
-        tid: 1
+        tecUsername: 10010
       }
       teacherGetBasicInforma(prams).then(response=>{
         console.log('测试教师获取基本信息接口')
         console.log(response.data)
+        this.personalInfo = response.data.data.baseInfo
       })
     },
     onSubmit() {
@@ -913,11 +856,31 @@ export default {
       }
     },
     confirmEditJiben: function() {
-      this.$message({
-        type:'success',
-        message:'修改成功'
-      })
-      this.basicDialogVisible = false
+      // for(let i in this.basicForm){
+      //   console.log(this.basicForm[i])
+      //   if(this.basicForm[i])
+      // }
+      console.log(Object.keys(this.basicForm).length)
+      if(Object.keys(this.basicForm).length!==18){
+        this.$message({
+          type:'warning',
+          message:'基本信息未填写完整，请检查后提交'
+        })
+      } else {
+        console.log('测试基本信息修改提交参数')
+        console.log(this.basicForm)
+        var prams =  this.basicForm
+        prams.tecUsername = '10010'
+        teacherEditBasicInfo(prams).then(response => {
+          console.log('测试基本信息修改')
+          console.log(response.data)
+          this.$message({
+            type:'success',
+            message:'修改成功'
+          })
+          this.basicDialogVisible = false
+        })
+      }
     },
     notEditProfessionalAbility: function() {
       this.zhuanyeDialogVisible = false
