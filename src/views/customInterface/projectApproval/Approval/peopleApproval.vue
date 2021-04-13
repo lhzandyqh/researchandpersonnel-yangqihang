@@ -1,31 +1,32 @@
 <template>
   <div class="app-container">
-    <el-table :data="peopleData" style="width: 100%" stripe>
-      <el-table-column prop="subdate" label="提交日期">
+    <el-table :data="peopleData.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%" stripe>
+      <el-table-column prop="submitDate" label="提交日期">
       </el-table-column>
-      <el-table-column prop="applypeople" label="提交人">
+      <el-table-column prop="applyPerson" label="提交人">
       </el-table-column>
-      <el-table-column prop="department" label="部门">
+      <el-table-column prop="dept" label="部门">
       </el-table-column>
-      <el-table-column prop="sub" label="审核类型">
+      <el-table-column prop="auditType" label="审核类型">
       </el-table-column>
-      <el-table-column prop="name" label="审核名称">
+      <el-table-column prop="auditName" label="审核名称">applyPerson
       </el-table-column>
       <el-table-column label="审核状态">
         <template slot-scope="scope">
-          <el-tag  v-if="scope.row.approval==='通过'" type="success">审核通过</el-tag>
-          <el-tag  v-if="scope.row.approval==='未通过'" type="danger">审核未通过</el-tag>
-          <el-tag  v-if="scope.row.approval==='待通过'">审核待通过</el-tag>
+          <el-tag  v-if="scope.row.auditStatus==='审核通过'" type="success">审核通过</el-tag>
+          <el-tag  v-if="scope.row.auditStatus==='审核未通过'" type="danger">审核未通过</el-tag>
+          <el-tag  v-if="scope.row.auditStatus==='待审核'">审核待审核</el-tag>
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" icon="el-icon-zoom-in" @click="jibenview(scope.row.sub)">审核</el-button>
+          <el-button type="primary" size="small" icon="el-icon-zoom-in" @click="jibenview(scope.row)">审核</el-button>
         </template>
       </el-table-column>
     </el-table>
     <div style="text-align: center; margin-top: 10px;">
       <el-pagination
+        @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
         :page-size="pagesize"
@@ -39,44 +40,21 @@
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">姓&#8195;&#8195;名：</span><span>王老师</span>
+              <span style="font-weight: bolder">姓&#8195;&#8195;名：</span><span>{{basicDetail.fullName}}</span>
             </div>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">性&#8195;&#8195;别：</span><span>女</span>
+              <span style="font-weight: bolder">性&#8195;&#8195;别：</span><span>{{basicDetail.sex}}</span>
             </div>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">民&#8195;&#8195;族：</span><span>汉</span>
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20" style="padding-top: 10px">
-        <el-col :span="8">
-          <div class="single">
-            <div class="biaoqian">
-              <span style="font-weight: bolder">出生年月：</span><span>1980-3-2</span>
-            </div>
-          </div>
-        </el-col>
-        <el-col :span="8">
-          <div class="single">
-            <div class="biaoqian">
-              <span style="font-weight: bolder">籍&#8195;&#8195;贯：</span><span>北京</span>
-            </div>
-          </div>
-        </el-col>
-        <el-col :span="8">
-          <div class="single">
-            <div class="biaoqian">
-              <span style="font-weight: bolder">职&#8195;&#8195;别：</span><span>讲师</span>
+              <span style="font-weight: bolder">民&#8195;&#8195;族：</span><span>{{basicDetail.nation}}</span>
             </div>
           </div>
         </el-col>
@@ -85,44 +63,21 @@
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">身份证号：</span><span>234445198xxxxxx</span>
+              <span style="font-weight: bolder">出生年月：</span><span>{{basicDetail.birthDate}}</span>
             </div>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">政治面目：</span><span>党员</span>
+              <span style="font-weight: bolder">籍&#8195;&#8195;贯：</span><span>{{basicDetail.nativePlace}}</span>
             </div>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">入党团时间：</span><span>2003-2-3</span>
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20" style="padding-top: 10px">
-        <el-col :span="8">
-          <div class="single">
-            <div class="biaoqian">
-              <span style="font-weight: bolder">家庭住址：</span><span>北京市朝阳区</span>
-            </div>
-          </div>
-        </el-col>
-        <el-col :span="8">
-          <div class="single">
-            <div class="biaoqian">
-              <span style="font-weight: bolder">手机号码：</span><span>12345678943</span>
-            </div>
-          </div>
-        </el-col>
-        <el-col :span="8">
-          <div class="single">
-            <div class="biaoqian">
-              <span style="font-weight: bolder">Email：</span><span>222334424#ddd</span>
+              <span style="font-weight: bolder">职&#8195;&#8195;别：</span><span>{{basicDetail.positionLevel}}</span>
             </div>
           </div>
         </el-col>
@@ -131,21 +86,21 @@
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">任教学科：</span><span>计算机教学</span>
+              <span style="font-weight: bolder">身份证号：</span><span>{{basicDetail.idCard}}</span>
             </div>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">部门：</span><span>计算机学院</span>
+              <span style="font-weight: bolder">政治面目：</span><span>{{basicDetail.politicalStatus}}</span>
             </div>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">参加工作时间：</span><span>2009.3.1</span>
+              <span style="font-weight: bolder">入党团时间：</span><span>{{basicDetail.joinPartyTime}}</span>
             </div>
           </div>
         </el-col>
@@ -154,7 +109,53 @@
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">工作状态：</span><span>任职</span>
+              <span style="font-weight: bolder">家庭住址：</span><span>{{basicDetail.address}}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">手机号码：</span><span>{{basicDetail.phone}}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">Email：</span><span>{{basicDetail.email}}</span>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20" style="padding-top: 10px">
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">任教学科：</span><span>{{basicDetail.teacherSubject}}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">部门：</span><span>{{basicDetail.department}}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">参加工作时间：</span><span>{{basicDetail.timeToWork}}</span>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20" style="padding-top: 10px">
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">工作状态：</span><span>{{basicDetail.workStatus}}</span>
             </div>
           </div>
         </el-col>
@@ -162,14 +163,14 @@
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">聘用合同起始时间：</span>
+              <span style="font-weight: bolder">聘用合同起始时间：</span><span>{{basicDetail.contractStartDate}}</span>
             </div>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">聘用合同终止时间：</span>
+              <span style="font-weight: bolder">聘用合同终止时间：</span><span>{{basicDetail.contractEndDate}}</span>
             </div>
           </div>
         </el-col>
@@ -182,15 +183,15 @@
         <el-row style="padding-top: 10px">
           <el-input
             :rows="4"
-            v-model="AuditingReason"
+            v-model="basicAuditingInfo.auditDesc"
             type="textarea"
             placeholder="请输入内容"/>
         </el-row>
       </div>
       <div class="foot">
         <span slot="footer" class="dialog-footer">
-          <el-button type="success" size="small" plain @click="pass">审核通过</el-button>
-          <el-button type="danger" size="small" plain @click="pass">审核未通过</el-button>
+          <el-button type="success" size="small" plain @click="basicAuditing(basicId,'审核通过')">审核通过</el-button>
+          <el-button type="danger" size="small" plain @click="basicAuditing(basicId,'审核未通过')">审核未通过</el-button>
           <el-button type="primary" @click="jibenVisible = false" size="small" plain>关闭</el-button>
         </span>
       </div>
@@ -449,6 +450,7 @@
 </template>
 
 <script>
+import { directorGetAllWaitAuditingInfoByType, directorGetBasicInfoById, directorAuditingBasicInfoById } from '@/api/researchReview'
   export default {
     name: 'peopleApproval',
     data(){
@@ -459,63 +461,53 @@
         zhuanyeVisible:false,
         workVisible:false,
         jibenVisible:false,
-        peopleData:[
-          {
-            number:'1',
-            sub:'基本信息',
-            applypeople:'王老师',
-            approvalpeople:'刘老师',
-            subdate:'2019-9-2',
-            approvaldate:'2020-1-2',
-            approval:'待通过',
-            department: '理学院',
-            name: '基本信息修改'
-          },
-          {
-            number:'2',
-            sub:'专业能力',
-            applypeople:'张老师',
-            approvalpeople:'刘老师',
-            subdate:'2017-9-2',
-            approvaldate:'2018-1-2',
-            approval:'待通过',
-            department: '理学院',
-            name: '基本信息修改',
-          },
-          {
-            number:'3',
-            sub:'工作经历',
-            applypeople:'刘老师',
-            approvalpeople:'刘老师',
-            subdate:'2019-4-2',
-            approvaldate:'2019-5-2',
-            approval:'待通过',
-            department: '理学院',
-            name: '基本信息修改',
-          },
-          {
-            number:'4',
-            sub:'工作经历',
-            applypeople:'赵老师',
-            approvalpeople:'刘老师',
-            subdate:'2019-12-21',
-            approvaldate:'2019-5-2',
-            approval:'待通过',
-            department: '理学院',
-            name: '基本信息修改',
-          },
-        ]
+        peopleData:[],
+        basicDetail: {}, // 基本信息暂存对象，
+        basicId: '', //当前要审核的基本信息条目id
+        basicAuditingInfo: {
+          tecUsername: '10010',
+          id:'',
+          auditType: '基本信息',
+          auditStatus: '',
+          auditDesc: ''
+        }
       }
     },
+    mounted() {
+      this.getPeopleData()
+    },
     methods:{
-      jibenview(sub){
-        if(sub ==='基本信息'){
-          this.jibenVisible = true;
-        }else if(sub === '专业能力'){
-          this.zhuanyeVisible = true;
-        }else if(sub === '工作经历'){
-          this.workVisible =true;
+      getPeopleData: function () {
+        const prams = {
+          tecUsername: '10010',
+          auditType: '个人信息评审'
         }
+        directorGetAllWaitAuditingInfoByType(prams).then(response => {
+          console.log('测试获取个人信息评审接口')
+          console.log(response.data)
+          this.peopleData = response.data.data
+        })
+      },
+      jibenview(row){
+        this.jibenVisible = true;
+        // if(sub ==='基本信息'){
+        //   this.jibenVisible = true;
+        // }else if(sub === '专业能力'){
+        //   this.zhuanyeVisible = true;
+        // }else if(sub === '工作经历'){
+        //   this.workVisible =true;
+        // }
+        this.basicId = row.id
+        const prams = {
+          tecUsername: '10010',
+          auditType: '基本信息',
+          id: row.id
+        }
+        directorGetBasicInfoById(prams).then(response => {
+          console.log('测试根据id获取基本信息详情')
+          console.log(response.data)
+          this.basicDetail = response.data.data
+        })
       },
       pass(){
         this.$message({
@@ -523,7 +515,46 @@
           message: '审核成功',
           }
         )
-      }
+      },
+      basicAuditing: function (id,status){
+        this.basicAuditingInfo.id = id
+        this.basicAuditingInfo.auditStatus = status
+        const prams = {
+          tecUsername: this.basicAuditingInfo.tecUsername,
+          id: this.basicAuditingInfo.id,
+          auditType: this.basicAuditingInfo.auditType,
+          auditStatus: this.basicAuditingInfo.auditStatus,
+          auditDesc: this.basicAuditingInfo.auditDesc
+        }
+        console.log('测试参数')
+        console.log(prams)
+        directorAuditingBasicInfoById(prams).then(response => {
+          console.log('测试科研处主管审核基本信息接口')
+          console.log(response.data)
+          this.jibenVisible = false;
+          this.$message({
+              type: 'success',
+              message: '审核完成',
+            }
+          )
+          this.getPeopleData()
+        })
+        // setTimeout(()=> {
+        //   this.basicAuditingInfo.id = ''
+        //   this.basicAuditingInfo.auditStatus = ''
+        //   this.basicAuditingInfo.auditDesc = ''
+        //   this.basicId = ''
+        // },1000)
+      },
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+        // this.currentPage = 1;
+        this.pagesize = val;
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+        this.currentPage = val;
+      },
     }
   }
 </script>

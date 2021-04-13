@@ -1,40 +1,40 @@
 <template>
   <div class="app-container">
-    <el-table :data="peopleData" style="width: 100%" stripe>
-      <el-table-column prop="subdate"  label="提交日期">
+    <el-table :data="peopleData.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%" stripe>
+      <el-table-column prop="submitDate"  label="提交日">
       </el-table-column>
-      <el-table-column prop="applypeople" label="提交人">
+      <el-table-column prop="applicant" label="提交人">
       </el-table-column>
-      <el-table-column prop="approvalpeople" label="审核人">
+      <el-table-column prop="auditPserson" label="审核人">
       </el-table-column>
       <el-table-column prop="department" label="部门" >
       </el-table-column>
-      <el-table-column prop="sub" label="审核类型">
+      <el-table-column prop="auditType" label="审核类型">
       </el-table-column>
-      <el-table-column prop="subname" label="审核名称">
-      </el-table-column>
-      <el-table-column prop="approvaldate" label="审核日期">
+      <el-table-column prop="auditDate" label="审核日期">
       </el-table-column>
       <el-table-column label="审核状态">
         <template slot-scope="scope">
-          <el-tag  v-if="scope.row.approval==='通过'" type="success">审核通过</el-tag>
-          <el-tag  v-if="scope.row.approval==='未通过'" type="danger">审核未通过</el-tag>
-          <el-tag  v-if="scope.row.approval==='待通过'">审核待通过</el-tag>
+          <el-tag  v-if="scope.row.auditStatus==='审核通过'" type="success">审核通过</el-tag>
+          <el-tag  v-if="scope.row.auditStatus==='审核未通过'" type="danger">审核未通过</el-tag>
+          <el-tag  v-if="scope.row.auditStatus==='待通过'">审核待通过</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="130px">
         <template slot-scope="scope">
-          <el-button type="text" size="small" icon="el-icon-zoom-in" @click="chakan">查看</el-button>
+          <el-button type="text" size="small" icon="el-icon-zoom-in" @click="chakan(scope.row)">查看</el-button>
           <el-button type="text" size="small" >导出</el-button>
         </template>
       </el-table-column>
     </el-table>
     <div style="text-align: center">
       <el-pagination
-        :current-page="1"
-        :page-sizes="[10, 20, 30]"
-        :page-size="10"
-        :total="10"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[5, 10, 15]"
+        :page-size="pagesize"
+        :total="peopleData.length"
         style="margin-top:20px;"
         layout="total, sizes, prev, pager, next, jumper"
       />
@@ -44,44 +44,21 @@
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">姓&#8195;&#8195;名：</span><span>王老师</span>
+              <span style="font-weight: bolder">姓&#8195;&#8195;名：</span><span>{{ peopleDetails.fullName }}</span>
             </div>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">性&#8195;&#8195;别：</span><span>女</span>
+              <span style="font-weight: bolder">性&#8195;&#8195;别：</span><span>{{ peopleDetails.sex }}</span>
             </div>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">民&#8195;&#8195;族：</span><span>汉</span>
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20" style="padding-top: 10px">
-        <el-col :span="8">
-          <div class="single">
-            <div class="biaoqian">
-              <span style="font-weight: bolder">出生年月：</span><span>1980-3-2</span>
-            </div>
-          </div>
-        </el-col>
-        <el-col :span="8">
-          <div class="single">
-            <div class="biaoqian">
-              <span style="font-weight: bolder">籍&#8195;&#8195;贯：</span><span>北京</span>
-            </div>
-          </div>
-        </el-col>
-        <el-col :span="8">
-          <div class="single">
-            <div class="biaoqian">
-              <span style="font-weight: bolder">职&#8195;&#8195;别：</span><span>讲师</span>
+              <span style="font-weight: bolder">民&#8195;&#8195;族：</span><span>{{ peopleDetails.nation }}</span>
             </div>
           </div>
         </el-col>
@@ -90,44 +67,21 @@
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">身份证号：</span><span>234445198xxxxxx</span>
+              <span style="font-weight: bolder">出生年月：</span><span>{{ peopleDetails.birthDate }}</span>
             </div>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">政治面目：</span><span>党员</span>
+              <span style="font-weight: bolder">籍&#8195;&#8195;贯：</span><span>{{ peopleDetails.nativePlace }}</span>
             </div>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">入党团时间：</span><span>2003-2-3</span>
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20" style="padding-top: 10px">
-        <el-col :span="8">
-          <div class="single">
-            <div class="biaoqian">
-              <span style="font-weight: bolder">家庭住址：</span><span>北京市朝阳区</span>
-            </div>
-          </div>
-        </el-col>
-        <el-col :span="8">
-          <div class="single">
-            <div class="biaoqian">
-              <span style="font-weight: bolder">手机号码：</span><span>12345678943</span>
-            </div>
-          </div>
-        </el-col>
-        <el-col :span="8">
-          <div class="single">
-            <div class="biaoqian">
-              <span style="font-weight: bolder">Email：</span><span>222334424#ddd</span>
+              <span style="font-weight: bolder">职&#8195;&#8195;别：</span><span>{{ peopleDetails.positionClass }}</span>
             </div>
           </div>
         </el-col>
@@ -136,21 +90,21 @@
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">任教学科：</span><span>计算机教学</span>
+              <span style="font-weight: bolder">身份证号：</span><span>{{ peopleDetails.idCard }}</span>
             </div>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">部门：</span><span>计算机学院</span>
+              <span style="font-weight: bolder">政治面目：</span><span>{{ peopleDetails.politicalStatus }}</span>
             </div>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">参加工作时间：</span><span>2009.3.1</span>
+              <span style="font-weight: bolder">入党团时间：</span><span>{{ peopleDetails.joinPartyTime }}</span>
             </div>
           </div>
         </el-col>
@@ -159,7 +113,53 @@
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">工作状态：</span><span>任职</span>
+              <span style="font-weight: bolder">家庭住址：</span><span>{{ peopleDetails.address }}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">手机号码：</span><span>{{ peopleDetails.phone }}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">Email：</span><span>{{ peopleDetails.email }}</span>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20" style="padding-top: 10px">
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">任教学科：</span><span>{{ peopleDetails.subject }}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">部门：</span><span>{{ peopleDetails.department }}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">参加工作时间：</span><span>{{ peopleDetails.dateToWork }}</span>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20" style="padding-top: 10px">
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">工作状态：</span><span>{{peopleDetails.workStatus}}</span>
             </div>
           </div>
         </el-col>
@@ -167,14 +167,14 @@
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">聘用合同起始时间：</span>
+              <span style="font-weight: bolder">聘用合同起始时间：</span><span>{{peopleDetails.contractStartDate}}</span>
             </div>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">聘用合同终止时间：</span>
+              <span style="font-weight: bolder">聘用合同终止时间：</span><span>{{peopleDetails.contractEndDate}}</span>
             </div>
           </div>
         </el-col>
@@ -183,20 +183,17 @@
       <h4>科研处意见</h4>
       <div>
         <el-row>
-          <el-col :span="6">
-            批准通过
-          </el-col>
-          <el-col :span="6">
-            <span>审核时间：</span>
-            <span>2019-12-04</span>
+          <el-col :span="12">
+            {{peopleDetails.auditDesc}}
           </el-col>
           <el-col :span="5">
             <span>审核人：</span>
-            <span>王志</span>
+            <span>{{peopleDetails.auditPerson}}</span>
           </el-col>
           <el-col :span="5">
             <span>审核状态</span>
-            <el-tag type="success">通过</el-tag>
+            <el-tag  v-if="peopleDetails.auditStatus==='审核通过'" type="success">审核通过</el-tag>
+            <el-tag  v-else type="danger">审核未通过</el-tag>
           </el-col>
         </el-row>
       </div>
@@ -210,54 +207,54 @@
 </template>
 
 <script>
+import { directorGetBasicInfoAuditingHistory, directorGetBasicInfoAuditingHistoryDetails } from '@/api/researchReview'
   export default {
     name: 'peopleHistory',
     data(){
       return{
+        currentPage: 1,
+        pagesize: 5,
         jibenVisible:false,
         AuditingReason:'',
         zhuanyeVisible:false,
         workVisible:false,
-        peopleData:[
-          {
-            number:'1',
-            sub:'基本信息',
-            applypeople:'李老师',
-            approvalpeople:'刘老师',
-            subdate:'2019-9-2',
-            approvaldate:'2020-1-2',
-            department:'计算机学院',
-            approval:'通过',
-            subname:'基本信息修改'
-          },
-          {
-            number:'2',
-            sub:'专业能力',
-            applypeople:'林老师',
-            approvalpeople:'刘老师',
-            subdate:'2017-9-2',
-            department:'计算机学院',
-            approvaldate:'2018-1-2',
-            approval:'通过',
-            subname:'基本信息修改'
-          },
-          {
-            number:'3',
-            sub:'工作经历',
-            applypeople:'赵老师',
-            approvalpeople:'刘老师',
-            subdate:'2019-4-2',
-            department:'计算机学院',
-            approvaldate:'2019-5-2',
-            approval:'未通过',
-            subname:'基本信息修改'
-          },
-        ]
+        peopleData:[],
+        peopleId: '',// 查看个人信息详情当前选中id
+        peopleDetails: {}//个人信息详情当前对象
+
       }
     },
+    mounted() {
+      this.getBasicHistory()
+    },
     methods:{
-      chakan(){
+      chakan(row){
         this.jibenVisible = true
+        const prams = {
+          id: row.id,
+          auditType: '基本信息'
+        }
+        directorGetBasicInfoAuditingHistoryDetails(prams).then(response => {
+          console.log('测试获取基本信息审核历史详情')
+          console.log(response.data)
+          this.peopleDetails = response.data.data
+        })
+      },
+      getBasicHistory: function () {
+        directorGetBasicInfoAuditingHistory().then(response => {
+          console.log('测试获取个人信息审核历史接口')
+          console.log(response.data)
+          this.peopleData = response.data.data
+        })
+      },
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+        // this.currentPage = 1;
+        this.pagesize = val;
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+        this.currentPage = val;
       }
     }
   }

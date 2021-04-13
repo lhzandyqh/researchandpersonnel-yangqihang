@@ -3,17 +3,17 @@
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="正在审核" name="first">
         <el-card class="box-card">
-          <div class="approval_item">
+          <div class="approval_item" v-for="(item,key) in this.scheduleData.slice((currentPage4-1)*pageSize,currentPage4*pageSize)" :key="key">
             <el-card class="box-card">
               <el-row>
                 <el-col :span="6">
                   <div class="projectname">
                     <span class="name_head">项目名称：</span>
-                    <span class="name_content">高职学生心理建设与研究</span>
+                    <span class="name_content">{{item.projectName}}</span>
                   </div>
                 </el-col>
                 <el-col :span="10">
-                  <el-steps :space="200" :active="1" finish-status="success">
+                  <el-steps :space="200" :active="item.scheduleInfo" finish-status="success">
                     <!--                    <el-step title="已完成"></el-step>-->
                     <el-step title="项目申报" />
                     <el-step title="组织评审" />
@@ -22,7 +22,7 @@
                 </el-col>
                 <el-col :span="4">
                   <span class="time_head">提交时间：</span>
-                  <span class="time_content">2019-08-19</span>
+                  <span class="time_content">{{item.submitDate}}</span>
                 </el-col>
                 <el-col :span="4">
                   <div>
@@ -32,133 +32,16 @@
               </el-row>
             </el-card>
           </div>
-          <div class="approval_item">
-            <el-card class="box-card">
-              <el-row>
-                <el-col :span="6">
-                  <div class="projectname">
-                    <span class="name_head">项目名称：</span>
-                    <span class="name_content">高职专业新课改</span>
-                  </div>
-                </el-col>
-                <el-col :span="10">
-                  <el-steps :space="200" :active="2" finish-status="success">
-                    <!--                    <el-step title="已完成"></el-step>-->
-                    <el-step title="项目申报" />
-                    <el-step title="组织评审" />
-                    <el-step title="评审完成" />
-                  </el-steps>
-                </el-col>
-                <el-col :span="4">
-                  <span class="time_head">提交时间：</span>
-                  <span class="time_content">2020-03-19</span>
-                </el-col>
-                <el-col :span="4">
-                  <div>
-                    <el-button type="text">查看详情</el-button>
-                  </div>
-                </el-col>
-              </el-row>
-            </el-card>
-          </div>
-          <div class="approval_item">
-            <el-card class="box-card">
-              <el-row>
-                <el-col :span="6">
-                  <div class="projectname">
-                    <span class="name_head">项目名称：</span>
-                    <span class="name_content">校园文化新建设</span>
-                  </div>
-                </el-col>
-                <el-col :span="10">
-                  <el-steps :space="200" :active="1" finish-status="success">
-                    <!--                    <el-step title="已完成"></el-step>-->
-                    <el-step title="项目申报" />
-                    <el-step title="组织评审" />
-                    <el-step title="评审完成" />
-                  </el-steps>
-                </el-col>
-                <el-col :span="4">
-                  <span class="time_head">提交时间：</span>
-                  <span class="time_content">2020-04-19</span>
-                </el-col>
-                <el-col :span="4">
-                  <div>
-                    <el-button type="text">查看详情</el-button>
-                  </div>
-                </el-col>
-              </el-row>
-            </el-card>
-          </div>
-          <div class="approval_item">
-            <el-card class="box-card">
-              <el-row>
-                <el-col :span="6">
-                  <div class="projectname">
-                    <span class="name_head">项目名称：</span>
-                    <span class="name_content">学生返校心理研究</span>
-                  </div>
-                </el-col>
-                <el-col :span="10">
-                  <el-steps :space="200" :active="3" finish-status="success">
-                    <!--                    <el-step title="已完成"></el-step>-->
-                    <el-step title="项目申报" />
-                    <el-step title="组织评审" />
-                    <el-step title="评审完成" />
-                  </el-steps>
-                </el-col>
-                <el-col :span="4">
-                  <span class="time_head">提交时间：</span>
-                  <span class="time_content">2020-07-14</span>
-                </el-col>
-                <el-col :span="4">
-                  <div>
-                    <el-button type="text">查看详情</el-button>
-                  </div>
-                </el-col>
-              </el-row>
-            </el-card>
-          </div>
           <div class="fenye">
             <el-pagination
               :current-page="currentPage4"
-              :page-sizes="[4, 8, 16]"
-              :page-size="4"
+              :page-sizes="[5, 10]"
+              :page-size="pageSize"
               layout="total, sizes, prev, pager, next, jumper"
-              :total="12"
+              :total="this.scheduleData.length"
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
             />
-          </div>
-        </el-card>
-      </el-tab-pane>
-      <el-tab-pane label="审核成功" name="second">
-        <el-card class="box-card">
-          <div class="img_con">
-            <img src="../../../assets/zanwu.png">
-            <div style="text-align: center">
-              <span style="font-size: 15px;font-weight: bold;color: #999999">暂无内容</span>
-            </div>
-          </div>
-        </el-card>
-      </el-tab-pane>
-      <el-tab-pane label="审核未通过" name="third">
-        <el-card class="box-card">
-          <div class="img_con">
-            <img src="../../../assets/zanwu.png">
-            <div style="text-align: center">
-              <span style="font-size: 15px;font-weight: bold;color: #999999">暂无内容</span>
-            </div>
-          </div>
-        </el-card>
-      </el-tab-pane>
-      <el-tab-pane label="审核历史" name="fourth">
-        <el-card class="box-card">
-          <div class="img_con">
-            <img src="../../../assets/zanwu.png">
-            <div style="text-align: center">
-              <span style="font-size: 15px;font-weight: bold;color: #999999">暂无内容</span>
-            </div>
           </div>
         </el-card>
       </el-tab-pane>
@@ -190,7 +73,7 @@
         </el-row>
       </div>
       <el-divider />
-      <h4>专家意见</h4>
+      <h4>专家评分</h4>
       <div>
         <el-row>
           <el-col :span="12">
@@ -218,14 +101,20 @@
 </template>
 
 <script>
+import { projectReviewSchedule } from '@/api/initiateProject'
 export default {
   name: 'ApprovalProgress',
   data() {
     return {
       dialogVisible: false,
       activeName: 'first',
-      currentPage4: 1
+      currentPage4: 1,
+      scheduleData: [],
+      pageSize: 5 // 每页的数据条数
     }
+  },
+  mounted() {
+    this.getReviewSchedule()
   },
   methods: {
     openDialog: function() {
@@ -236,9 +125,21 @@ export default {
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
+      this.pageSize = val
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
+      this.currentPage4 = val
+    },
+    getReviewSchedule: function () {
+      const prams = {
+        tecUsername: '10010'
+      }
+      projectReviewSchedule(prams).then(response => {
+        console.log('测试获取项目评审进度接口')
+        console.log(response.data)
+        this.scheduleData = response.data.data
+      })
     }
   }
 }

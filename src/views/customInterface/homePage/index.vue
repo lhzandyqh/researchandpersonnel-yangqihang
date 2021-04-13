@@ -123,6 +123,23 @@
               <chart-six></chart-six>
             </el-col>
           </el-row>
+          <el-row>
+            <div>
+              <div>
+                <span style="font-size: 18px;color: #00a4ff;font-weight: bold">时序科研数据统计</span>
+              </div>
+              <div class="echart_container">
+                <test-echart-one></test-echart-one>
+                <div class="block" style="width: 600px">
+                  <el-slider
+                    v-model="value"
+                    range
+                    :marks="marks">
+                  </el-slider>
+                </div>
+              </div>
+            </div>
+          </el-row>
         </div>
 <!--        <el-divider></el-divider>-->
       </el-card>
@@ -182,6 +199,7 @@ import chartSeven from '@/views/customInterface/homePage/echart/chart_seven'
 import chartEight from '@/views/customInterface/homePage/echart/chart_eight'
 import chartNine from '@/views/customInterface/homePage/echart/chart_nine'
 import chartTen from '@/views/customInterface/homePage/echart/chart_ten'
+import testEchartOne from "./testEchartOne";
 // import chart_three from './echart/chart_three'
 import echarts from 'echarts'
 require('echarts/theme/macarons')
@@ -197,7 +215,8 @@ export default {
     chartSeven,
     chartEight,
     chartNine,
-    chartTen
+    chartTen,
+    testEchartOne
   },
   computed:{
     roles() {
@@ -227,6 +246,28 @@ export default {
   },
   data(){
     return{
+      value: [40, 60],
+      marks: {
+        0: '2015-01',
+        10: '2015-06',
+        20: '2015-12',
+        30: '2016-01',
+        40: '2016-01',
+        50: '2016-01',
+        60: '2017-01',
+        70: '2017-01',
+        80: '2017-01',
+        90: '2018-01',
+        // 100: '2018-01',
+        // 8: '8°C',
+        // 37: '37°C',
+        // 50: {
+        //   style: {
+        //     color: '#1989FA'
+        //   },
+        //   label: this.$createElement('strong', '50%')
+        // }
+      },
       value1: [],
       value2: [],
       value3: [],
@@ -511,5 +552,8 @@ export default {
   }
   .block {
     text-align: center;
+  }
+  .echart_container {
+    margin-left: 30%;
   }
 </style>
