@@ -15,49 +15,6 @@
               <el-option label="学术专著" value="学术专著"/>
             </el-select>
           </el-col>
-          <el-col :span="2" style="margin-left: 20px;margin-right: 0px">
-            <div class="selector">
-              <span style="font-size: 15px;font-weight: bolder;margin-left: 15px">积分级别:</span>
-            </div>
-          </el-col>
-          <el-col :span="3">
-            <div style="margin-left: 0px">
-              <el-select v-model="value2" style="padding: 0px 0px 0px 0px" placeholder="积分级别">
-                <el-option
-                  v-for="item in option2"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-            </div>
-          </el-col>
-          <el-col :span="3">
-            <div class="add">
-              <el-button class="filter-item"  type="primary">查询</el-button>
-            </div>
-          </el-col>
-<!--          <el-col :span="2" style="margin-left: 20px;margin-right: 0px">-->
-<!--            <div class="selector">-->
-<!--              <span style="font-size: 15px;font-weight: bolder;margin-left: 15px">积分类型:</span>-->
-<!--            </div>-->
-<!--          </el-col>-->
-<!--          <el-col :span="4">-->
-<!--            <div class="select">-->
-<!--              <el-select v-model="type_select_value" placeholder="请选择您的积分类型" >-->
-<!--                                      <el-option label="学术成果积分配置" value="xueshu"/>-->
-<!--                                      <el-option label="项目课题积分配置" value="yanjiuke"/>-->
-<!--                                      <el-option label="学术讲座与经验分享积分配置" value="jinyan"/>-->
-<!--                                      <el-option label="教育教学评比竞赛积分配置" value="jingsai"/>-->
-<!--                                      <el-option label="研究课积分配置" value="yanjiu"/>-->
-<!--                                      <el-option label="教育教学成果获奖积分配置" value="jiaoyu"/>-->
-<!--                                      <el-option label="教师指导学生参加学科比赛获奖情况积分配置" value="xueke"/>-->
-<!--                                      <el-option label="艺科体社团积分配置" value="yike"/>-->
-<!--                                      <el-option label="行政获奖积分配置" value="xinzheng"/>-->
-<!--                                      <el-option label="校本培训积分配置" value="xiaoben"/>-->
-<!--                </el-select>-->
-<!--            </div>-->
-<!--          </el-col>-->
           <el-col :span="6">
             <div class="add">
               <el-button class="filter-item" style="margin-left: 10px;float: right" type="primary" icon="el-icon-edit" @click="dialogPvVisible = true">新增积分规则配置</el-button>
@@ -65,45 +22,10 @@
           </el-col>
         </el-row>
         <el-divider/>
-        <el-table
-          :data="projectData"
-          stripe
-          style="width: 100%">
-          <el-table-column
-            prop="projectname"
-            label="项目名称"
-            />
-          <el-table-column
-            prop="projectuser"
-            label="项目负责人"
-            />
-          <el-table-column
-            prop="projectsub"
-            label="项目类型"
-           />
-          <el-table-column
-            prop="projectclass"
-            label="项目级别"
-            />
-          <el-table-column
-            prop="date"
-            label="完成时间"
-            />
-          <el-table-column
-            prop="score"
-            label="分值"
-           />
-        </el-table>
-        <div style="text-align: center; margin-top: 10px;">
-          <el-pagination
-            @current-change="2"
-            :current-page="1"
-            :page-size="pagesize"
-            :page-sizes="[5, 10]"
-            :total="projectData.length"
-            layout="total, sizes, prev, pager, next, jumper"
-          />
-        </div>
+        <project-table v-show="listQuery.qualification_type === '课题项目'" ref="project"></project-table>
+        <academic-table v-show="listQuery.qualification_type === '学术论文'" ref="academic"></academic-table>
+        <scientific-table v-show="listQuery.qualification_type === '科研专利'" ref="scientific">></scientific-table>
+        <monographs-table v-show="listQuery.qualification_type === '学术专著'" ref="monographs"></monographs-table>
       </div>
       <el-dialog :visible.sync="dialogPvVisible" title="新增积分规则配置">
         <el-form ref="form" label-width="150px" style="margin: 20px 0;">
@@ -112,7 +34,7 @@
               <el-option label="课题项目" value="ktxm"/>
               <el-option label="学术论文" value="xslw"/>
               <el-option label="科研专利" value="kyzl"/>
-              <el-option label="科研著作" value="kyzz"/>
+              <el-option label="科研专著" value="kyzz"/>
             </el-select>
           </el-form-item>
         </el-form>
@@ -120,7 +42,7 @@
         <el-row v-if="t_qualification_name==='ktxm'">
           <el-form ref="ktxmform" :model="ktxmform" label-width="200px">
             <el-form-item label="课题级别">
-              <el-select v-model="ktxmform.rank" placeholder="请选择课题级别">
+              <el-select v-model="ktxmform.projectLevel" placeholder="请选择课题级别">
                 <el-option label="国家级" value="国家级"/>
                 <el-option label="省级" value="省级"/>
                 <el-option label="区级" value="区级"/>
@@ -129,29 +51,29 @@
               </el-select>
             </el-form-item>
             <el-form-item label="课题类型">
-              <el-select v-model="ktxmform.type" placeholder="请选择课题级别">
-                <el-option label="个人项目" value="国家级"/>
-                <el-option label="教学建设" value="省级"/>
-                <el-option label="学术科研" value="区级"/>
-                <el-option label="集体科研" value="市级"/>
+              <el-select v-model="ktxmform.projectType" placeholder="请选择课题类型">
+                <el-option label="个人项目" value="个人项目"/>
+                <el-option label="教学建设" value="教学建设"/>
+                <el-option label="学术科研" value="学术科研"/>
+                <el-option label="集体科研" value="集体科研"/>
               </el-select>
             </el-form-item>
             <el-form-item label="个人角色">
-              <el-select v-model="ktxmform.role" placeholder="请选择个人角色">
+              <el-select v-model="ktxmform.personnelRole" placeholder="请选择个人角色">
                 <el-option label="主持" value="主持"/>
                 <el-option label="参与" value="参与"/>
               </el-select>
-              <el-input v-model="input" style="width: 200px" placeholder="分值比率"></el-input>
+              <el-input v-model="ktxmform.scoreRate" style="width: 200px" placeholder="分值比率"></el-input>
             </el-form-item>
             <el-form-item label="基础分值" style="width: 400px">
-              <el-input v-model="ktxmform.score"/>
+              <el-input v-model="ktxmform.baseScore"/>
             </el-form-item>
           </el-form>
         </el-row>
         <el-row v-if="t_qualification_name==='xslw'">
           <el-form ref="xslwform" :model="xslwform" label-width="200px">
             <el-form-item label="论文级别">
-              <el-select v-model="xslwform.rank" placeholder="请选择论文级别">
+              <el-select v-model="xslwform.paperLevel" placeholder="请选择论文级别">
                 <el-option label="T类 特种刊物论文" value="特种刊物论文"/>
                 <el-option label="A类 权威核心刊物论文" value="权威核心刊物论文"/>
                 <el-option label="B类 重要核心刊物论文" value="重要核心刊物论文"/>
@@ -161,46 +83,37 @@
               </el-select>
             </el-form-item>
             <el-form-item label="作者类别">
-              <el-select v-model="xslwform.role" placeholder="请选择作者类别">
+              <el-select v-model="xslwform.authorType" placeholder="请选择作者类别">
                 <el-option label="第一作者" value="第一作者"/>
                 <el-option label="第二作者" value="第二作者"/>
                 <el-option label="第三作者" value="第三作者"/>
                 <el-option label="其他" value="其他"/>
               </el-select>
-              <el-input v-model="input" style="width: 200px" placeholder="分值比率"></el-input>
+              <el-input v-model="xslwform.scoreRate" style="width: 200px" placeholder="分值比率"></el-input>
             </el-form-item>
             <el-form-item label="基础分值" style="width: 400px">
-              <el-input v-model="xslwform.score"/>
+              <el-input v-model="xslwform.baseScore"/>
             </el-form-item>
           </el-form>
         </el-row>
         <el-row v-if="t_qualification_name==='kyzl'">
           <el-form ref="kyzlform" :model="kyzlform" label-width="200px">
             <el-form-item label="专利类型">
-              <el-select v-model="kyzlform.rank" placeholder="请选择专利类型">
+              <el-select v-model="kyzlform.patentType" placeholder="请选择专利类型">
                 <el-option label="发明专利" value="特种刊物论文"/>
                 <el-option label="实用新型专利" value="实用新型专利"/>
                 <el-option label="软件著作权" value="软件著作权"/>
               </el-select>
             </el-form-item>
-<!--            <el-form-item label="作者类别">-->
-<!--              <el-select v-model="yanjiukeform.role" placeholder="请选择作者类别">-->
-<!--                <el-option label="第一作者" value="第一作者"/>-->
-<!--                <el-option label="第二作者" value="第二作者"/>-->
-<!--                <el-option label="第三作者" value="第三作者"/>-->
-<!--                <el-option label="其他" value="其他"/>-->
-<!--              </el-select>-->
-<!--              <el-input v-model="input" style="width: 200px" placeholder="分值比率"></el-input>-->
-<!--            </el-form-item>-->
             <el-form-item label="基础分值" style="width: 400px">
-              <el-input v-model="kyzlform.score"/>
+              <el-input v-model="kyzlform.baseScore"/>
             </el-form-item>
           </el-form>
         </el-row>
         <el-row v-if="t_qualification_name==='kyzz'">
           <el-form ref="kyzzform" :model="kyzzform" label-width="200px">
             <el-form-item label="著作类型">
-              <el-select v-model="kyzzform.rank" placeholder="请选择专利类型">
+              <el-select v-model="kyzzform.monographType" placeholder="请选择专利类型">
                 <el-option label="专著" value="专著"/>
                 <el-option label="编著" value="编著"/>
                 <el-option label="译著" value="译著"/>
@@ -208,7 +121,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="著作级别">
-              <el-select v-model="kyzzform.rank" placeholder="请选择专利类型">
+              <el-select v-model="kyzzform.monographLevel" placeholder="请选择专利类型">
                 <el-option label="T" value="T"/>
                 <el-option label="A" value="A"/>
                 <el-option label="B" value="B"/>
@@ -227,21 +140,32 @@
             <!--              <el-input v-model="input" style="width: 200px" placeholder="分值比率"></el-input>-->
             <!--            </el-form-item>-->
             <el-form-item label="基础分值" style="width: 400px">
-              <el-input v-model="kyzzform.score"/>
+              <el-input v-model="kyzzform.baseScore"/>
             </el-form-item>
           </el-form>
         </el-row>
         <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogPvVisible = false">关闭</el-button>
-        <el-button type="success" >确定</el-button>
+        <el-button type="success" @click="addScoreConfig">确定</el-button>
       </span>
       </el-dialog>
     </div>
 </template>
 
 <script>
+import { projectScoreConfig, academicScoreConfig, scientificScoreConfig, monographsScoreConfig } from '@/api/scoreConfig'
+import projectTable from './tables/projectTable'
+import academicTable from './tables/academicTable'
+import scientificTable from './tables/scientificTable'
+import monographsTable from './tables/monographsTable'
     export default {
-        name: "index",
+      name: "index",
+      components: {
+        projectTable,
+        academicTable,
+        scientificTable,
+        monographsTable
+      },
       data(){
           return{
             pagesize: 5,
@@ -296,7 +220,7 @@
               }],
             dialogPvVisible: false,
             listQuery: {
-              qualification_type: '',
+              qualification_type: '课题项目',
               department_level: '',
               qualification_level: ''
             },
@@ -307,28 +231,17 @@
               score: ''
             },
             ktxmform: {
-              type: '',
-              first: '',
-              rank: '',
-              score: ''
+              // baseScore: '',
+              // scoreRate: '',
+              // projectType: '',
+              // projectLevel: '',
+              // personnelRole: ''
             },
             xslwform: {
-              type: '',
-              first: '',
-              rank: '',
-              score: ''
             },
             kyzlform: {
-              type: '',
-              first: '',
-              rank: '',
-              score: ''
             },
             kyzzform: {
-              type: '',
-              first: '',
-              rank: '',
-              score: ''
             },
             yanjiukeform: {
               role: '',
@@ -381,7 +294,107 @@
             t_qualification_name: 'ktxm',
             type_select_value: 'ktxm',
           }
-     }
+     },
+      mounted() {
+        // this.getProjectData()
+      },
+      methods: {
+        // getProjectData:function () {
+        //   console.log('测试获取项目课题积分配置数据')
+        //   projectScoreQuery().then(response => {
+        //     console.log('测试接口')
+        //     console.log(response.data)
+        //   })
+        // }
+        addScoreConfig: function () {
+          switch (this.t_qualification_name){
+            case "ktxm":
+              if(Object.keys(this.ktxmform).length!==5){
+                this.$message({
+                  message: '未配置完整',
+                  type: 'warning'
+                })
+                console.log(Object.keys(this.ktxmform).length)
+              }else {
+                projectScoreConfig(this.ktxmform).then(response => {
+                  console.log('测试课题项目积分配置')
+                  console.log(response.data)
+                  this.$message({
+                    message: '配置成功',
+                    type: 'success'
+                  })
+                  this.ktxmform = {}
+                  this.dialogPvVisible = false
+                  this.$refs.project.getProjectData()
+                })
+              }
+              break
+            case "xslw":
+              if(Object.keys(this.xslwform).length!==4){
+                this.$message({
+                  message: '未配置完整',
+                  type: 'warning'
+                })
+                console.log(Object.keys(this.xslwform).length)
+              }else {
+                academicScoreConfig(this.xslwform).then(response => {
+                  console.log('测试学术论文积分配置')
+                  console.log(response.data)
+                  this.$message({
+                    message: '配置成功',
+                    type: 'success'
+                  })
+                  this.xslwform = {}
+                  this.dialogPvVisible = false
+                  this.$refs.academic.getAcademicData()
+                })
+              }
+              break
+            case "kyzl":
+              if(Object.keys(this.kyzlform).length!==2){
+                this.$message({
+                  message: '未配置完整',
+                  type: 'warning'
+                })
+                console.log(Object.keys(this.kyzlform).length)
+              }else {
+                scientificScoreConfig(this.kyzlform).then(response => {
+                  console.log('测试科研专利积分配置')
+                  console.log(response.data)
+                  this.$message({
+                    message: '配置成功',
+                    type: 'success'
+                  })
+                  this.kyzlform = {}
+                  this.dialogPvVisible = false
+                  this.$refs.scientific.getScientificData()
+                })
+              }
+              break
+            case "kyzz":
+              if(Object.keys(this.kyzzform).length!==3){
+                this.$message({
+                  message: '未配置完整',
+                  type: 'warning'
+                })
+                console.log(Object.keys(this.kyzzform).length)
+              }else {
+                monographsScoreConfig(this.kyzzform).then(response => {
+                  console.log('测试科研著作积分配置')
+                  console.log(response.data)
+                  this.$message({
+                    message: '配置成功',
+                    type: 'success'
+                  })
+                  this.kyzzform = {}
+                  this.dialogPvVisible = false
+                  this.$refs.monographs.getMonoData()
+                })
+              }
+              break
+          }
+        }
+      }
     }
 </script>
 
