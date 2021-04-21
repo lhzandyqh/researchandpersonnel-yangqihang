@@ -9,10 +9,11 @@
               <div style="text-align: right">
                 <el-upload
                   class="upload-demo"
-                  action="https://jsonplaceholder.typicode.com/posts/"
+                  action="http://58.119.112.15:11002//upload/fileUpload"
                   :on-preview="handlePreview"
                   :on-remove="handleRemove"
                   :before-remove="beforeRemove"
+                  :on-success="uploadSuccess"
                   multiple
                   :limit="3"
                   :on-exceed="handleExceed"
@@ -209,7 +210,9 @@ export default {
   data() {
     return {
       // 修改
+      fileList: [],
       value1: '',
+      pdfUrl: '',
       option1: [{
         value: '个人项目',
         label: '个人项目'
@@ -243,7 +246,8 @@ export default {
       budgetData: [],
       submitData: [],
       directorList: [],
-      remakes: ''
+      remakes: '',
+      deptArray: []
     }
   },
   methods: {
@@ -260,9 +264,10 @@ export default {
       //   type:'success',
       //   message:'提交成功'
       // })
-      var username = 10010
+      var username = localStorage.getItem('loginName')
       for(let key in this.basicData) {
         const obj = {
+          "appendix": '',
           "assessDate": "",
           "assessDesc": "",
           "assessExpert": "",
@@ -280,6 +285,7 @@ export default {
           "tusername": "",
           "type": ""
         }
+        obj.appendix = this.pdfUrl
         obj.tusername = username
         obj.type = '基本信息'
         obj.contentName = this.basicData[key].content_name
@@ -294,6 +300,7 @@ export default {
       }
       for(let key in this.projectData) {
         const obj = {
+          "appendix": '',
           "assessDate": "",
           "assessDesc": "",
           "assessExpert": "",
@@ -311,6 +318,7 @@ export default {
           "tusername": "",
           "type": ""
         }
+        obj.appendix = this.pdfUrl
         obj.tusername = username
         obj.type = '项目信息'
         obj.contentName = this.projectData[key].content_name
@@ -324,6 +332,7 @@ export default {
       }
       for(let key in this.budgetData) {
         const obj = {
+          "appendix": '',
           "assessDate": "",
           "assessDesc": "",
           "assessExpert": "",
@@ -341,6 +350,7 @@ export default {
           "tusername": "",
           "type": ""
         }
+        obj.appendix = this.pdfUrl
         obj.tusername = username
         obj.type = '预算信息'
         obj.contentName = this.budgetData[key].content_name
@@ -375,6 +385,10 @@ export default {
             message:'提交成功'
           })
           this.submitData = []
+          this.previewGetTableData()
+          // this.projectData = []
+          // this.basicData = []
+          // this.budgetData = []
         })
       }
   },
@@ -390,6 +404,23 @@ export default {
     getBaiscDataInputData: function () {
       console.log('输入框输入值，查看当前basicData状态')
       console.log(this.basicData);
+    },
+    uploadSuccess: function (response) {
+      console.log('测试文件上传接口')
+      console.log(response.data)
+      if(response.data!== '') {
+        this.$message({
+          message: '上传成功',
+          type: 'success'
+        });
+        this.pdfUrl = response.data.fileUrl
+        console.log(this.pdfUrl)
+      }else {
+        this.$message({
+          message: '请重试',
+          type: 'warning'
+        });
+      }
     }
   },
   mounted() {

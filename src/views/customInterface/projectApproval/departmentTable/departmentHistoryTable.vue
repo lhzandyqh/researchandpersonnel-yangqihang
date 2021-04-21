@@ -1,46 +1,46 @@
 <template>
   <div class="app-container">
     <el-table
-      :data="tableData"
+      :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
       stripe
       style="width: 100%">
       <el-table-column
-        prop="date"
+        prop="submitDate"
         label="提交日期">
       </el-table-column>
       <el-table-column
-        prop="tijiao"
+        prop="applyTecName"
         width="100"
         label="提交人">
       </el-table-column>
       <el-table-column
-        prop="shenhe"
+        prop="assessExpert"
         width="100"
         label="审核人">
       </el-table-column>
       <el-table-column
-        prop="bumen"
+        prop="dept"
         width="130"
         label="部门">
       </el-table-column>
       <el-table-column
-        prop="type"
+        prop="assessType"
         width="200"
         label="审核类型">
       </el-table-column>
       <el-table-column
-        prop="name"
+        prop="projectName"
         label="审核名称">
       </el-table-column>
       <el-table-column
-        prop="datetwo"
+        prop="assessDate"
         width="130"
         label="审核日期">
       </el-table-column>
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" icon="el-icon-zoom-in" @click="getAuditing(scope.row.id,scope.row.type)">查看</el-button>
-          <el-button type="primary" size="small" icon="el-icon-zoom-in" @click="getAuditing(scope.row.id,scope.row.type)">导出</el-button>
+          <el-button type="primary" size="small" icon="el-icon-zoom-in" @click="lookDetails(scope.row)">查看</el-button>
+          <el-button type="primary" size="small" icon="el-icon-zoom-in">导出</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -48,35 +48,74 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[10, 15, 20]"
-        :page-size="10"
+        :current-page="currentPage"
+        :page-size="pagesize"
+        :page-sizes="[5, 10]"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="79">
+        :total="tableData.length">
       </el-pagination>
     </div>
+    <el-dialog
+      title="评审详情"
+      :visible.sync="dialogVisible"
+      width="40%"
+      :before-close="handleClose">
+      <span>这是一段信息</span>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+  </span>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
+import { expertGetAuditingHistory } from '@/api/expertEvaluation'
     export default {
         name: "departmentHistoryTable",
       data(){
           return{
+            dialogVisible: false,
+            currentPage: 1,
+            pagesize:5,
             currentPage4: '',
-            tableData:[
-              {date:'2018-08-02',tijiao:'王老师',shenhe:'李老师',bumen:'计算机学院',type:'科研项目',name:'校园安全可视化监控系统',datetwo:'2018-08-04'},
-              {date:'2018-08-05',tijiao:'赵老师',shenhe:'李老师',bumen:'计算机学院',type:'科研项目',name:'教师绩效评测系统',datetwo:'2018-08-08'},
-              {date:'2018-07-12',tijiao:'吴老师',shenhe:'李老师',bumen:'计算机学院',type:'科研项目',name:'网络在线考试系统',datetwo:'2018-07-16'},
-              {date:'2018-07-15',tijiao:'欧老师',shenhe:'李老师',bumen:'计算机学院',type:'科研项目',name:'课程设计管理系统',datetwo:'2018-07-16'},
-              {date:'2018-08-02',tijiao:'王老师',shenhe:'李老师',bumen:'计算机学院',type:'科研项目',name:'办公自动化系统的设计与实现',datetwo:'2018-08-04'},
-              {date:'2018-08-17',tijiao:'程老师',shenhe:'李老师',bumen:'计算机学院',type:'科研项目',name:'城市公交管理系统',datetwo:'2018-08-19'},
-              {date:'2018-08-24',tijiao:'左老师',shenhe:'李老师',bumen:'计算机学院',type:'科研项目',name:'高点检测系统',datetwo:'2018-08-26'},
-              {date:'2018-08-29',tijiao:'刘老师',shenhe:'李老师',bumen:'计算机学院',type:'科研项目',name:'环境质量监控系统',datetwo:'2018-09-01'},
-              {date:'2018-09-09',tijiao:'罗老师',shenhe:'李老师',bumen:'计算机学院',type:'科研项目',name:'医保情况监控系统的设计与实现',datetwo:'2018-09-11'},
-              {date:'2018-10-02',tijiao:'王老师',shenhe:'李老师',bumen:'计算机学院',type:'科研项目',name:'数据融合平台的设计',datetwo:'2018-10-04'}
-            ]
+            tableData:[]
           }
+      },
+      mounted() {
+          this.getHistory()
+      },
+      methods:{
+        handleClose(done) {
+          this.$confirm('确认关闭？')
+            .then(_ => {
+              done();
+            })
+            .catch(_ => {});
+        },
+        handleSizeChange(val) {
+          console.log(`每页 ${val} 条`);
+          // this.currentPage = 1;
+          this.pagesize = val;
+        },
+        handleCurrentChange(val) {
+          console.log(`当前页: ${val}`);
+          this.currentPage = val;
+        },
+          getHistory: function () {
+            const prams = {
+              tecUsername: localStorage.getItem('loginName')
+            }
+            expertGetAuditingHistory(prams).then(response => {
+              console.log('测试获取审核历史接口')
+              console.log(response.data)
+              this.tableData = response.data.data
+            })
+          },
+        lookDetails: function (row) {
+          this.dialogVisible = true
+        }
       }
     }
 </script>

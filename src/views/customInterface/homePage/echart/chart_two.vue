@@ -7,10 +7,17 @@
 </template>
 
 <script>
+import {projectDistribution} from '@/api/chartsData'
 import echarts from 'echarts'
 require('echarts/theme/macarons')
 export default {
   name: 'OverviewChartTwo',
+  props: {
+    onlyForTeacher: {
+      type: Function,
+      default: null
+    }
+  },
   data() {
     return {
       option: {
@@ -26,7 +33,7 @@ export default {
         //   right: -30,
         //   data: ['待提审', '审核中', '审核未通过', '未开始', '进行中', '已完成', '逾期未完成']
         // },
-        series: [
+        series:
           {
             name: '访问来源',
             type: 'pie',
@@ -56,17 +63,38 @@ export default {
               { value: 18, name: '逾期未完成' }
             ]
           }
-        ]
       }
     }
   },
   mounted() {
     this.initChart()
+    this.projectDistribution()
   },
   methods: {
     initChart: function() {
       this.chart = echarts.init(document.getElementById('overview_chart_two'), 'macarons')
       this.chart.setOption(this.option)
+    },
+    //智能分析-普通教师参与的项目状态分布
+    projectDistribution () {
+      const prams = {
+        tecUsername: 10010
+      }
+      projectDistribution(prams).then(response =>{
+        console.log('测试普通教师参与的项目状态分布接口');
+        console.log(response.data);
+        this.option.series.data = [
+          { value: response.data.data.auditNotPassNums, name: '审核未通过' },
+          { value: response.data.data.notStartNums, name: '未开始' },
+          { value: response.data.data.auditingNums, name: '审核中' },
+          { value: response.data.data.endedNums, name: '已完成' },
+          { value: response.data.data.onDoingNums, name: '进行中' },
+          { value: response.data.data.overdueNums, name: '逾期未完成' },
+          { value: response.data.data.waitAuditNums, name: '等待评审' }
+        ]
+        this.chart.setOption(this.option)
+      })
+      this.onlyForTeacher()
     }
   }
 }

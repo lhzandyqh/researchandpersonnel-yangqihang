@@ -242,6 +242,13 @@
           </span>
         </el-form-item>
 
+        <el-form-item style="margin-top: 10px">
+          <span style="font-weight: bold;margin-left: 12px">选择用户权限：</span>
+          <el-radio v-model="loginForm.role" label="科研主管">科研主管</el-radio>
+          <el-radio v-model="loginForm.role" label="教师">教师</el-radio>
+          <el-radio v-model="loginForm.role" label="专家评审">专家评审</el-radio>
+        </el-form-item>
+
         <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;;margin-top: 20px;height: 40px" @click.native.prevent="handleLogin">
           {{ $t('login.logIn') }}
         </el-button>
@@ -268,7 +275,7 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
+// import { validUsername } from '@/utils/validate'
 // import LangSelect from '@/components/LangSelect'
 // import SocialSign from './socialsignin'
 
@@ -276,33 +283,36 @@ export default {
   name: 'Login',
   // components: { LangSelect, SocialSign },
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
-      } else {
-        callback()
-      }
-    }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
-      } else {
-        callback()
-      }
-    }
+    // const validateUsername = (rule, value, callback) => {
+    //   if (!validUsername(value)) {
+    //     callback(new Error('Please enter the correct user name'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
+    // const validatePassword = (rule, value, callback) => {
+    //   if (value.length < 6) {
+    //     callback(new Error('The password can not be less than 6 digits'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
     return {
       activeName: 'first',
       activeNametwo: 'first',
       schna: ['https://zhongkeruitong.top/dangjian/5.jpg','https://zhongkeruitong.top/dangjian/4.jpg'],
       dialogVisible: false,
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        // username: 'admin',
+        // password: '111111',
+        username: '10002',
+        password: '123456',
+        role: ''
       },
-      loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
-      },
+      // loginRules: {
+      //   username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+      //   password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+      // },
       passwordType: 'password',
       loading: false,
       showDialog: false,
@@ -342,20 +352,27 @@ export default {
       })
     },
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true
-          this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
-            this.loading = false
-            this.$router.push({ path: this.redirect || '/' })
-          }).catch(() => {
-            this.loading = false
-          })
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
+      if(this.loginForm.role === '') {
+        this.$message({
+          message: '未选择权限',
+          type: 'warning'
+        });
+      }else {
+        this.$refs.loginForm.validate(valid => {
+          if (valid) {
+            this.loading = true
+            this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
+              this.loading = false
+              this.$router.push({ path: this.redirect || '/' })
+            }).catch(() => {
+              this.loading = false
+            })
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
+      }
     },
     afterQRScan() {
       // const hash = window.location.hash.slice(1)

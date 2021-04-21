@@ -1,25 +1,25 @@
 <template>
   <div class="app-container">
     <el-table
-      :data="tableData"
+      :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
       stripe
       style="width: 100%">
       <el-table-column
-        prop="date"
+        prop="submitDate"
         width="200"
-        label="发布日期">
+        label="提交日期">
       </el-table-column>
 <!--      <el-table-column-->
 <!--        prop="people"-->
 <!--        label="提交人">-->
 <!--      </el-table-column>-->
        <el-table-column
-         prop="people"
+         prop="applyTecName"
          width="200"
-         label="评审时间">
+         label="申请人">
       </el-table-column>
       <el-table-column
-        prop="address"
+        prop="dept"
         label="部门">
       </el-table-column>
 <!--      <el-table-column-->
@@ -27,12 +27,12 @@
 <!--        label="审核类型">-->
 <!--      </el-table-column>-->
       <el-table-column
-        prop="name"
+        prop="projectName"
         label="项目名称">
       </el-table-column>
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" icon="el-icon-zoom-in" @click="getAuditing(scope.row.id,scope.row.type)">评审</el-button>
+          <el-button type="primary" size="small" icon="el-icon-zoom-in" @click="getAuditing(scope.row)">评审</el-button>
           <el-button type="primary" size="small" icon="el-icon-notebook-2">查看论证书</el-button>
         </template>
       </el-table-column>
@@ -41,11 +41,11 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[5, 10, 15, 20]"
-        :page-size="5"
+        :current-page="currentPage"
+        :page-size="pagesize"
+        :page-sizes="[5, 10]"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="4">
+        :total="tableData.length">
       </el-pagination>
     </div>
 
@@ -100,14 +100,14 @@
             <div>
               <div class="dimension_name">
                 <span>{{value.dimensionName}}:</span>
-                <el-input v-model="value.number" style="width: 150px;margin-left: 15px" placeholder="请输入评审分值" />
+                <el-input v-model="value.number" @change="addScore(value.id,value.number)" style="width: 150px;margin-left: 15px" placeholder="请输入评审分值" />
               </div>
             </div>
           </div>
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button type="success" @click="editAuditing(1)">评审完成</el-button>
+        <el-button type="success" @click="confirmAuditing">评审完成</el-button>
         <el-button type="primary" @click="keyandialogPvVisible = false">关闭</el-button>
       </span>
     </el-dialog>
@@ -116,10 +116,13 @@
 
 <script>
 import { projectReviewDimensionSetting } from '@/api/personnalSettings'
+import { expertGetAllWaitAuditingData, expertAuditingProject } from '@/api/expertEvaluation'
     export default {
         name: "departmentProjectTable",
       data(){
           return{
+            currentPage: 1,
+            pagesize:5,
             dimensionData: [],
             currentPage4: 4,
             aData:[
@@ -179,25 +182,88 @@ import { projectReviewDimensionSetting } from '@/api/personnalSettings'
               id: '',
               status: '',
               remark: ''
+            },
+            evaluationSheetScores: [],
+            auditingForm: {
+              tecUsername: localStorage.getItem('loginName'),
+              applyTecUsername: '',
+              times:'',
+              assessStatus:'',
+              assessDesc: '暂无意见'
             }
           }
       },
       mounted() {
-          this.getDimensionData()
+        this.getDimensionData()
+        this.getWaitAuditing()
       },
       methods:{
-        getAuditing(id,type) {
-          if(type === '中文核心论文登记'){
-            this.keyandialogPvVisible = true
-          } else if(type === '科研项目'){
-            this.xiangmudialogVisible = true
+        addScore: function (evaluationSheetId,evaluationScore) {
+          var score = {
+            evaluationSheetId: '',
+            evaluationScore: ''
           }
+          score.evaluationSheetId = evaluationSheetId
+          score.evaluationScore = evaluationScore
+          console.log('测试score参数')
+          console.log(score)
+          this.evaluationSheetScores.push(score)
+        },
+        getWaitAuditing: function () {
+          console.log('测试专家评审获取所有待审核')
+          const prams = {
+            tecUsername: localStorage.getItem('loginName')
+          }
+          expertGetAllWaitAuditingData(prams).then(response => {
+            console.log('测试获取待审核接口')
+            console.log(response.data)
+            this.tableData = response.data.data
+          })
+        },
+        confirmAuditing: function (){
+          this.auditingForm.assessStatus = '评审完成'
+          console.log('测试auditingForm参数')
+          console.log(this.auditingForm)
+          console.log('测试evaluationSheetScores')
+          console.log(this.evaluationSheetScores)
+          expertAuditingProject(this.auditingForm,this.evaluationSheetScores).then(response => {
+            console.log('测试专家评审接口')
+            console.log(response.data)
+            this.auditingForm = {
+              tecUsername: localStorage.getItem('loginName'),
+              applyTecUsername: '',
+              times:'',
+              assessStatus:'',
+              assessDesc: '暂无意见'
+            }
+            this.evaluationSheetScores = []
+            this.xiangmudialogVisible = false
+            this.$message({
+              message: '审核完成',
+              type: 'success'
+            });
+            this.getWaitAuditing()
+          })
+        },
+        getAuditing(row) {
+          // if(type === '中文核心论文登记'){
+          //   this.keyandialogPvVisible = true
+          // } else if(type === '科研项目'){
+          //   this.xiangmudialogVisible = true
+          // }
+          console.log(row)
+          this.auditingForm.times = row.times
+          this.auditingForm.applyTecUsername = row.applyTecUsername
+          this.xiangmudialogVisible = true
         },
         handleSizeChange(val) {
           console.log(`每页 ${val} 条`);
+          // this.currentPage = 1;
+          this.pagesize = val;
         },
         handleCurrentChange(val) {
           console.log(`当前页: ${val}`);
+          this.currentPage = val;
         },
         getDimensionData: function () {
           projectReviewDimensionSetting().then(response => {

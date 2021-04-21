@@ -24,11 +24,11 @@
                   <span class="time_head">提交时间：</span>
                   <span class="time_content">{{item.submitDate}}</span>
                 </el-col>
-                <el-col :span="4">
-                  <div>
-                    <el-button type="text" @click="openDialog">查看详情</el-button>
-                  </div>
-                </el-col>
+<!--                <el-col :span="4">-->
+<!--                  <div>-->
+<!--                    <el-button type="text" @click="openDialog">查看详情</el-button>-->
+<!--                  </div>-->
+<!--                </el-col>-->
               </el-row>
             </el-card>
           </div>
@@ -133,7 +133,7 @@ export default {
     },
     getReviewSchedule: function () {
       const prams = {
-        tecUsername: '10010'
+        tecUsername: localStorage.getItem('loginName')
       }
       projectReviewSchedule(prams).then(response => {
         console.log('测试获取项目评审进度接口')

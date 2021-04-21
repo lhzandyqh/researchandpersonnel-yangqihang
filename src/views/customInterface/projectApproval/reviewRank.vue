@@ -19,40 +19,43 @@
     <el-divider></el-divider>
     <div class="table_container">
       <el-table
-        :data="tableData"
+        :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
         stripe
         style="width: 100%">
         <el-table-column
           prop="rank"
           label="排名"
           width="180">
+          <template slot-scope="scope">
+            <span style="font-weight: bold">{{scope.$index+1}}</span>
+          </template>
         </el-table-column>
         <el-table-column
           prop="projectName"
           label="科研项目名称">
         </el-table-column>
         <el-table-column
-          prop="peopleName"
-          label="申报人姓名"
+          prop="applyPerson"
+          label="申报人"
           width="180">
         </el-table-column>
         <el-table-column
-          prop="major"
-          label="申报人所在学院"
+          prop="dept"
+          label="申报人所在部门"
           width="180">
         </el-table-column>
         <el-table-column
-          prop="score"
-          label="项目得分"
+          prop="totalScore"
+          label="项目评审得分"
           width="180">
         </el-table-column>
         <el-table-column
-          prop="expert"
+          prop="assessExpert"
           label="评审专家"
           width="180">
         </el-table-column>
         <el-table-column
-          prop="date"
+          prop="assessDate"
           label="评审日期"
           width="180">
         </el-table-column>
@@ -61,7 +64,7 @@
           label="操作"
           width="180">
           <template slot-scope="scope">
-            <el-button type="text" @click="getScoreDetail">查看评审得分详情</el-button>
+            <el-button type="text" @click="getScoreDetail(scope.row)">查看评审得分详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -70,8 +73,8 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="currentPage"
-          :page-sizes="[10, 15, 20]"
-          :page-size="10"
+          :page-size="pagesize"
+          :page-sizes="[5, 10]"
           layout="total, sizes, prev, pager, next, jumper"
           :total="tableData.length ">
         </el-pagination>
@@ -80,9 +83,25 @@
     <el-dialog
       title="评审得分"
       :visible.sync="dialogVisible"
-      width="45%"
+      width="30%"
       :before-close="handleClose">
-      <rank-score-echart></rank-score-echart>
+<!--      <rank-score-echart></rank-score-echart>-->
+      <div class="dimension_container" v-for="(item, key) in scoreDetails" :key="key">
+        <div class="dimension_title">
+          <span style="font-weight: bold;color: #8c939d">{{item.dimensionName}}</span>
+          <el-divider></el-divider>
+          <div class="dimension_item clearfix" v-for="(value, k) in item.children" :key="key">
+            <div>
+              <div class="dimension_name">
+                <span>{{value.dimensionName}}:</span>
+                <span style="font-weight: bold;">{{value.evaluationScore}}</span>
+                <span style="float: right">该维度评价总分值：{{value.basicScore}}分</span>
+<!--                <el-input v-model="value.number" @change="addScore(value.id,value.number)" style="width: 150px;margin-left: 15px" placeholder="请输入评审分值" />-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible = false">取 消</el-button>
     <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
@@ -93,12 +112,14 @@
 
 <script>
 import rankScoreEchart from "./echarts/rankScoreEchart";
+import { directorGetAuditingRank, directorGetAuditingScoreDetails } from '@/api/expertEvaluation'
 export default {
 name: "reviewRank",
   data() {
     return {
       dialogVisible: false,
-      currentPage: '',
+      currentPage: 1,
+      pagesize:5,
       options: [{
         value: '2020',
         label: '2020'
@@ -171,15 +192,23 @@ name: "reviewRank",
           expert: '胡专家',
           date: '2020-08-13'
         }
-      ]
+      ],
+      detailrow: {},
+      scoreDetails: []
     }
+  },
+  mounted() {
+    this.getAllData()
   },
   methods: {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
+      // this.currentPage = 1;
+      this.pagesize = val;
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+      this.currentPage = val;
     },
     handleClose(done) {
       this.$confirm('确认关闭？')
@@ -188,8 +217,29 @@ name: "reviewRank",
         })
         .catch(_ => {});
     },
-    getScoreDetail: function () {
+    getAllData: function () {
+      const prams = {
+        tecUsername: '10002'
+      }
+      directorGetAuditingRank(prams).then(response => {
+        console.log('测试科研主管获取项目申报评审排名接口')
+        console.log(response.data)
+        this.tableData = response.data.data
+      })
+    },
+    getScoreDetail: function (row) {
       this.dialogVisible = true
+      this.detailrow = row
+      const prams = {
+        applyTecUsername: this.detailrow.applyTecUsername,
+        times: this.detailrow.times
+      }
+      directorGetAuditingScoreDetails(prams).then(response => {
+        console.log('测试获取打分详情接口')
+        console.log(response.data)
+        this.scoreDetails = response.data.data.assessScore.children
+        console.log(this.scoreDetails)
+      })
     }
   },
   components: {
@@ -211,5 +261,13 @@ name: "reviewRank",
 .fenye {
   margin-top: 20px;
   text-align: center;
+}
+.dimension_container {
+  margin-top: 30px;
+}
+.dimension_name {
+  margin-top: 20px;
+  /*float: left;*/
+  margin-left: 10%;
 }
 </style>

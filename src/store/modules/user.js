@@ -1,4 +1,6 @@
-import { loginByUsername, logout, getUserInfo } from '@/api/login'
+// import { loginByUsername, logout, getUserInfo } from '@/api/login' // 这是没有修改的登录调用 20210415
+import { logout, getUserInfo } from '@/api/login'
+import { loginByUsername } from '@/api/myLogin'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
@@ -47,9 +49,23 @@ const user = {
     // 用户名登录
     LoginByUsername({ commit }, userInfo) {
       const username = userInfo.username.trim()
+      localStorage.setItem('loginName',username)
       return new Promise((resolve, reject) => {
-        loginByUsername(username, userInfo.password).then(response => {
-          const data = response.data
+        // loginByUsername(username, userInfo.password).then(response => {
+        //   console.log('测试登陆成功后返回的数据')
+        //   console.log(response.data)
+        //   const data = response.data
+        //   commit('SET_TOKEN', data.token)
+        //   setToken(response.data.token)
+        //   resolve()
+        // }).catch(error => {
+        //   reject(error)
+        // })
+        const prams = userInfo
+        loginByUsername(prams).then(response => {
+          console.log('测试登陆成功后返回的数据')
+          console.log(response.data)
+          const data = response.data.data
           commit('SET_TOKEN', data.token)
           setToken(response.data.token)
           resolve()
@@ -65,7 +81,8 @@ const user = {
         getUserInfo(state.token).then(response => {
           // 由于mockjs 不支持自定义状态码只能这样hack
           if (!response.data) {
-            reject('Verification failed, please login again.')
+            // reject('Verification failed, please login again.....')
+            reject('登录验证失败，请检查用户名、密码及用户权限')
           }
           const data = response.data
 
@@ -129,6 +146,7 @@ const user = {
         console.log('测试role')
         console.log(role)
         setToken(role)
+        // debugger
         getUserInfo(role).then(response => {
           const data = response.data
           console.log('测试getUserInfo')

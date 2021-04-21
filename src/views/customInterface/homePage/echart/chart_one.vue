@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import {paperNum} from '@/api/chartsData'
 import echarts from 'echarts'
 require('echarts/theme/macarons')
 export default {
@@ -21,7 +22,7 @@ export default {
           trigger: 'axis'
         },
         legend: {
-          data: ['科研任务/项目', '论文']
+          data: ['审核项目', '论文', '科研项目', '专利', '专著']
         },
         toolbox: {
           show: true,
@@ -33,12 +34,12 @@ export default {
           }
         },
         calculable: true,
-        xAxis: [
+        xAxis:
           {
             type: 'category',
             data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
           }
-        ],
+        ,
         yAxis: [
           {
             type: 'value'
@@ -83,11 +84,102 @@ export default {
   },
   mounted() {
     this.initChart()
+    this.paperNum()
   },
   methods: {
     initChart: function() {
       this.chart = echarts.init(document.getElementById('chart_one'), 'macarons')
       this.chart.setOption(this.option)
+    },
+    //智能分析-普通教师最近12个月的学术成果及参与项目数
+    paperNum () {
+      const prams = {
+        tecUsername : localStorage.getItem('loginName')
+      }
+      paperNum(prams).then(response => {
+        console.log('测试教师最近12个月的学术成果及参与项目数接口');
+        console.log(response.data)
+        this.option.xAxis.data = response.data.data.months;
+        this.option.series = [
+          {
+            name: '审核项目',
+            type: 'bar',
+            data: response.data.data.projectApplyNums,
+            markPoint: {
+              data: [
+                { type: 'max', name: '最大值' },
+                { type: 'min', name: '最小值' }
+              ]
+            },
+            markLine: {
+              data: [
+                { type: 'average', name: '平均值' }
+              ]
+            }
+          },{
+            name: '论文',
+            type: 'bar',
+            data: response.data.data.paperNums,
+            markPoint: {
+              data: [
+                { type: 'max', name: '最大值' },
+                { type: 'min', name: '最小值' }
+              ]
+            },
+            markLine: {
+              data: [
+                { type: 'average', name: '平均值' }
+              ]
+            }
+          },{
+            name: '科研项目',
+            type: 'bar',
+            data: response.data.data.projectNums,
+            markPoint: {
+              data: [
+                { type: 'max', name: '最大值' },
+                { type: 'min', name: '最小值' }
+              ]
+            },
+            markLine: {
+              data: [
+                { type: 'average', name: '平均值' }
+              ]
+            }
+          },{
+            name: '专利',
+            type: 'bar',
+            data: response.data.data.patentNums,
+            markPoint: {
+              data: [
+                { type: 'max', name: '最大值' },
+                { type: 'min', name: '最小值' }
+              ]
+            },
+            markLine: {
+              data: [
+                { type: 'average', name: '平均值' }
+              ]
+            }
+          },{
+            name: '专著',
+            type: 'bar',
+            data: response.data.data.monographNums,
+            markPoint: {
+              data: [
+                { type: 'max', name: '最大值' },
+                { type: 'min', name: '最小值' }
+              ]
+            },
+            markLine: {
+              data: [
+                { type: 'average', name: '平均值' }
+              ]
+            }
+          }
+        ];
+        this.chart.setOption(this.option)
+      })
     }
   }
 }

@@ -1,40 +1,42 @@
 <template>
   <div class="app-container">
-    <el-table :data="scientificData" style="width: 100%" stripe>
-      <el-table-column prop="subdate"  label="提交日期" width="100px">
+    <el-table :data="scientificData.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%" stripe>
+      <el-table-column prop="submitDate"  label="提交日期" width="100px">
       </el-table-column>
-      <el-table-column prop="applypeople" label="提交人" width="100px">
+      <el-table-column prop="applyPerson" label="提交人" width="100px">
       </el-table-column>
-      <el-table-column prop="approvalpeople" label="审核人" width="100px">
+      <el-table-column prop="auditPerson" label="审核人" width="100px">
       </el-table-column>
-      <el-table-column prop="department" label="部门" >
+      <el-table-column prop="dept" label="部门" >
       </el-table-column>
-      <el-table-column prop="sub" label="审核类型">
+      <el-table-column prop="assessType" label="审核类型">
       </el-table-column>
-      <el-table-column prop="subname" label="审核名称">
+      <el-table-column prop="auditName" label="审核名称">
       </el-table-column>
-      <el-table-column prop="approvaldate" label="审核日期" width="100px">
+      <el-table-column prop="auditDate" label="审核日期" width="100px">
       </el-table-column>
-      <el-table-column label="审核状态">
+      <el-table-column prop="auditStatus" label="审核状态">
         <template slot-scope="scope">
-          <el-tag  v-if="scope.row.approval==='通过'" type="success">审核通过</el-tag>
-          <el-tag  v-if="scope.row.approval==='未通过'" type="danger">审核未通过</el-tag>
-          <el-tag  v-if="scope.row.approval==='待通过'">审核待通过</el-tag>
+          <el-tag  v-if="scope.row.auditStatus==='审核通过'" type="success">审核通过</el-tag>
+          <el-tag  v-if="scope.row.auditStatus==='审核未通过'" type="danger">审核未通过</el-tag>
+          <el-tag  v-if="scope.row.auditStatus==='待通过'">审核待通过</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="130px">
         <template slot-scope="scope">
-          <el-button type="text" size="small" icon="el-icon-zoom-in" @click="chakan">查看</el-button>
+          <el-button type="text" size="small" icon="el-icon-zoom-in" @click="chakan(scope.row)">查看</el-button>
           <el-button type="text" size="small" >导出</el-button>
         </template>
       </el-table-column>
     </el-table>
     <div style="text-align: center">
       <el-pagination
-        :current-page="1"
-        :page-sizes="[10, 20, 30]"
-        :page-size="10"
-        :total="10"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[5, 10, 15]"
+        :page-size="pagesize"
+        :total="scientificData.length"
         style="margin-top:20px;"
         layout="total, sizes, prev, pager, next, jumper"
       />
@@ -45,7 +47,7 @@
           <div class="single">
             <div class="biaoqian">
               <span style="font-weight: bolder">文章题目：</span>
-              <span>高点探测智能分析</span>
+              <span>{{scienticficDetails.paperName}}</span>
             </div>
           </div>
         </el-col>
@@ -53,6 +55,7 @@
           <div class="single">
             <div class="biaoqian">
               <span style="font-weight: bolder">发表时间：</span>
+              <span>{{scienticficDetails.publishDate}}</span>
             </div>
           </div>
         </el-col>
@@ -60,7 +63,7 @@
           <div class="single">
             <div class="biaoqian">
               <span style="font-weight: bolder">是否第一作者：</span>
-              <span>是</span>
+              <span>{{scienticficDetails.ifFirstAuthor}}</span>
             </div>
           </div>
         </el-col>
@@ -70,6 +73,7 @@
           <div class="single">
             <div class="biaoqian">
               <span style="font-weight: bolder">发表刊物：</span>
+              <span>{{scienticficDetails.publishJournal}}</span>
             </div>
           </div>
         </el-col>
@@ -77,6 +81,7 @@
           <div class="single">
             <div class="biaoqian">
               <span style="font-weight: bolder">出版社：</span>
+              <span>{{scienticficDetails.publisher}}</span>
             </div>
           </div>
         </el-col>
@@ -84,7 +89,7 @@
           <div class="single">
             <div class="biaoqian">
               <span style="font-weight: bolder">提交时间：</span>
-              <span>2019.4.3</span>
+              <span>{{scienticficDetails.submitDate}}</span>
             </div>
           </div>
         </el-col>
@@ -130,10 +135,13 @@
 </template>
 
 <script>
+import { getAcadeAchieveAuditedRecord, getAcadeAchieveAuditedRecordDetail} from '@/api/researchReview'
   export default {
     name: 'scientificHistory',
     data(){
       return{
+        currentPage: 1,
+        pagesize: 5,
         zhuanyeVisible:false,
         hexinVisible:false,
         jibenVisible:false,
@@ -182,17 +190,52 @@
             approval:'未通过',
             subname:'校园诊改系统'
           },
-        ]
+        ],
+        scienticficDetails: {}//学术成果详情当前对象
       }
     },
+    mounted() {
+      this.getAcadeAchieveAuditedRecord()
+    },
     methods:{
-      chakan(){
-        this.hexinVisible = true
+      chakan(row){
+        this.hexinVisible = true;
+        const prams = {
+          id: row.id,
+          assessType: '学术论文'
+        }
+        getAcadeAchieveAuditedRecordDetail(prams).then(response => {
+          console.log('测试获取学术论文审核历史详情')
+          console.log(response.data)
+          this.scienticficDetails = response.data.data
+        })
+      },
+      // 科研主管获取学术成果审批历史
+      getAcadeAchieveAuditedRecord () {
+        getAcadeAchieveAuditedRecord().then(response => {
+          console.log('测试获取学术成果审核历史接口')
+          console.log(response.data)
+          this.scientificData = response.data.data
+        })
+      },
+      //分页
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+        // this.currentPage = 1;
+        this.pagesize = val;
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+        this.currentPage = val;
       }
     }
   }
 </script>
 
 <style scoped>
-
+.foot{
+  text-align: right;
+  margin-right: 30px;
+  margin-top: 20px;
+}
 </style>

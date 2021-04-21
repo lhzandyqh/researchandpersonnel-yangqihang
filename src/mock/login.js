@@ -18,7 +18,7 @@ const userMap = {
   editortwo: {
     roles: ['专家评审'],
     token: 'editortwo',
-    introduction: '我是系部主管',
+    introduction: '我是专家评审',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     name: 'Normal Editor'
   }

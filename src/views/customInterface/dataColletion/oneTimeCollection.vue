@@ -218,7 +218,7 @@
                   <span style="font-weight: bolder">职&#8195;&#8195;称：</span>
                 </div>
                 <div class="content">
-                  <span>教授</span>
+                  <span>{{ professionalAbilityInfo.positionTitle}}</span>
                 </div>
               </div>
             </el-col>
@@ -228,7 +228,7 @@
                   <span style="font-weight: bolder">职称评定时间：</span>
                 </div>
                 <div class="content">
-                  <span>2013.5.4</span>
+                  <span>{{ professionalAbilityInfo.positionTitleDate}}</span>
                 </div>
               </div>
             </el-col>
@@ -238,7 +238,7 @@
                   <span style="font-weight: bolder">岗位级别：</span>
                 </div>
                 <div class="content">
-                  <span>教授</span>
+                  <span>{{ professionalAbilityInfo.positionLevel}}</span>
                 </div>
               </div>
             </el-col>
@@ -250,7 +250,7 @@
                   <span style="font-weight: bolder">荣誉称号：</span>
                 </div>
                 <div class="content">
-                  <span>名誉教授</span>
+                  <span>{{ professionalAbilityInfo.honorTitle}}</span>
                 </div>
               </div>
             </el-col>
@@ -260,7 +260,7 @@
                   <span style="font-weight: bolder">荣誉称号取得时间：</span>
                 </div>
                 <div class="content">
-                  <span>2003.3.3</span>
+                  <span>{{ professionalAbilityInfo.honorTitleDate}}</span>
                 </div>
               </div>
             </el-col>
@@ -272,7 +272,7 @@
                   <span style="font-weight: bolder">专业发展称号：</span>
                 </div>
                 <div class="content">
-                  <span>学科带头人</span>
+                  <span>{{ professionalAbilityInfo.professionalDevTitle}}</span>
                 </div>
               </div>
             </el-col>
@@ -282,7 +282,7 @@
                   <span style="font-weight: bolder">专业发展称号取得时间：</span>
                 </div>
                 <div class="content">
-                  <span>2019.4.3</span>
+                  <span>{{ professionalAbilityInfo.professionalDevTitleDate}}</span>
                 </div>
               </div>
             </el-col>
@@ -294,7 +294,7 @@
                   <span style="font-weight: bolder">任现职以来担任学校工作：</span>
                 </div>
                 <div class="content">
-                  <span>科研</span>
+                  <span>{{ professionalAbilityInfo.onDuty}}</span>
                 </div>
               </div>
             </el-col>
@@ -304,7 +304,7 @@
                   <span style="font-weight: bolder">担任工作起始时间：</span>
                 </div>
                 <div class="content">
-                  <span>2003.3.3</span>
+                  <span>{{ professionalAbilityInfo.dutyStartDate}}</span>
                 </div>
               </div>
             </el-col>
@@ -314,7 +314,7 @@
                   <span style="font-weight: bolder">担任工作结束时间：</span>
                 </div>
                 <div class="content">
-                  <span>2003.3.4</span>
+                  <span>{{ professionalAbilityInfo.dutyEndDate}}</span>
                 </div>
               </div>
             </el-col>
@@ -330,16 +330,16 @@
         </div>
         <div class="card-container">
 <!--          <div v-for=" (item, i) in workExperience" :key="item" class="itemContainer">-->
-            <el-row :gutter="20" style="padding-top: 10px">
-              <el-col :span="1">
-                <span style="font-weight: bolder">xxx</span>
-              </el-col>
+            <el-row v-for="(item,i) in workExperienceInfo" :key="i" :label="item" :gutter="20" style="padding-top: 10px">
+<!--              <el-col :span="1">-->
+<!--                <span style="font-weight: bolder">xxxx</span>-->
+<!--              </el-col>-->
               <el-col :span="4">
                 <div class="biaoqian">
                   <span style="font-weight: bolder">工作单位：</span>
                 </div>
                 <div class="content">
-                  <span>大学</span>
+                  <span>{{item.placeOfWord}}</span>
                 </div>
               </el-col>
               <el-col :span="4">
@@ -347,7 +347,7 @@
                   <span style="font-weight: bolder">担任职务：</span>
                 </div>
                 <div class="content">
-                  <span>讲师</span>
+                  <span>{{item.position}}</span>
                 </div>
               </el-col>
               <el-col :span="4">
@@ -355,7 +355,7 @@
                   <span style="font-weight: bolder">开始时间：</span>
                 </div>
                 <div class="content">
-                  <span>2000</span>
+                  <span>{{item.workStartDate}}</span>
                 </div>
               </el-col>
               <el-col :span="4">
@@ -363,7 +363,7 @@
                   <span style="font-weight: bolder">结束时间：</span>
                 </div>
                 <div class="content">
-                  <span>xxxxxx</span>
+                  <span>{{item.workEndDate}}</span>
                 </div>
               </el-col>
               <el-col :span="4">
@@ -371,14 +371,16 @@
                   <span style="font-weight: bolder">证明人：</span>
                 </div>
                 <div class="content">
-                  <span>王老师</span>
+                  <span>{{item.witness}}</span>
                 </div>
               </el-col>
-              <el-col :span="2">
-                <div >
-                  <span style="display: inline-block" ><el-button type="text" style="margin-top: -20px">修改</el-button></span>
-                  <span style="display: inline-block" ><el-button type="text" style="margin-top: -20px">删除</el-button></span>
-                </div>
+              <el-col :span="2" >
+                <template>
+                  <div >
+                    <span style="display: inline-block" ><el-button @click="editWorkExperience(item)" type="text" style="margin-top: -20px">修改</el-button></span>
+                    <span style="display: inline-block" ><el-button type="text" style="margin-top: -20px" @click="deleteTecWorkExpById(item)">删除</el-button></span>
+                  </div>
+                </template>
               </el-col>
             </el-row>
           </div>
@@ -388,62 +390,62 @@
       <el-dialog :visible.sync="dialogVisible" title="增加工作经历">
         <el-form ref="form" :model="form" label-width="100px">
           <el-form-item label="工作单位">
-            <el-input v-model="form.danwei"/>
+            <el-input v-model="form.placeOfWord"/>
           </el-form-item>
           <el-form-item label="担任职务">
             <!--            <el-input v-model="form.zhiwu"/>-->
-            <el-input v-model="form.zhiwu"/>
+            <el-input v-model="form.position"/>
           </el-form-item>
           <el-form-item label="证明人">
-            <el-input v-model="form.people"/>
+            <el-input v-model="form.witness"/>
           </el-form-item>
           <el-form-item label="开始时间">
             <el-col :span="11">
-              <el-date-picker v-model="form.begindate" value-format=" yyyy-MM-dd " format="yyyy-MM-dd " type="date" placeholder="选择日期" style="width: 60%;"/>
+              <el-date-picker v-model="form.workStartDate" value-format=" yyyy-MM-dd " format="yyyy-MM-dd " type="date" placeholder="选择日期" style="width: 60%;"/>
             </el-col>
           </el-form-item>
           <el-form-item label="结束时间">
             <el-col :span="11">
-              <el-date-picker v-model="form.overdate" value-format=" yyyy-MM-dd " format="yyyy-MM-dd " type="date" placeholder="选择日期" style="width: 60%;"/>
+              <el-date-picker v-model="form.workEndDate" value-format=" yyyy-MM-dd " format="yyyy-MM-dd " type="date" placeholder="选择日期" style="width: 60%;"/>
             </el-col>
           </el-form-item>
           <el-form-item label="备注">
-            <el-input v-model="form.beizhu"/>
+            <el-input v-model="form.remarks"/>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="submit">确 定</el-button>
+          <el-button @click="notAddWorkExperience">取 消</el-button>
+          <el-button type="primary" @click="confirmAddWorkExperience">确 定</el-button>
         </div>
       </el-dialog>
     </div>
     <div>
       <el-dialog :visible.sync="editDialogVisible" title="修改工作经历">
-        <el-form ref="form" :model="editform" label-width="100px">
+        <el-form ref="form" v-model="editform" label-width="100px">
           <el-form-item label="工作单位">
-            <el-input v-model="editform.danwei"/>
+            <el-input v-model="editform.placeOfWord"/>
           </el-form-item>
           <el-form-item label="担任职务">
             <!--            <el-input v-model="editform.zhiwu"/>-->
-            <el-input v-model="editform.zhiwu"/>
+            <el-input v-model="editform.position"/>
           </el-form-item>
           <el-form-item label="证明人">
-            <el-input v-model="editform.people"/>
+            <el-input v-model="editform.witness"/>
           </el-form-item>
           <el-form-item label="开始时间">
             <el-col :span="11">
-              <el-date-picker v-model="editform.begindate" value-format=" yyyy-MM-dd" format="yyyy-MM-dd " type="date" placeholder="选择日期" style="width: 60%;"/>
+              <el-date-picker v-model="editform.workStartDate" value-format=" yyyy-MM-dd" format="yyyy-MM-dd " type="date" placeholder="选择日期" style="width: 60%;"/>
             </el-col>
           </el-form-item>
           <el-form-item label="结束时间">
             <el-col :span="11">
-              <el-date-picker v-model="editform.overdate" value-format=" yyyy-MM-dd " format="yyyy-MM-dd " type="date" placeholder="选择日期" style="width: 60%;"/>
+              <el-date-picker v-model="editform.workEndDate" value-format=" yyyy-MM-dd " format="yyyy-MM-dd " type="date" placeholder="选择日期" style="width: 60%;"/>
             </el-col>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="editDialogVisible = false">取 消</el-button>
-          <el-button type="primary">确 定</el-button>
+          <el-button @click="notEditWorkExperience">取 消</el-button>
+          <el-button type="primary" @click="confirmEditWorkExperience">确 定</el-button>
         </div>
       </el-dialog>
     </div>
@@ -456,7 +458,7 @@
                 <span style="font-weight: bolder">职称：</span>
               </div>
               <div class="content">
-                <el-input placeholder="请输入内容"/>
+                <el-input v-model="professionalAbilityForm.professionalTitle" placeholder="请输入内容"/>
               </div>
             </div>
           </el-col>
@@ -466,7 +468,7 @@
                 <span style="font-weight: bolder">职称评定时间：</span>
               </div>
               <div class="content" style="width: 250px">
-                <el-date-picker  value-format=" yyyy-MM-dd " format="yyyy-MM-dd " type="date" placeholder="选择日期" style="width: 60%;"/>
+                <el-date-picker v-model="professionalAbilityForm.dateOfProfess" value-format=" yyyy-MM-dd " format="yyyy-MM-dd " type="date" placeholder="选择日期" style="width: 60%;"/>
               </div>
             </div>
           </el-col>
@@ -476,7 +478,7 @@
                 <span style="font-weight: bolder">岗位级别：</span>
               </div>
               <div class="content">
-                <el-input placeholder="请输入内容"/>
+                <el-input v-model="professionalAbilityForm.positionLevelOne" placeholder="请输入内容"/>
               </div>
             </div>
           </el-col>
@@ -488,7 +490,7 @@
                 <span style="font-weight: bolder">专业发展称号：</span>
               </div>
               <div class="content">
-                <el-input placeholder="请输入内容"/>
+                <el-input v-model="professionalAbilityForm.honoraryTitle" placeholder="请输入内容"/>
               </div>
             </div>
           </el-col>
@@ -498,7 +500,7 @@
                 <span style="font-weight: bolder">专业发展称号取得时间：</span>
               </div>
               <div class="content" style="width: 250px">
-                <el-date-picker type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期" style="width: 60%;"/>
+                <el-date-picker v-model="professionalAbilityForm.dateOfHonorTitle" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期" style="width: 60%;"/>
               </div>
             </div>
           </el-col>
@@ -510,7 +512,7 @@
                 <span style="font-weight: bolder">荣誉称号：</span>
               </div>
               <div class="content">
-                  <el-input placeholder="请输入内容"/>
+                  <el-input v-model="professionalAbilityForm.professionalDevTitle" placeholder="请输入内容"/>
               </div>
             </div>
           </el-col>
@@ -520,7 +522,7 @@
                 <span style="font-weight: bolder">荣誉称号取得时间：</span>
               </div>
               <div class="content" style="width: 250px">
-                <el-date-picker type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期" style="width: 60%;"/>
+                <el-date-picker v-model="professionalAbilityForm.dateOfProfessDevTitle" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期" style="width: 60%;"/>
               </div>
             </div>
           </el-col>
@@ -532,7 +534,7 @@
                 <span style="font-weight: bolder">任现职以来担任学校工作：</span>
               </div>
               <div class="content">
-                  <el-input placeholder="请输入内容"/>
+                  <el-input v-model="professionalAbilityForm.onDuty" placeholder="请输入内容"/>
               </div>
             </div>
           </el-col>
@@ -544,7 +546,7 @@
                 <span style="font-weight: bolder">担任工作起始时间：</span>
               </div>
               <div class="content" style="width: 250px">
-                <el-date-picker type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期" style="width: 60%;"/>
+                <el-date-picker v-model="professionalAbilityForm.dutyStartDate" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期" style="width: 60%;"/>
               </div>
             </div>
           </el-col>
@@ -554,14 +556,14 @@
                 <span style="font-weight: bolder">担任工作结束时间：</span>
               </div>
               <div class="content" style="width: 250px">
-                <el-date-picker type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期" style="width: 60%;"/>
+                <el-date-picker v-model="professionalAbilityForm.dutyEndDate" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期" style="width: 60%;"/>
               </div>
             </div>
           </el-col>
         </el-row>
         <div slot="footer" class="dialog-footer">
-          <el-button >取 消</el-button>
-          <el-button type="primary" @click="change">确 定</el-button>
+          <el-button @click="notEditProfessionalAbility">取 消</el-button>
+          <el-button type="primary" @click="confirmEditProfessionalAbility">确 定</el-button>
         </div>
       </el-dialog>
     </div>
@@ -772,11 +774,13 @@
 </template>
 
 <script>
-  import { teacherGetBasicInforma, teacherEditBasicInfo } from '@/api/teacherGetData'
+  import { teacherGetBasicInforma, teacherEditBasicInfo,teacherEditProfessionalInfo,updateWorkExp,insertWorkExp,deleteTecWorkExpById ,getWorkExp} from '@/api/teacherGetData'
 export default {
   name: 'OneTimeCollection',
   mounted(){
     this.getBasic()
+    this.getProfessionalAbilityInfo()
+    this.getWorkExperienceInfo()
   },
   data() {
     return {
@@ -786,32 +790,64 @@ export default {
       basicDialogVisible: false,
       editDialogVisible: false,
       editform: {
-        zhiwu: '',
-        begindate: '',
-        overdate: '',
-        danwei: '',
-        people: ''
+        tecUsername: 10010
       },
       form: {
 
       },
       basicForm: {
-
+      },
+      professionalAbilityForm:{
       },
       personalInfo: {
-        // fullName: ''
-      }
+      },
+      professionalAbilityInfo: {
+      },
+      workExperienceInfo:[]
     }
   },
   methods: {
+    reset () {
+      this.form = {
+        placeOfWord: '',
+        position: '',
+        witness: '',
+        workStartDate: '',
+        workEndDate: '',
+        remarks: ''
+      }
+    },
+    // 获取教师基本信息
     getBasic: function(){
       const prams = {
-        tecUsername: 10010
+        tecUsername: localStorage.getItem('loginName')
       }
       teacherGetBasicInforma(prams).then(response=>{
         console.log('测试教师获取基本信息接口')
         console.log(response.data)
         this.personalInfo = response.data.data.baseInfo
+      })
+    },
+    // 获取教师专业能力
+    getProfessionalAbilityInfo: function() {
+      const prams = {
+        tecUsername: localStorage.getItem('loginName')
+      }
+      teacherGetBasicInforma(prams).then(response=>{
+        console.log('测试教师获取专业能力接口');
+        console.log(response.data);
+        this.professionalAbilityInfo = response.data.data.professionalAbility
+      })
+    },
+    // 获取教师工作经历
+    getWorkExperienceInfo: function() {
+      const prams = {
+        tecUsername: localStorage.getItem('loginName')
+      }
+      getWorkExp(prams).then(response=>{
+        console.log('测试教师获取工作经历接口');
+        console.log(response.data);
+        this.workExperienceInfo = response.data.data
       })
     },
     onSubmit() {
@@ -843,23 +879,18 @@ export default {
       this.basicDialogVisible = true
     },
     openDialog: function() {
+      this.reset()
       console.log('我点了')
       this.dialogVisible = true
     },
     openZhuanyeDialog: function() {
       this.zhuanyeDialogVisible = true
     },
+    // 教师修改基本信息
     notEditJiben: function() {
       this.basicDialogVisible = false
-      const prams = {
-        infotype: '基础信息'
-      }
     },
     confirmEditJiben: function() {
-      // for(let i in this.basicForm){
-      //   console.log(this.basicForm[i])
-      //   if(this.basicForm[i])
-      // }
       console.log(Object.keys(this.basicForm).length)
       if(Object.keys(this.basicForm).length!==18){
         this.$message({
@@ -870,10 +901,11 @@ export default {
         console.log('测试基本信息修改提交参数')
         console.log(this.basicForm)
         var prams =  this.basicForm
-        prams.tecUsername = '10010'
+        prams.tecUsername = localStorage.getItem('loginName')
         teacherEditBasicInfo(prams).then(response => {
           console.log('测试基本信息修改')
           console.log(response.data)
+          this.getBasic()
           this.$message({
             type:'success',
             message:'修改成功'
@@ -882,14 +914,125 @@ export default {
         })
       }
     },
+    // 教师修改专业能力
     notEditProfessionalAbility: function() {
       this.zhuanyeDialogVisible = false
-      const prams = {
-        infotype: '专业能力'
-      }
+      // const prams = {
+      //   infotype: '专业能力'
+      // }
     },
     confirmEditProfessionalAbility: function() {
-      this.zhuanyeDialogVisible = false
+      console.log(Object.keys(this.professionalAbilityForm).length)
+      if (Object.keys(this.professionalAbilityForm).length !==10 ){
+        this.$message({
+          type:'warning',
+          message:'基本信息未填写完整，请检查后提交'
+        })
+      } else {
+        console.log('测试专业能力修改提交参数');
+        console.log(this.professionalAbilityForm);
+        var prams = this.professionalAbilityForm
+        prams.tecUsername = localStorage.getItem('loginName')
+        teacherEditProfessionalInfo(prams).then(response => {
+          console.log('测试专业能力修改');
+          console.log(response.data);
+          this.$message({
+            type:'success',
+            message:'修改成功'
+          })
+          this.zhuanyeDialogVisible = false
+        })
+      }
+    },
+    //教师新增工作经历
+    notAddWorkExperience () {
+     this.dialogVisible = false
+    },
+    confirmAddWorkExperience () {
+      //先判断该对象非空键值对的长度,然后审核信息长度没有填完整的话提示信息
+      let i = 0;
+      for (let key in this.form) {
+        if (this.form[key] == '') {
+          continue
+        } else {
+          i ++
+        }
+      }
+      console.log('form对象非空键值对长度' + i)
+      console.log(Object.keys(this.form).length);
+      if (i !==6 ){
+        this.$message({
+          type:'warning',
+          message:'基本信息未填写完整，请检查后提交'
+        })
+      } else {
+        console.log('测试教师新增工作经历提交参数');
+        this.form.tecUsername = localStorage.getItem('loginName')
+        console.log(this.form);
+        const prams = this.form
+        insertWorkExp(prams).then(response => {
+          console.log('测试教师工作经历新增接口');
+          console.log(response.data)
+          this.$message({
+            type: 'success',
+            message: '新增成功'
+          })
+          this.dialogVisible = false;
+          this.getWorkExperienceInfo()
+        })
+      }
+    } ,
+    editWorkExperience (item) {
+      console.log('我点了修改按钮');
+      console.log(item)
+      console.log(item.id)
+      this.editDialogVisible = true;
+      this.editform = item
+
+    },
+    // 教师修改工作经历
+    notEditWorkExperience: function() {
+      this.editDialogVisible = false
+    },
+    confirmEditWorkExperience: function() {
+      console.log(Object.keys(this.editform).length)
+      // if (Object.keys(this.editform).length !== 5) {
+      //   this.$message({
+      //     type:'warning',
+      //     message:'基本信息未填写完整，请检查后提交'
+      //   })
+      // } else {
+      console.log('测试工作经历修改提交参数');
+      console.log(this.editform);
+      var prams = this.editform
+      updateWorkExp(prams).then(response => {
+        console.log('测试工作经历修改');
+        console.log(response.data);
+        this.$message({
+          type:'success',
+          message:'修改成功'
+        })
+        this.editDialogVisible = false;
+        this.getWorkExperienceInfo()
+      })
+    },
+    //教师删除工作经历
+    deleteTecWorkExpById (item) {
+      // this.workId = item.id
+      console.log('测试工作经历删除提交参数');
+      console.log(item.id);
+      const prams = {
+        workId: item.id
+      }
+      deleteTecWorkExpById(prams).then(response => {
+        console.log('测试工作经历删除');
+        console.log(response.data);
+        this.$message({
+          type:'success',
+          message:'删除成功'
+        })
+        this.getWorkExperienceInfo()
+      })
     }
   }
 }

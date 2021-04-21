@@ -3,15 +3,36 @@
     <div style="margin-bottom:15px;">{{ $t('permission.roles') }}： {{ roles }}</div>
     {{ $t('permission.switchRoles') }}：
     <el-radio-group v-model="switchRoles">
-      <el-radio-button label="专家评审" />
-      <el-radio-button label="科研主管" />
-      <el-radio-button label="教师" />
+      <el-radio-button v-show="this.roleArray.includes('专家评审')" label="专家评审" />
+      <el-radio-button v-show="this.roleArray.includes('科研主管')" label="科研主管" />
+      <el-radio-button v-show="this.roleArray.includes('教师')" label="教师" />
     </el-radio-group>
   </div>
 </template>
 
 <script>
+import { getAllPermission } from '@/api/myLogin'
 export default {
+  created() {
+    this.getAllPer()
+  },
+  data() {
+    return {
+      roleArray: []
+    }
+  },
+  methods: {
+    getAllPer: function () {
+      const prams = {
+        username: localStorage.getItem('loginName')
+      }
+      getAllPermission(prams).then(response => {
+        console.log('测试当前账号拥有权限接口')
+        console.log(response.data)
+        this.roleArray = response.data.data.roles
+      })
+    }
+  },
   computed: {
     roles() {
       return this.$store.getters.roles

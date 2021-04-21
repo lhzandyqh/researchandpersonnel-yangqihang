@@ -202,7 +202,7 @@
           <div class="single">
             <div class="biaoqian">
               <span style="font-weight: bolder">职&#8195;&#8195;称：</span>
-              <span>教授</span>
+              <span>{{basicDetail.professionalTitle}}</span>
             </div>
           </div>
         </el-col>
@@ -210,7 +210,7 @@
           <div class="single">
             <div class="biaoqian">
               <span style="font-weight: bolder">职称评定时间：</span>
-              <span>2013.5.4</span>
+              <span>{{basicDetail.dateOfProfess}}</span>
             </div>
           </div>
         </el-col>
@@ -218,7 +218,7 @@
           <div class="single">
             <div class="biaoqian">
               <span style="font-weight: bolder">岗位级别：</span>
-              <span>教授</span>
+              <span>{{basicDetail.positionLevelOne}}</span>
             </div>
           </div>
         </el-col>
@@ -228,6 +228,7 @@
           <div class="single">
             <div class="biaoqian">
               <span style="font-weight: bolder">荣誉称号：</span>
+              <span>{{basicDetail.honoraryTitle}}</span>
             </div>
           </div>
         </el-col>
@@ -235,6 +236,7 @@
           <div class="single">
             <div class="biaoqian">
               <span style="font-weight: bolder">荣誉称号取得时间：</span>
+              <span>{{basicDetail.dateOfHonorTitle}}</span>
             </div>
           </div>
         </el-col>
@@ -244,6 +246,7 @@
           <div class="single">
             <div class="biaoqian">
               <span style="font-weight: bolder">专业发展称号：</span>
+              <span>{{basicDetail.professionalDevTitle}}</span>
             </div>
           </div>
         </el-col>
@@ -251,6 +254,7 @@
           <div class="single">
             <div class="biaoqian">
               <span style="font-weight: bolder">专业发展称号取得时间：</span>
+              <span>{{basicDetail.DateOfProfessDevTitle}}</span>
             </div>
           </div>
         </el-col>
@@ -260,7 +264,7 @@
           <div class="single">
             <div class="biaoqian">
               <span style="font-weight: bolder">任现职以来担任学校工作：</span>
-              <span>科研</span>
+              <span>{{basicDetail.onDuty}}</span>
             </div>
           </div>
         </el-col>
@@ -268,7 +272,7 @@
           <div class="single">
             <div class="biaoqian">
               <span style="font-weight: bolder">担任工作起始时间：</span>
-              <span>2003.3.3</span>
+              <span>{{basicDetail.dutyStartDate}}</span>
             </div>
           </div>
         </el-col>
@@ -276,7 +280,7 @@
           <div class="single">
             <div class="biaoqian">
               <span style="font-weight: bolder">担任工作结束时间：</span>
-              <span>2003.3.4</span>
+              <span>{{basicDetail.dutyEndDate}}</span>
             </div>
           </div>
         </el-col>
@@ -331,15 +335,15 @@
         <el-row style="padding-top: 10px">
           <el-input
             :rows="4"
-            v-model="AuditingReason"
+            v-model="basicAuditingInfo.auditDesc"
             type="textarea"
             placeholder="请输入内容"/>
         </el-row>
       </div>
       <div class="foot">
         <span slot="footer" class="dialog-footer">
-          <el-button type="success" size="small" plain @click="pass">审核通过</el-button>
-          <el-button type="danger" size="small" plain @click="pass">审核未通过</el-button>
+          <el-button type="success" size="small" plain @click="basicAuditing(basicId,'审核通过')">审核通过</el-button>
+          <el-button type="danger" size="small" plain @click="basicAuditing(basicId,'审核未通过')">审核未通过</el-button>
           <el-button type="primary" @click="zhuanyeVisible = false" size="small" plain>关闭</el-button>
         </span>
       </div>
@@ -348,18 +352,18 @@
       <el-row :gutter="20" style="padding-top: 10px">
         <el-col :span="8">
           <span style="font-weight: bolder">姓名：</span>
-          <span>王老师</span>
+          <span>{{basicDetail.applyPerson}}</span>
         </el-col>
         <el-col :span="8">
           <div class="biaoqian">
             <span style="font-weight: bolder">工作单位：</span>
-            <span>大学</span>
+            <span>{{basicDetail.placeOfWord}}</span>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="biaoqian">
             <span style="font-weight: bolder">担任职务：</span>
-            <span>讲师</span>
+            <span>{{basicDetail.position}}</span>
           </div>
         </el-col>
       </el-row>
@@ -367,19 +371,19 @@
         <el-col :span="8">
           <div class="biaoqian">
             <span style="font-weight: bolder">开始时间：</span>
-            <span>2000</span>
+            <span>{{basicDetail.workStartDate}}</span>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="biaoqian">
             <span style="font-weight: bolder">结束时间：</span>
-            <span>xxxxxx</span>
+            <span>{{basicDetail.workEndDate}}</span>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="biaoqian">
             <span style="font-weight: bolder">证明人：</span>
-            <span>王老师</span>
+            <span>{{basicDetail.witness}}</span>
           </div>
         </el-col>
       </el-row>
@@ -433,16 +437,16 @@
         <el-row style="padding-top: 10px">
           <el-input
             :rows="4"
-            v-model="AuditingReason"
+            v-model="basicAuditingInfo.auditDesc"
             type="textarea"
             placeholder="请输入内容"/>
         </el-row>
       </div>
       <div class="foot">
         <span slot="footer" class="dialog-footer">
-           <el-button type="success" size="small" plain @click="pass">审核通过</el-button>
-          <el-button type="danger" size="small" plain @click="pass">审核未通过</el-button>
-          <el-button type="primary" @click="zhuanyeVisible = false" size="small" plain>关闭</el-button>
+          <el-button type="success" size="small" plain @click="basicAuditing(basicId,'审核通过')">审核通过</el-button>
+          <el-button type="danger" size="small" plain @click="basicAuditing(basicId,'审核未通过')">审核未通过</el-button>
+          <el-button type="primary" @click="workVisible = false" size="small" plain>关闭</el-button>
         </span>
       </div>
     </el-dialog>
@@ -464,10 +468,11 @@ import { directorGetAllWaitAuditingInfoByType, directorGetBasicInfoById, directo
         peopleData:[],
         basicDetail: {}, // 基本信息暂存对象，
         basicId: '', //当前要审核的基本信息条目id
+        auditType1: '',
         basicAuditingInfo: {
-          tecUsername: '10010',
+          tecUsername : localStorage.getItem('loginName'),
           id:'',
-          auditType: '基本信息',
+          auditType: '',
           auditStatus: '',
           auditDesc: ''
         }
@@ -479,7 +484,7 @@ import { directorGetAllWaitAuditingInfoByType, directorGetBasicInfoById, directo
     methods:{
       getPeopleData: function () {
         const prams = {
-          tecUsername: '10010',
+          tecUsername : localStorage.getItem('loginName'),
           auditType: '个人信息评审'
         }
         directorGetAllWaitAuditingInfoByType(prams).then(response => {
@@ -489,20 +494,24 @@ import { directorGetAllWaitAuditingInfoByType, directorGetBasicInfoById, directo
         })
       },
       jibenview(row){
-        this.jibenVisible = true;
-        // if(sub ==='基本信息'){
-        //   this.jibenVisible = true;
-        // }else if(sub === '专业能力'){
-        //   this.zhuanyeVisible = true;
-        // }else if(sub === '工作经历'){
-        //   this.workVisible =true;
-        // }
+        // this.jibenVisible = true;
+        console.log(row.auditType)
+        if(row.auditType ==='基本信息'){
+          this.jibenVisible = true;
+        }else if(row.auditType === '专业能力'){
+          this.zhuanyeVisible = true;
+        }else if(row.auditType === '工作经历'){
+          this.workVisible =true;
+        }
         this.basicId = row.id
+        this.auditType1 = row.auditType
         const prams = {
-          tecUsername: '10010',
-          auditType: '基本信息',
+          tecUsername : localStorage.getItem('loginName'),
+          auditType: row.auditType,
           id: row.id
         }
+        console.log('测试参数')
+        console.log(prams)
         directorGetBasicInfoById(prams).then(response => {
           console.log('测试根据id获取基本信息详情')
           console.log(response.data)
@@ -522,7 +531,7 @@ import { directorGetAllWaitAuditingInfoByType, directorGetBasicInfoById, directo
         const prams = {
           tecUsername: this.basicAuditingInfo.tecUsername,
           id: this.basicAuditingInfo.id,
-          auditType: this.basicAuditingInfo.auditType,
+          auditType: this.auditType1,
           auditStatus: this.basicAuditingInfo.auditStatus,
           auditDesc: this.basicAuditingInfo.auditDesc
         }
@@ -537,6 +546,13 @@ import { directorGetAllWaitAuditingInfoByType, directorGetBasicInfoById, directo
               message: '审核完成',
             }
           )
+          if(this.auditType1 ==='基本信息'){
+            this.jibenVisible = false;
+          }else if(this.auditType1 === '专业能力'){
+            this.zhuanyeVisible = false;
+          }else if(this.auditType1 === '工作经历'){
+            this.workVisible = false;
+          }
           this.getPeopleData()
         })
         // setTimeout(()=> {

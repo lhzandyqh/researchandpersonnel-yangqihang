@@ -253,15 +253,15 @@ export const asyncRoutes = [
       roles: ['admin', '教师'] // you can set roles in root nav
     },
     children: [
-      {
-        path: 'processwarn',
-        component: () => import('@/views/customInterface/projectManage/index'),
-        name: 'processwarn',
-        meta: {
-          title: '进度提醒',
-          roles: ['admin', '教师'] // or you can only set roles in sub nav
-        }
-      },
+      // {
+      //   path: 'processwarn',
+      //   component: () => import('@/views/customInterface/projectManage/index'),
+      //   name: 'processwarn',
+      //   meta: {
+      //     title: '进度提醒',
+      //     roles: ['admin', '教师'] // or you can only set roles in sub nav
+      //   }
+      // },
       // {
       //   path: 'projectbegin',
       //   component: () => import('@/views/customInterface/projectManage/projectBegin'),
@@ -358,18 +358,18 @@ export const asyncRoutes = [
       }
     ]
   },
-  {
-    path: '/smartinquire',
-    component: Layout,
-    children: [
-      {
-        path: 'smartinquire',
-        component: () => import('@/views/customInterface/smartInquire/index'),
-        name: 'smartinquire',
-        meta: { title: '智能查询', icon: 'search', noCache: true, roles: ['科研主管'] }
-      }
-    ]
-  },
+  // {
+  //   path: '/smartinquire',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'smartinquire',
+  //       component: () => import('@/views/customInterface/smartInquire/index'),
+  //       name: 'smartinquire',
+  //       meta: { title: '智能查询', icon: 'search', noCache: true, roles: ['科研主管'] }
+  //     }
+  //   ]
+  // },
   {
     path: '/budgetmanagement',
     component: Layout,
@@ -448,22 +448,40 @@ export const asyncRoutes = [
       roles: ['专家评审', '教师', '科研主管'] // you can set roles in root nav
     },
     children: [
+      // {
+      //   path: 'smartexport',
+      //   component: () => import('@/views/customInterface/smartExport/index'),
+      //   name: 'smartexport',
+      //   meta: {
+      //     title: '一键导出',
+      //     roles: ['科研主管','专家评审', '教师'] // or you can only set roles in sub nav
+      //   }
+      // },
+      // {
+      //   path: 'smartimport',
+      //   component: () => import('@/views/customInterface/smartExport/smartImport'),
+      //   name: 'smartimport',
+      //   meta: {
+      //     title: '智能导入',
+      //     roles: ['科研主管','专家评审'] // or you can only set roles in sub nav
+      //   }
+      // },
       {
-        path: 'smartexport',
-        component: () => import('@/views/customInterface/smartExport/index'),
-        name: 'smartexport',
+        path: 'fileLibrary',
+        component: () => import('@/views/customInterface/smartExport/fileLibrary'),
+        name: 'fileLibrary',
         meta: {
-          title: '一键导出',
-          roles: ['科研主管','专家评审', '教师'] // or you can only set roles in sub nav
+          title: '文件库',
+          roles: ['教师','专家评审'] // or you can only set roles in sub nav
         }
       },
       {
-        path: 'smartimport',
-        component: () => import('@/views/customInterface/smartExport/smartImport'),
-        name: 'smartimport',
+        path: 'fileLibraryManage',
+        component: () => import('@/views/customInterface/smartExport/fileLibraryManage'),
+        name: 'fileLibraryManage',
         meta: {
-          title: '智能导入',
-          roles: ['科研主管','专家评审'] // or you can only set roles in sub nav
+          title: '文件库管理',
+          roles: ['科研主管'] // or you can only set roles in sub nav
         }
       },
       // {
