@@ -9,6 +9,22 @@ export function getProjectInterim(parems) {
     params : parems
   })
 }
+//教师获取中期项目名称和项目评审专家
+export function getConclusionProjectNAndExpert(parems) {
+  return request({
+    url: '/projectManage/getConclusionProjectNAndExpert',
+    method: 'get',
+    params: parems
+  })
+}
+//教师查看中期评审结果
+export function getDiscussionResult(parems) {
+  return request({
+    url: '/projectManage/getDiscussionResult',
+    method: 'get',
+    params: parems
+  })
+}
 //教师新增项目中期信息
 export function insertProjectInterim(parems) {
   return request({
@@ -16,7 +32,8 @@ export function insertProjectInterim(parems) {
     method: 'post',
     data : parems
   })
-}//教师修改项目中期信息
+}
+//教师修改项目中期信息
 export function updateProjectInterim(parems) {
   return request({
     url: '/projectManage/updateProjectInterim',

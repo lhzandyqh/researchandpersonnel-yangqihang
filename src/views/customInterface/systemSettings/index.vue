@@ -4,7 +4,27 @@
       <el-button type="primary" @click="projectTablePreview">教师项目申报表预览<i class="el-icon-tickets el-icon--right"></i></el-button>
     </div>
     <el-divider></el-divider>
-    <div class="basic_info_container">
+<!--    <div class="basic_info_container magin_control">-->
+<!--      <el-card class="box-card">-->
+<!--        <div class="basic_title">-->
+<!--          <span>项目申报批次配置</span>-->
+<!--        </div>-->
+<!--        <div class="basic_table_container">-->
+<!--          <div style="margin-top: 20px">-->
+<!--            <span>项目批次名称：</span>-->
+<!--&lt;!&ndash;            <el-input v-model='batchName' style="width: 300px" placeholder="请输入批次名称"></el-input>&ndash;&gt;-->
+<!--            <span class="batchName">asdasdadadadaddasdadad</span>-->
+<!--            <span style="margin-left: 100px">开始时间：</span>-->
+<!--            <span class="batchDate">2021-2-222</span>-->
+<!--            <span style="margin-left: 100px">终止时间：</span>-->
+<!--            <span class="batchDate">2021-2-222</span>-->
+<!--            <el-button style="float: right; margin-top:-10px; margin-right: 40px" type="text"-->
+<!--            @click="batchVisible = true">编辑</el-button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </el-card>-->
+<!--    </div>-->
+    <div class="basic_info_container magin_control">
       <el-card class="box-card">
         <div class="basic_title">
           <span>基本信息填写配置</span>
@@ -265,6 +285,35 @@
     <el-button type="primary" @click="confirmEdit">确 定</el-button>
   </span>
     </el-dialog>
+    <el-dialog
+      title="编辑项目批次"
+      :visible.sync="batchVisible"
+      width="35%"
+      :before-close="handleCloseFour">
+      <el-form ref="form" :model="editForm" label-width="110px">
+        <el-form-item label="项目批次名称：">
+          <el-input v-model="batchName"></el-input>
+        </el-form-item>
+        <el-form-item label="批次开始时间：">
+          <el-date-picker
+            v-model="batchStartDate"
+            type="date"
+            placeholder="选择日期">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="批次终止时间：">
+          <el-date-picker
+            v-model="batchOverDate"
+            type="date"
+            placeholder="选择日期">
+          </el-date-picker>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="batchVisible = false">取 消</el-button>
+    <el-button type="primary" @click="confirmEdit">确 定</el-button>
+  </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -278,8 +327,12 @@ export default {
   },
   data() {
     return {
+      batchName: '',
+      batchStartDate:'',
+      batchOverDate:'',
       editId: '',
       addType: '',
+      batchVisible: false,
       dialogVisibleTwo: false,
       dialogVisibleThree: false,
       dynamicTags: [],
@@ -455,6 +508,7 @@ export default {
       })
     },
     addNewTableItem: function (){
+      console.log(this.batchDate)
       const prams = {
         contentName: '',
         contentOption: '',
@@ -597,5 +651,13 @@ export default {
 }
 .button_container {
   margin-top: 20px;
+}
+.batchName {
+  display: inline-block;
+  width: 150px;
+}
+.batchDate {
+  display: inline-block;
+  width: 100px;
 }
 </style>

@@ -78,3 +78,29 @@ export function getDimensionTableDataById(parems) {
     params: parems
   })
 }
+
+//获取所有申报批次
+export function getAllProjectApplyBatch() {
+  return request({
+    url: '/projectApplyTwo/getAllProjectApplyBatch',
+    method: 'get',
+  })
+}
+
+// 新增项目批次
+export function ProjectApplyBatchInfo(parems) {
+  return request({
+    url: '/projectApplyTwo/ProjectApplyBatchInfo',
+    method: 'post',
+    data: parems
+  })
+}
+
+// 编辑项目批次
+export function updateBatch(parems) {
+  return request({
+    url: '/projectApplyTwo/updateBatch',
+    method: 'post',
+    data: parems
+  })
+}

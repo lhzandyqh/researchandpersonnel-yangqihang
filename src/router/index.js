@@ -311,6 +311,16 @@ export const asyncRoutes = [
           roles: ['专家评审'] // or you can only set roles in sub nav
         }
       },
+      //lixian
+      {
+        path: 'middleapproval',
+        component: () => import('@/views/customInterface/projectApproval/middleapproval'),
+        name: 'endapproval',
+        meta: {
+          title: '项目中期',
+          roles: ['专家评审'] // or you can only set roles in sub nav
+        }
+      },
       {
         path: 'endapproval',
         component: () => import('@/views/customInterface/projectApproval/endApproval'),
@@ -417,6 +427,15 @@ export const asyncRoutes = [
       roles: ['科研主管'] // you can set roles in root nav
     },
     children: [
+      {
+        path: 'batchTable',
+        component: () => import('@/views/customInterface/systemSettings/batchSettings'),
+        name: 'batchTable',
+        meta: {
+          title: '项目批次配置',
+          roles: ['科研主管'] // or you can only set roles in sub nav
+        }
+      },
       {
         path: 'projectTable',
         component: () => import('@/views/customInterface/systemSettings/index'),

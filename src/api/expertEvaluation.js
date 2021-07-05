@@ -46,4 +46,12 @@ export function directorGetAuditingScoreDetails(parems) {
   })
 }
 
+//科研主管安排项目进行中期
+export function arrangeProjectMidTerm(parems) {
+  return request({
+    url: '/ExpertAssessController/arrangeProjectMidTerm',
+    method: 'post',
+    data: parems
+  })
+}
 

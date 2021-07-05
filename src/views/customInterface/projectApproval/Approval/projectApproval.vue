@@ -442,7 +442,7 @@ import {getWaitResDirectorAuditInfosTwo,getProjectApplyWaitAuditDetail,projectAp
 .detailName {
   float: left;
   /*display: inline-block;*/
-  width: 70px;
+  width: 90px;
   /*height: 20px;*/
   /*line-height: 20px;*/
   font-weight: 700

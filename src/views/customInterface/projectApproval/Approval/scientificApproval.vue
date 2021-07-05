@@ -35,7 +35,7 @@
         layout="total, sizes, prev, pager, next, jumper"
       />
     </div>
-    <el-dialog :visible.sync="hexinVisible" :data='detailTable' title="审核详情" style="width: 110%">
+    <el-dialog :visible.sync="hexinVisible" :data='detailTable' title="学术论文审核详情" style="width: 110%">
       <el-row :gutter="20" style="padding-top: 10px">
         <el-col :span="8">
           <div class="single">
@@ -119,6 +119,250 @@
         </span>
       </div>
     </el-dialog>
+    <el-dialog :visible.sync="projectVisible" :data='detailTable' title="项目课题审核详情" style="width: 110%">
+      <el-row :gutter="20" style="padding-top: 10px">
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">项目名称：</span>
+              <span>{{ detailTable.projectName }}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">项目角色：</span>
+              <span>{{ detailTable.projectRole }}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">项目级别：</span>
+              <span>{{ detailTable.projectLevel }}</span>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20" style="padding-top: 10px">
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">项目负责人：</span>
+              <span>{{ detailTable.projectPerson }}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">发表时间：</span>
+              <span>{{ detailTable.declarationDate }}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">提交时间：</span>
+              <span>{{ detailTable.submitDate }}</span>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20" style="padding-top: 10px">
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">照片证明：</span>
+              <el-button type="text">查看图片</el-button>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+      <el-divider/>
+      <div>
+        <el-row style="padding-top: 10px">
+          <span style="font-weight: bolder">科研处意见</span>
+        </el-row>
+        <el-row style="padding-top: 10px">
+          <el-input
+            :rows="4"
+            v-model="auditingInfo.auditDesc"
+            type="textarea"
+            placeholder="请输入内容"/>
+        </el-row>
+      </div>
+      <div class="foot">
+        <span slot="footer" class="dialog-footer">
+          <el-button type="success" size="small" plain @click="acadeAchievesAudit(basicId,assessType1,'审核通过')">审核通过</el-button>
+          <el-button type="danger" size="small" plain @click="acadeAchievesAudit(basicId,assessType1,'审核未通过')">审核未通过</el-button>
+          <el-button type="primary" @click="projectVisible = false"  size="small" plain>关闭</el-button>
+        </span>
+      </div>
+    </el-dialog>
+    <el-dialog :visible.sync="patentVisible" :data='detailTable' title="专利审核详情" style="width: 110%">
+      <el-row :gutter="20" style="padding-top: 10px">
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">专利名称：</span>
+              <span>{{ detailTable.patentName }}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">专利编号：</span>
+              <span>{{ detailTable.patentNumber }}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">申请人：</span>
+              <span>{{ detailTable.patentApplicant }}</span>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20" style="padding-top: 10px">
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">专利类型：</span>
+              <span>{{ detailTable.patentType }}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">申请时间：</span>
+              <span>{{ detailTable.applyTime }}</span>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20" style="padding-top: 10px">
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">照片证明：</span>
+              <el-button type="text">查看图片</el-button>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+      <el-divider/>
+      <div>
+        <el-row style="padding-top: 10px">
+          <span style="font-weight: bolder">科研处意见</span>
+        </el-row>
+        <el-row style="padding-top: 10px">
+          <el-input
+            :rows="4"
+            v-model="auditingInfo.auditDesc"
+            type="textarea"
+            placeholder="请输入内容"/>
+        </el-row>
+      </div>
+      <div class="foot">
+        <span slot="footer" class="dialog-footer">
+          <el-button type="success" size="small" plain @click="acadeAchievesAudit(basicId,assessType1,'审核通过')">审核通过</el-button>
+          <el-button type="danger" size="small" plain @click="acadeAchievesAudit(basicId,assessType1,'审核未通过')">审核未通过</el-button>
+          <el-button type="primary" @click="patentVisible = false"  size="small" plain>关闭</el-button>
+        </span>
+      </div>
+    </el-dialog>
+    <el-dialog :visible.sync="monographVisible" :data='detailTable' title="专著审核详情" style="width: 110%">
+      <el-row :gutter="20" style="padding-top: 10px">
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">专著名称：</span>
+              <span>{{ detailTable.monographName }}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">专著类型：</span>
+              <span>{{ detailTable.monographField }}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">负责人：</span>
+              <span>{{ detailTable.username }}</span>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20" style="padding-top: 10px">
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">出版刊物：</span>
+              <span>{{ detailTable.publication }}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">出版社：</span>
+              <span>{{ detailTable.publisher }}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">发表时间：</span>
+              <span>{{ detailTable.publishTime }}</span>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20" style="padding-top: 10px">
+        <el-col :span="8">
+          <div class="single">
+            <div class="biaoqian">
+              <span style="font-weight: bolder">照片证明：</span>
+              <el-button type="text">查看图片</el-button>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+      <el-divider/>
+      <div>
+        <el-row style="padding-top: 10px">
+          <span style="font-weight: bolder">科研处意见</span>
+        </el-row>
+        <el-row style="padding-top: 10px">
+          <el-input
+            :rows="4"
+            v-model="auditingInfo.auditDesc"
+            type="textarea"
+            placeholder="请输入内容"/>
+        </el-row>
+      </div>
+      <div class="foot">
+        <span slot="footer" class="dialog-footer">
+          <el-button type="success" size="small" plain @click="acadeAchievesAudit(basicId,assessType1,'审核通过')">审核通过</el-button>
+          <el-button type="danger" size="small" plain @click="acadeAchievesAudit(basicId,assessType1,'审核未通过')">审核未通过</el-button>
+          <el-button type="primary" @click="monographVisible = false"  size="small" plain>关闭</el-button>
+        </span>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -131,6 +375,9 @@
         currentPage: 1,
         pagesize: 5,
         hexinVisible:false,
+        projectVisible:false,
+        patentVisible:false,
+        monographVisible:false,
         workVisible:false,
         jibenVisible:false,
         peopleData:[
@@ -233,9 +480,21 @@
       },
       //主管根据id获取学术成果评审详细信息
       getAcadeAchievesWaitAuditDetail (row) {
-        this.hexinVisible = true;
-        this.basicId = row.id;
+        console.log(row.assessType)
         this.assessType1 = row.assessType
+        if(row.assessType ==='学术论文'){
+          this.hexinVisible = true;
+        }else if(row.assessType === '项目课题'){
+          this.projectVisible = true;
+        }else if(row.assessType === '专利登记'){
+          this.patentVisible =true;
+        } else if (row.assessType === '专著登记') {
+          this.monographVisible =true;
+        }
+        // this.hexinVisible = true;
+        this.basicId = row.id;
+        console.log(row.id)
+        // this.assessType1 = row.assessType
         const prams = {
           tecUsername: localStorage.getItem('loginName'),
           assessType: row.assessType,
@@ -273,6 +532,15 @@
               message: '审核完成',
             }
           )
+          if(this.assessType1 ==='学术论文'){
+            this.hexinVisible = false;
+          }else if(this.assessType1 === '项目课题'){
+            this.projectVisible = false;
+          }else if(this.assessType1 === '专利登记'){
+            this.patentVisible =false;
+          } else if (this.assessType1 === '专著登记') {
+            this.monographVisible =false;
+          }
           this.getWaitResDirectorAuditInfosTwo()
         })
       }

@@ -19,7 +19,7 @@ export function teacherEditBasicInfo(parems) {
 }
 
 //教师专业能力修改
-export function teacherEditProfessionalInfo(parems) {
+export function updateTeaProfessAbilityInfoById(parems) {
   return request ({
     url: '/teacherinfo/updateTeaProfessAbilityInfoById',
     method: 'post',

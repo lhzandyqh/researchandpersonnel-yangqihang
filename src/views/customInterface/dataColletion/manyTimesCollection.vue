@@ -214,7 +214,7 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="专著登记">
-        <h4 style="text-align: center;margin: 28px 0px 0px 0px;">专著登记表</h4>
+<!--        <h4 style="text-align: center;margin: 28px 0px 0px 0px;">专著登记表</h4>-->
         <el-button @click="switchTypeFour('add')" style="float: right;margin-right: 15px" type="text">新增</el-button>
 <!--        <el-button style="float: right;margin-right: 15px" type="text">修改</el-button>-->
         <el-table
@@ -230,7 +230,7 @@
             label="专著类型"
             />
           <el-table-column
-            prop="monographAuthor"
+            prop="publication"
             label="发表刊物"
             />
           <el-table-column
@@ -326,6 +326,9 @@
           <el-form-item label="负责人">
             <el-input v-model="form.monographAuthor"/>
           </el-form-item>
+          <el-form-item label="出版刊物">
+            <el-input v-model="form.publication"/>
+          </el-form-item>
           <el-form-item label="出版社">
             <el-input v-model="form.publisher"/>
           </el-form-item>
@@ -417,15 +420,15 @@
           </el-form-item>
           <el-form-item label="是否第一作者">
             <el-select v-model="paperForm1.ifFirstAuthor" style="width: 310px" placeholder="请选择">
-              <el-option label="是" value="1"></el-option>
-              <el-option label="否" value="0"></el-option>
+              <el-option label="是" value="是"></el-option>
+              <el-option label="否" value="否"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="论文类型">
             <el-select v-model="paperForm1.paperType" placeholder="请选择您的学术论文类型" >
-              <el-option label="中文核心论文" value="hexin"/>
-              <el-option label="三大检索论文" value="threesearch"/>
-              <el-option label="其他" value="others"/>
+              <el-option label="中文核心论文" value="中文核心论文"/>
+              <el-option label="三大检索论文" value="三大检索论文"/>
+              <el-option label="其他" value="其他"/>
 <!--              <el-option label="中文核心论文" value="1"/>-->
 <!--              <el-option label="三大检索论文" value="2"/>-->
 <!--              <el-option label="其他" value="3"/>-->
@@ -554,10 +557,10 @@ export default {
         fileUrl: ''
       },
       paperForm1: {
-        tecUsername: localStorage.getItem('loginName')
+        // tecUsername: localStorage.getItem('loginName')
       },
       paperForm2: {
-        tecUsername: localStorage.getItem('loginName')
+        // tecUsername: localStorage.getItem('loginName')
       },
       options: [{
         value: '1',
@@ -748,43 +751,43 @@ export default {
   methods: {
     reset() {
       this.form = {
-        projecttime: undefined,
-        projectpeople: undefined,
-        projectclass: undefined,
-        projectrole: undefined,
-        projectname: undefined,
-        papersub: undefined,
-        papername: undefined,
-        isauthor: undefined,
-        publication: undefined,
-        press: undefined,
-        pubtime: undefined,
-        enclosure: undefined,
-        patentname: undefined,
-        patentnum: undefined,
-        patentsub: undefined,
-        applicant: undefined,
-        patentpress: undefined,
-        patenttime: undefined,
-        patentenclosure: undefined,
-        monographname: undefined,
-        monographsub: undefined,
-        monographpublication: undefined,
-        monographpress: undefined,
-        monographtime: undefined,
-        monographsenclosure: undefined,
-        threesname: undefined,
-        threesisauthor: undefined,
-        threespublication: undefined,
-        threespress: undefined,
-        threespubtime: undefined,
-        threesenclosure: undefined,
-        noncorename: undefined,
-        noncoreisauthor: undefined,
-        noncorepublication: undefined,
-        noncorepress: undefined,
-        noncorepubtime: undefined,
-        noncoreenclosure: undefined
+        declarationDate: '',
+        projectPerson: '',
+        projectLevel: '',
+        projectRole: '',
+        projectName: '',
+        papersub: '',
+        papername: '',
+        isauthor: '',
+        publication: '',
+        press: '',
+        pubtime: '',
+        enclosure: '',
+        patentname: '',
+        patentnum: '',
+        patentsub: '',
+        applicant: '',
+        patentpress: '',
+        patenttime: '',
+        patentenclosure: '',
+        monographname: '',
+        monographsub: '',
+        monographpublication: '',
+        monographpress: '',
+        monographtime: '',
+        monographsenclosure: '',
+        threesname: '',
+        threesisauthor: '',
+        threespublication: '',
+        threespress: '',
+        threespubtime: '',
+        threesenclosure: '',
+        noncorename: '',
+        noncoreisauthor: '',
+        noncorepublication: '',
+        noncorepress: '',
+        noncorepubtime: '',
+        noncoreenclosure: '',
       };
     },
     onSubmit() {
@@ -968,6 +971,7 @@ export default {
       // let data = this.paperForm
       // this.paperForm.tecUsername = '10010'
       const prams = this.paperForm1
+      prams.teacUsername = localStorage.getItem('loginName')
       insertPaperInfo(prams).then(response => {
         console.log('测试学术论文新增接口');
         console.log(response.data);
@@ -999,7 +1003,7 @@ export default {
         console.log(this.paperForm2);
         const prams = this.paperForm2
         prams.id = this.editId
-        prams.tecUsername = localStorage.getItem('loginName')
+        prams.teacUsername = localStorage.getItem('loginName')
         updatePaperInfos(prams).then(response => {
           console.log('测试修改')
           console.log(response.data)
@@ -1062,15 +1066,16 @@ export default {
         console.log(Object.keys(this.form).length)
         console.log('测试课题项目新增提交参数');
         console.log(this.form);
-        // const prams = this.form
-        insertProjectInfo(this.form).then(response => {
+        const prams = this.form
+        prams.tecUsername = localStorage.getItem('loginName')
+        insertProjectInfo(prams).then(response => {
           console.log('测试课题项目新增接口');
           console.log(response.data);
           this.$message({
             type: 'success',
             message: '新增成功'
           })
-          console.log(this.form.fileUrl)
+          console.log(response.data.data.projectRole)
           this.getAllProjectInfo()
           this.dialogVisibleThrees = false
         })
@@ -1214,8 +1219,10 @@ export default {
         console.log(Object.keys(this.form).length)
         console.log('测试专利新增提交参数');
         console.log(this.form);
+        const prams = this.form
+        prams.tecUsername = localStorage.getItem('loginName')
         // const prams = this.form
-        insertPatentInfo(this.form).then(response => {
+        insertPatentInfo(prams).then(response => {
           console.log('测试专利新增接口');
           console.log(response.data);
           this.$message({
@@ -1323,7 +1330,9 @@ export default {
         console.log('测试专著新增提交参数');
         console.log(this.form);
         // const prams = this.form
-        insertMonographInfo(this.form).then(response => {
+        const prams = this.form
+        prams.tecUsername = localStorage.getItem('loginName')
+        insertMonographInfo(prams).then(response => {
           console.log('测试专著新增接口');
           console.log(response.data);
           this.$message({

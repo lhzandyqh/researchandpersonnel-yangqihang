@@ -5,7 +5,8 @@
         <div class="function_container">
           <h3>项目申报表</h3>
           <div class="function_items">
-            <div style="text-align: right">
+            <span style="font-weight: bold">2021第一季度：</span>
+            <span>2021.1.1至2021.4.1</span>
               <el-upload
                 class="upload-demo"
                 action="https://jsonplaceholder.typicode.com/posts/"
@@ -20,7 +21,6 @@
                 <el-button size="small" type="primary">上传申报书</el-button>
                 <!--                  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
               </el-upload>
-            </div>
           </div>
         </div>
         <el-divider></el-divider>
@@ -157,6 +157,7 @@ export default {
     this.previewGetTableData()
   },
   methods: {
+    //主管获取项目申报表预览
     previewGetTableData: function () {
       projectTableGetData().then(response => {
         console.log('测试预览表获取数据接口')
@@ -184,4 +185,13 @@ export default {
   width: 100%;
   height: 100%;
 }
+.right {
+ }
+ .function_items {
+   height: 32px;
+   line-height: 32px;
+ }
+ .upload-demo {
+   float: right;
+ }
 </style>

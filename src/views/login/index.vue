@@ -195,8 +195,10 @@
       title="请登录"
       :visible.sync="dialogVisible"
       width="30%"
-      :before-close="handleClose"
     >
+<!--      上面的handleClose在这-->
+<!--      :before-close="handleClose"-->
+
       <!--      <span>这是一段信息</span>-->
       <!--      <span slot="footer" class="dialog-footer">-->
       <!--        <el-button @click="dialogVisible = false">取 消</el-button>-->
@@ -305,8 +307,10 @@ export default {
       loginForm: {
         // username: 'admin',
         // password: '111111',
-        username: '10002',
+        username: '10020',
         password: '123456',
+        // username: '',
+        // password: '',
         role: ''
       },
       // loginRules: {

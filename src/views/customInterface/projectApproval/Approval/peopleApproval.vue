@@ -15,7 +15,7 @@
         <template slot-scope="scope">
           <el-tag  v-if="scope.row.auditStatus==='审核通过'" type="success">审核通过</el-tag>
           <el-tag  v-if="scope.row.auditStatus==='审核未通过'" type="danger">审核未通过</el-tag>
-          <el-tag  v-if="scope.row.auditStatus==='待审核'">审核待审核</el-tag>
+          <el-tag  v-if="scope.row.auditStatus==='待审核'">待审核</el-tag>
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作">
@@ -286,48 +286,48 @@
         </el-col>
       </el-row>
       <el-divider/>
-      <h4>部门意见</h4>
-      <div>
-        <el-row>
-          <el-col :span="6">
-            信息属实
-          </el-col>
-          <el-col :span="6">
-            <span>审核时间：</span>
-            <span>2019-12-04</span>
-          </el-col>
-          <el-col :span="6">
-            <span>审核人：</span>
-            <span>刘明至</span>
-          </el-col>
-          <el-col :span="5">
-            <span>审核状态</span>
-            <el-tag type="success" size="small">通过</el-tag>
-          </el-col>
-        </el-row>
-      </div>
-      <el-divider />
-      <h4>系部意见</h4>
-      <div>
-        <el-row>
-          <el-col :span="6">
-            批准通过
-          </el-col>
-          <el-col :span="6">
-            <span>审核时间：</span>
-            <span>2019-12-04</span>
-          </el-col>
-          <el-col :span="6">
-            <span>审核人：</span>
-            <span>郭志</span>
-          </el-col>
-          <el-col :span="5">
-            <span>审核状态</span>
-            <el-tag type="success" size="small">通过</el-tag>
-          </el-col>
-        </el-row>
-      </div>
-      <el-divider />
+<!--      <h4>部门意见</h4>-->
+<!--      <div>-->
+<!--        <el-row>-->
+<!--          <el-col :span="6">-->
+<!--            信息属实-->
+<!--          </el-col>-->
+<!--          <el-col :span="6">-->
+<!--            <span>审核时间：</span>-->
+<!--            <span>2019-12-04</span>-->
+<!--          </el-col>-->
+<!--          <el-col :span="6">-->
+<!--            <span>审核人：</span>-->
+<!--            <span>刘明至</span>-->
+<!--          </el-col>-->
+<!--          <el-col :span="5">-->
+<!--            <span>审核状态</span>-->
+<!--            <el-tag type="success" size="small">通过</el-tag>-->
+<!--          </el-col>-->
+<!--        </el-row>-->
+<!--      </div>-->
+<!--      <el-divider />-->
+<!--      <h4>系部意见</h4>-->
+<!--      <div>-->
+<!--        <el-row>-->
+<!--          <el-col :span="6">-->
+<!--            批准通过-->
+<!--          </el-col>-->
+<!--          <el-col :span="6">-->
+<!--            <span>审核时间：</span>-->
+<!--            <span>2019-12-04</span>-->
+<!--          </el-col>-->
+<!--          <el-col :span="6">-->
+<!--            <span>审核人：</span>-->
+<!--            <span>郭志</span>-->
+<!--          </el-col>-->
+<!--          <el-col :span="5">-->
+<!--            <span>审核状态</span>-->
+<!--            <el-tag type="success" size="small">通过</el-tag>-->
+<!--          </el-col>-->
+<!--        </el-row>-->
+<!--      </div>-->
+<!--      <el-divider />-->
       <div>
         <el-row style="padding-top: 10px">
           <span style="font-weight: bolder">科研处意见</span>
@@ -388,48 +388,48 @@
         </el-col>
       </el-row>
       <el-divider/>
-      <h4>部门意见</h4>
-      <div>
-        <el-row>
-          <el-col :span="6">
-            信息属实
-          </el-col>
-          <el-col :span="6">
-            <span>审核时间：</span>
-            <span>2019-12-04</span>
-          </el-col>
-          <el-col :span="6">
-            <span>审核人：</span>
-            <span>刘明至</span>
-          </el-col>
-          <el-col :span="5">
-            <span>审核状态</span>
-            <el-tag type="success" size="small">通过</el-tag>
-          </el-col>
-        </el-row>
-      </div>
-      <el-divider />
-      <h4>系部意见</h4>
-      <div>
-        <el-row>
-          <el-col :span="6">
-           批准通过
-          </el-col>
-          <el-col :span="6">
-            <span>审核时间：</span>
-            <span>2019-12-04</span>
-          </el-col>
-          <el-col :span="6">
-            <span>审核人：</span>
-            <span>郭志</span>
-          </el-col>
-          <el-col :span="5">
-            <span>审核状态</span>
-            <el-tag type="success" size="small">通过</el-tag>
-          </el-col>
-        </el-row>
-      </div>
-      <el-divider />
+<!--      <h4>部门意见</h4>-->
+<!--      <div>-->
+<!--        <el-row>-->
+<!--          <el-col :span="6">-->
+<!--            信息属实-->
+<!--          </el-col>-->
+<!--          <el-col :span="6">-->
+<!--            <span>审核时间：</span>-->
+<!--            <span>2019-12-04</span>-->
+<!--          </el-col>-->
+<!--          <el-col :span="6">-->
+<!--            <span>审核人：</span>-->
+<!--            <span>刘明至</span>-->
+<!--          </el-col>-->
+<!--          <el-col :span="5">-->
+<!--            <span>审核状态</span>-->
+<!--            <el-tag type="success" size="small">通过</el-tag>-->
+<!--          </el-col>-->
+<!--        </el-row>-->
+<!--      </div>-->
+<!--      <el-divider />-->
+<!--      <h4>系部意见</h4>-->
+<!--      <div>-->
+<!--        <el-row>-->
+<!--          <el-col :span="6">-->
+<!--           批准通过-->
+<!--          </el-col>-->
+<!--          <el-col :span="6">-->
+<!--            <span>审核时间：</span>-->
+<!--            <span>2019-12-04</span>-->
+<!--          </el-col>-->
+<!--          <el-col :span="6">-->
+<!--            <span>审核人：</span>-->
+<!--            <span>郭志</span>-->
+<!--          </el-col>-->
+<!--          <el-col :span="5">-->
+<!--            <span>审核状态</span>-->
+<!--            <el-tag type="success" size="small">通过</el-tag>-->
+<!--          </el-col>-->
+<!--        </el-row>-->
+<!--      </div>-->
+<!--      <el-divider />-->
       <div>
         <el-row style="padding-top: 10px">
           <span style="font-weight: bolder">科研处意见</span>
@@ -529,7 +529,7 @@ import { directorGetAllWaitAuditingInfoByType, directorGetBasicInfoById, directo
         this.basicAuditingInfo.id = id
         this.basicAuditingInfo.auditStatus = status
         const prams = {
-          tecUsername: this.basicAuditingInfo.tecUsername,
+          tecUsername: localStorage.getItem('loginName'),
           id: this.basicAuditingInfo.id,
           auditType: this.auditType1,
           auditStatus: this.basicAuditingInfo.auditStatus,

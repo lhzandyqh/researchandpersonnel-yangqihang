@@ -15,6 +15,9 @@
       <div class="function_item left_control">
         <el-button type="primary">搜索</el-button>
       </div>
+      <div class="function_item right_control">
+        <el-button type="primary" @click="nextVisible=true">安排中期</el-button>
+      </div>
     </div>
     <el-divider></el-divider>
     <div class="table_container">
@@ -25,24 +28,25 @@
         <el-table-column
           prop="rank"
           label="排名"
-          width="180">
+          width="80">
           <template slot-scope="scope">
             <span style="font-weight: bold">{{scope.$index+1}}</span>
           </template>
         </el-table-column>
         <el-table-column
           prop="projectName"
-          label="科研项目名称">
+          label="科研项目名称"
+          width="180">
         </el-table-column>
         <el-table-column
           prop="applyPerson"
           label="申报人"
-          width="180">
+          width="150">
         </el-table-column>
         <el-table-column
           prop="dept"
           label="申报人所在部门"
-          width="180">
+          width="150">
         </el-table-column>
         <el-table-column
           prop="totalScore"
@@ -107,19 +111,93 @@
     <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
   </span>
     </el-dialog>
+    <el-dialog
+      title="安排中期"
+      :visible.sync="nextVisible"
+      width="60%"
+      :before-close="handleClose">
+      <span style="font-weight: bolder">项目时间批次：</span>
+      <span>2021-1-1&#8195;至&#8195;2021-4-4</span>
+      <div class="main_table">
+        <div class="table_container">
+          <el-table
+            ref="multipleTable"
+            :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+            tooltip-effect="dark"
+            style="width: 100%"
+            @selection-change="handleSelectionChange"
+          >
+            <el-table-column
+              type="selection"
+              width="55"
+            />
+            <el-table-column
+              label="排名"
+              width="100"
+            >
+              <template slot-scope="scope">
+                <span style="font-weight: bold">{{scope.$index+1}}</span>
+              </template>
+<!--              <template slot-scope="scope">{{ scope.row.number }}</template>-->
+            </el-table-column>
+            <el-table-column
+              prop="projectName"
+              label="科研项目名称"
+              width="200px"
+            />
+            <el-table-column
+              prop="applyPerson"
+              label="申报人"
+              width="150px"
+            />
+            <el-table-column
+              prop="totalScore"
+              label="项目评审得分"
+              width="150px"
+            />
+            <el-table-column
+              prop="assessExpert"
+              label="评审专家"
+              width="150px"
+            />
+          </el-table>
+<!--          <div style="margin-top: 20px">-->
+<!--            <el-button type="primary" @click="toggleSelection(row)">安排中期</el-button>-->
+<!--          </div>-->
+          <div class="fenye">
+            <el-pagination
+              @size-change="handleSizeChange1"
+              @current-change="handleCurrentChange1"
+              :current-page="currentPage1"
+              :page-size="pagesize1"
+              :page-sizes="[5, 10]"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="tableData.length ">
+            </el-pagination>
+          </div>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="nextVisible = false">取 消</el-button>
+        <el-button type="primary" @click="arrangeMiddle">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import rankScoreEchart from "./echarts/rankScoreEchart";
-import { directorGetAuditingRank, directorGetAuditingScoreDetails } from '@/api/expertEvaluation'
+import { directorGetAuditingRank, directorGetAuditingScoreDetails, arrangeProjectMidTerm } from '@/api/expertEvaluation'
 export default {
 name: "reviewRank",
   data() {
     return {
       dialogVisible: false,
+      nextVisible: false,
       currentPage: 1,
-      pagesize:5,
+      pagesize: 5,
+      currentPage1: 1,
+      pagesize1: 5,
       options: [{
         value: '2020',
         label: '2020'
@@ -194,19 +272,56 @@ name: "reviewRank",
         }
       ],
       detailrow: {},
-      scoreDetails: []
+      scoreDetails: [],
+      multipleSelection: []
     }
   },
   mounted() {
     this.getAllData()
   },
   methods: {
+    //安排中期多选
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+      // console.log(this.multipleSelection)
+    },
+    //全选和全部取消
+    toggleSelection(rows) {
+      if (rows) {
+        rows.forEach(row => {
+          this.$refs.multipleTable.toggleRowSelection(row)
+
+        })
+      } else {
+        this.$refs.multipleTable.clearSelection()
+      }
+    },
+    //安排项目中期接口
+    arrangeMiddle () {
+      // console.log(this.multipleSelection)
+      const prams = this.multipleSelection
+      arrangeProjectMidTerm(prams).then(response =>{
+        console.log('测试主管安排项目中期接口')
+        console.log(response.data)
+      })
+      this.nextVisible = false;
+    },
+  //fenye
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
       // this.currentPage = 1;
       this.pagesize = val;
     },
     handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.currentPage = val;
+    },
+    handleSizeChange1(val) {
+      console.log(`每页 ${val} 条`);
+      // this.currentPage = 1;
+      this.pagesize = val;
+    },
+    handleCurrentChange1(val) {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
     },
@@ -219,7 +334,7 @@ name: "reviewRank",
     },
     getAllData: function () {
       const prams = {
-        tecUsername: '10002'
+        tecUsername: localStorage.getItem('loginName')
       }
       directorGetAuditingRank(prams).then(response => {
         console.log('测试科研主管获取项目申报评审排名接口')
@@ -227,9 +342,11 @@ name: "reviewRank",
         this.tableData = response.data.data
       })
     },
+    //查看得分详情
     getScoreDetail: function (row) {
       this.dialogVisible = true
       this.detailrow = row
+      // console.log(row)
       const prams = {
         applyTecUsername: this.detailrow.applyTecUsername,
         times: this.detailrow.times
@@ -258,6 +375,9 @@ name: "reviewRank",
 .left_control{
   margin-left: 20px;
 }
+.right_control {
+  margin-left: 730px;
+}
 .fenye {
   margin-top: 20px;
   text-align: center;
@@ -269,5 +389,13 @@ name: "reviewRank",
   margin-top: 20px;
   /*float: left;*/
   margin-left: 10%;
+}
+.main_title span {
+  font-size: 15px;
+  font-weight: bold;
+  color: #666666;
+}
+.table_container{
+  margin-top: 30px;
 }
 </style>
