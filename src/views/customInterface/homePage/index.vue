@@ -272,10 +272,10 @@ export default {
     },
     getBasic (roles) {
       if (roles==='教师') {
-        getExpertBasic().then(response => {
-          console.log('测试专家——获取基本方框接口')
+        teacherBasic().then(response => {
+          console.log('测试教师——获取基本方框接口')
           console.log(response.data)
-          this.numObject3 = response.data.data
+          this.numObject1 = response.data.data
         })
       } else if (roles==='科研主管') {
         const prams = {

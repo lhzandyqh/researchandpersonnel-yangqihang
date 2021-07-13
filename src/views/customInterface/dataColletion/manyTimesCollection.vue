@@ -268,7 +268,7 @@
     </el-tabs>
     <div>
       <el-dialog :visible.sync="dialogVisiblePatent" :title="title">
-        <el-form ref="form" :model="form" label-width="100px">
+        <el-form ref="form" :model="form" label-width="120px">
           <el-form-item label="专利名称">
             <el-input v-model="form.patentName"/>
           </el-form-item>

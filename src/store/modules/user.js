@@ -65,9 +65,11 @@ const user = {
         loginByUsername(prams).then(response => {
           console.log('测试登陆成功后返回的数据')
           console.log(response.data)
-          const data = response.data.data
-          commit('SET_TOKEN', data.token)
-          setToken(response.data.token)
+          // const data = response.data.data
+          // commit('SET_TOKEN', response.data.data.token)  //这是最好使用response.data.data.xx 上面使用的data就不好用-2021.7.12
+          commit('SET_TOKEN', response.data.data.token)
+          // commit("SET_USERID", data.user.id);
+          setToken(response.data.data.token)
           resolve()
         }).catch(error => {
           reject(error)
