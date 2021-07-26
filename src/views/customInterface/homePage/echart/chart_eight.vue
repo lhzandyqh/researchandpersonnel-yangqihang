@@ -22,7 +22,9 @@ import {getSciAchieveNumsByYears} from '@/api/chartsData'
             text: '学院科研项目及论文年度对比'
           },
           legend: {
-            data: ['学术论文','审核项目','课题项目','专利','专著']
+            data: ['学术论文','审核项目','课题项目','专利','专著'],
+            top: '5%',
+            left: '40%'
           },
           xAxis: {
             type: 'category',

@@ -36,7 +36,7 @@
         layout="total, sizes, prev, pager, next, jumper"
       />
     </div>
-    <el-dialog :visible.sync="projectVisible" title="审核详情">
+    <el-dialog :visible.sync="projectVisible" title="审核详情" width="60%">
       <div class="clearfix">
         <el-row style="margin-top: 10px">
             <span style="font-weight: bolder; font-size: 15px">基本信息：</span>
@@ -442,7 +442,7 @@ import {getWaitResDirectorAuditInfosTwo,getProjectApplyWaitAuditDetail,projectAp
 .detailName {
   float: left;
   /*display: inline-block;*/
-  width: 90px;
+  width: 130px;
   /*height: 20px;*/
   /*line-height: 20px;*/
   font-weight: 700

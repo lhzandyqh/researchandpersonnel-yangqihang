@@ -33,7 +33,7 @@
 </template>
 
 <script>
-  import departmentProjectTable from '@/views/customInterface/projectApproval/departmentTable/departmentProjectTable'
+import departmentProjectTable from '@/views/customInterface/projectApproval/departmentTable/departmentProjectTable'
 export default {
   name: "departmentApproval",
   components: {

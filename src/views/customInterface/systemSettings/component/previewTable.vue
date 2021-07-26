@@ -5,8 +5,8 @@
         <div class="function_container">
           <h3>项目申报表</h3>
           <div class="function_items">
-            <span style="font-weight: bold">2021第一季度：</span>
-            <span>2021.1.1至2021.4.1</span>
+            <span style="font-weight: bold">{{form.batch}}：</span>
+            <span>{{form.batchStartDate}}&nbsp;&nbsp;&nbsp;&nbsp;至&nbsp;&nbsp;&nbsp;&nbsp;{{form.batchEndDate}}</span>
               <el-upload
                 class="upload-demo"
                 action="https://jsonplaceholder.typicode.com/posts/"
@@ -143,18 +143,20 @@
 </template>
 
 <script>
-import { projectTableGetData } from '@/api/personnalSettings'
+import { projectTableGetData, getLatestBatch} from '@/api/personnalSettings'
 export default {
   name: "previewTable",
   data() {
     return {
       basicData: [],
       projectData: [],
-      budgetData: []
+      budgetData: [],
+      form: {}
     }
   },
   mounted() {
     this.previewGetTableData()
+    this.getLatestBatch()
   },
   methods: {
     //主管获取项目申报表预览
@@ -165,6 +167,13 @@ export default {
         this.basicData = response.data.data.basicInfo
         this.projectData = response.data.data.projectInfo
         this.budgetData = response.data.data.budgetInfo
+      })
+    },
+    getLatestBatch() {
+      getLatestBatch().then(response => {
+        console.log('测试预览表获取最新批次接口')
+        console.log(response.data)
+        this.form = response.data.data
       })
     }
   }

@@ -6,8 +6,8 @@
           <div class="function_container">
             <h3>项目申报表</h3>
             <div class="function_items">
-              <span style="font-weight: bold">2021第一季度：</span>
-              <span>2021.1.1至2021.4.1</span>
+              <span style="font-weight: bold">{{form.batch}}：</span>
+              <span>{{form.batchStartDate}}&nbsp;&nbsp;&nbsp;&nbsp;至&nbsp;&nbsp;&nbsp;&nbsp;{{form.batchEndDate}}</span>
                 <el-upload
                   class="upload-demo"
                   action="http://58.119.112.15:11002//upload/fileUpload"
@@ -141,7 +141,7 @@
           </div>
           <div class="button_container">
             <div style="float: right">
-              <el-button size="small" type="success">重置</el-button>
+<!--              <el-button size="small" type="success">重置</el-button>   //重置功能未实现-->
               <el-button size="small" type="primary" @click="submitVisible = true">下一步</el-button>
             </div>
           </div>
@@ -203,7 +203,7 @@
 </template>
 
 <script>
-import { projectTableGetData } from '@/api/personnalSettings'
+import { projectTableGetData, getLatestBatch} from '@/api/personnalSettings'
 import { projectFillDeclaration, getDirectorList } from '@/api/initiateProject'
 export default {
   name: 'FormFill',
@@ -213,6 +213,7 @@ export default {
       fileList: [],
       value1: '',
       pdfUrl: '',
+      form: {},
       option1: [{
         value: '个人项目',
         label: '个人项目'
@@ -249,6 +250,11 @@ export default {
       remakes: '',
       deptArray: []
     }
+  },
+  mounted() {
+    this.previewGetTableData()
+    this.getPeopleList()
+    this.getLatestBatch()
   },
   methods: {
     getPeopleList: function () {
@@ -392,6 +398,14 @@ export default {
         })
       }
   },
+    // 立项表获取最新批次
+    getLatestBatch() {
+      getLatestBatch().then(response => {
+        console.log('测试预览表获取最新批次接口')
+        console.log(response.data)
+        this.form = response.data.data
+      })
+    },
     previewGetTableData: function () {
       projectTableGetData().then(response => {
         console.log('测试预览表获取数据接口')
@@ -422,10 +436,6 @@ export default {
         });
       }
     }
-  },
-  mounted() {
-    this.previewGetTableData()
-    this.getPeopleList()
   }
 }
 </script>

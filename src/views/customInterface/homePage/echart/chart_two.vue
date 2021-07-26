@@ -94,7 +94,7 @@ export default {
         ]
         this.chart.setOption(this.option)
       })
-      this.onlyForTeacher()
+      // this.onlyForTeacher()
     }
   }
 }

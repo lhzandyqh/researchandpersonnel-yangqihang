@@ -218,7 +218,9 @@ import {getExpertSCiAchieveByTecName,getExpertSciAchiCompareByTecNameTwo} from '
               }
             },
             legend: {
-              data: ['课题项目', '专利', '学术论文', '学术专著', '']
+              data: ['课题项目', '专利', '学术论文', '学术专著', ''],
+              top: '5%',
+              left: '30%'
             },
             xAxis: [
               {

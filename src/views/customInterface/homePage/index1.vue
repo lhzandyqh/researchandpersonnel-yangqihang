@@ -201,24 +201,25 @@ export default {
     chartNine,
     chartTen
   },
-  computed:{
-    roles() {
-      return this.$store.getters.roles[0]
-    }
-  },
+  // computed:{
+  //   roles() {
+  //     this.roles =  this.$store.getters.roles[0]
+  //   }
+  // },
   mounted() {
     // setTimeout(()=>{
     //   this.initChart()
-    //   this.deptBasic()
-    //   this.teacherBasic()
-    //   this.getExpertBasic()
-    // },1000)
+      // this.deptBasic()
+      // this.teacherBasic()
+      // this.getExpertBasic()
+      // this.onlyForTeacher()
+    // },500)
     this.initChart()
-    this.somePaperSum()
-    // this.getBasic('科研主管')
-    this.getDeptData()
-    this.getExpertData()
-    this.onlyForTeacher()
+    // this.somePaperSum()
+    // this.getDeptData()
+    // this.getExpertData()
+    // this.onlyForTeacher()
+    this.getBasic ()
   },
   methods: {
     initChart: function() {
@@ -270,14 +271,14 @@ export default {
         this.numObject3 = response.data.data
       })
     },
-    getBasic (roles) {
-      if (roles==='教师') {
+    getBasic () {
+      if (this.roles==='教师') {
         teacherBasic().then(response => {
           console.log('测试教师——获取基本方框接口')
           console.log(response.data)
           this.numObject1 = response.data.data
         })
-      } else if (roles==='科研主管') {
+      } else if (this.roles==='科研主管') {
         const prams = {
           tecUsername : localStorage.getItem('loginName')
         }
@@ -286,7 +287,7 @@ export default {
           console.log(response.data)
           this.numObject2 = response.data.data
         });
-      } else if (roles==='专家评审') {
+      } else if (this.roles==='专家评审') {
         getExpertBasic().then(response => {
           console.log('测试专家——获取基本方框接口')
           console.log(response.data)
@@ -314,22 +315,22 @@ export default {
       // })
     },
     //智能分析-普通教师基本方框
-    teacherBasic () {
-      var bar_dv = this.$refs.chart;
-      if (bar_dv) {
-        console.log('bar_dv不为空')
-        const prams = {
-          tecUsername : 10010
-        }
-        teacherBasic(prams).then(response => {
-          console.log('测试教师——获取基本方框接口')
-          console.log(response.data)
-          this.numObject1 = response.data.data
-        })
-      } else {
-        console.log('bar_dv为空！')
-      }
-    },
+    // teacherBasic () {
+    //   var bar_dv = this.$refs.chart;
+    //   if (bar_dv) {
+    //     console.log('bar_dv不为空')
+    //     const prams = {
+    //       tecUsername : 10010
+    //     }
+    //     teacherBasic(prams).then(response => {
+    //       console.log('测试教师——获取基本方框接口')
+    //       console.log(response.data)
+    //       this.numObject1 = response.data.data
+    //     })
+    //   } else {
+    //     console.log('bar_dv为空！')
+    //   }
+    // },
     //智能分析-科研主管基本方框
     deptBasic () {
       const prams = {
@@ -554,6 +555,7 @@ export default {
   },
   data(){
     return{
+      roles: '',
       numObject1: {},
       numObject2: {},
       numObject3: {},

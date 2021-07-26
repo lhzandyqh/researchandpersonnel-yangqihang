@@ -79,6 +79,14 @@ export function getDimensionTableDataById(parems) {
   })
 }
 
+// 预览表获取最新项目批次
+export function getLatestBatch() {
+  return request({
+    url: '/projectApplyTwo/getLatestBatch',
+    method: 'get',
+  })
+}
+
 //获取所有申报批次
 export function getAllProjectApplyBatch() {
   return request({
@@ -102,5 +110,14 @@ export function updateBatch(parems) {
     url: '/projectApplyTwo/updateBatch',
     method: 'post',
     data: parems
+  })
+}
+
+// 删除项目批次
+export function deleteBatch(parems) {
+  return request({
+    url: '/projectApplyTwo/deleteBatch',
+    method: 'delete',
+    params: parems
   })
 }

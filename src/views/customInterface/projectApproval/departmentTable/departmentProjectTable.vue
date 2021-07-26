@@ -91,7 +91,7 @@
         <el-button type="primary" @click="keyandialogPvVisible = false">关闭</el-button>
       </span>
     </el-dialog>
-    <el-dialog :visible.sync="xiangmudialogVisible" title="科研项目立项评分"   width="30%">
+    <el-dialog :visible.sync="xiangmudialogVisible" title="科研项目立项评分"   width="35%">
       <div class="dimension_container" v-for="(item, key) in dimensionData" :key="key">
         <div class="dimension_title">
           <span style="font-weight: bold">{{item.dimensionName}}</span>
@@ -101,6 +101,7 @@
               <div class="dimension_name">
                 <span>{{value.dimensionName}}:</span>
                 <el-input v-model="value.number" @change="addScore(value.id,value.number)" style="width: 150px;margin-left: 15px" placeholder="请输入评审分值" />
+                <span class="pingjiaxiangqing">该维度评价总分值：{{value.basicScore}}分</span>
               </div>
             </div>
           </div>
@@ -291,5 +292,8 @@ import { expertGetAllWaitAuditingData, expertAuditingProject } from '@/api/exper
   }
   .dimension_container {
     margin-top: 30px;
+  }
+  .pingjiaxiangqing {
+    margin-left: 60px;
   }
 </style>

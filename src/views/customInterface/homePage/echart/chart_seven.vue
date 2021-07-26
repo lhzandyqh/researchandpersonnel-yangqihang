@@ -22,6 +22,8 @@
           },
           legend: {
             data: ['科研任务/项目', '论文']
+            // top: '30%',
+            // left: '35%'
           },
           toolbox: {
             show: true,
