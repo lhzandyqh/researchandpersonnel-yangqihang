@@ -20,7 +20,7 @@
       </el-table-column>
       <el-table-column align="center" label="操作" width="400">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" icon="el-icon-zoom-in" @click="getProjectApplyWaitAuditDetail(scope.row)">查看</el-button>
+          <el-button type="primary" size="small" icon="el-icon-zoom-in" @click="getProjectApplyWaitAuditDetail(scope.row)">审核</el-button>
           <el-button type="primary" size="small" icon="el-icon-user" @click="beginProJudge(scope.row)">安排专家评审</el-button>
         </template>
       </el-table-column>
@@ -36,10 +36,10 @@
         layout="total, sizes, prev, pager, next, jumper"
       />
     </div>
-    <el-dialog :visible.sync="projectVisible" title="审核详情" width="60%">
+    <el-dialog :visible.sync="projectVisible" title="审核详情" width="65%">
       <div class="clearfix">
         <el-row style="margin-top: 10px">
-            <span style="font-weight: bolder; font-size: 15px">基本信息：</span>
+            <span style="font-weight: bolder; font-size: 18px">基本信息：</span>
         </el-row>
         <el-row  style="padding-top: 10px">
           <el-col >
@@ -52,7 +52,7 @@
           </el-col>
         </el-row>
         <el-row style="margin-top: 10px">
-          <span style="font-weight: bolder; font-size: 15px">项目信息：</span>
+          <span style="font-weight: bolder; font-size: 18px">项目信息：</span>
         </el-row>
         <el-row  style="padding-top: 10px">
           <el-col >
@@ -65,7 +65,7 @@
           </el-col>
         </el-row>
         <el-row style="margin-top: 10px">
-          <span style="font-weight: bolder; font-size: 15px">预算信息：</span>
+          <span style="font-weight: bolder; font-size: 18px">预算信息：</span>
         </el-row>
         <el-row  style="padding-top: 10px">
           <el-col >

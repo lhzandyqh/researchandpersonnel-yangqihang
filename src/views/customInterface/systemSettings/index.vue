@@ -400,7 +400,6 @@ export default {
         type: ''
       },
       editForm: {
-
       }
     }
   },
@@ -586,7 +585,7 @@ export default {
       }
       prams.id = this.editForm.id
       prams.type = this.editForm.type
-      prams.content_name = this.content_name
+      prams.content_name = this.editForm.content_name
       prams.content_type = this.editForm.content_type
       if(prams.content_type!== '选择器'){
         prams.content_option = ''
@@ -599,9 +598,10 @@ export default {
         prams.content_option = optionStr
       }
       console.log('测试prams')
-      editProjectTableData(prams).then(reponse=>{
+      console.log(prams)
+      editProjectTableData(prams).then(response=>{
         console.log('测试编辑接口')
-        console.log(reponse.data)
+        console.log(response.data)
         this.getProjectTableData()
         this.dynamicTags = []
         this.$message({

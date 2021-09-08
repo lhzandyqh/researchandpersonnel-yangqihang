@@ -421,7 +421,7 @@
 <!--              label="附件"-->
 <!--            />-->
             <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
-              <template slot-scope="scope">
+                <template slot-scope="scope">
                 <span style="display: inline-block" ><el-button @click="editWorkExperience(scope.row)" type="text" style="margin-top: -20px">修改</el-button></span>
                 <span style="display: inline-block" ><el-button type="text" style="margin-top: -20px" @click="deleteTecWorkExpById(scope.row)">删除</el-button></span>
                 <!--                    <span style="display: inline-block" ><el-button type="text" style="margin-top: -20px" @click="deleteTecWorkExpById(item)">删除</el-button></span>-->

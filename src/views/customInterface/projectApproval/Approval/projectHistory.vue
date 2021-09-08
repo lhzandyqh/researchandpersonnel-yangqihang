@@ -41,9 +41,9 @@
         layout="total, sizes, prev, pager, next, jumper"
       />
     </div>
-    <el-dialog :visible.sync="projectVisible" title="审核详情">
+    <el-dialog :visible.sync="projectVisible" title="审核详情" width="60%">
       <el-row style="margin-top: 10px">
-        <span style="font-weight: bolder; font-size: 15px">基本信息：</span>
+        <span style="font-weight: bolder; font-size: 17px">基本信息：</span>
       </el-row>
       <el-row  style="padding-top: 10px">
         <el-col >
@@ -56,7 +56,7 @@
         </el-col>
       </el-row>
       <el-row style="margin-top: 10px">
-        <span style="font-weight: bolder; font-size: 15px">项目信息：</span>
+        <span style="font-weight: bolder; font-size: 17px">项目信息：</span>
       </el-row>
       <el-row  style="padding-top: 10px">
         <el-col >
@@ -69,7 +69,7 @@
         </el-col>
       </el-row>
       <el-row style="margin-top: 10px">
-        <span style="font-weight: bolder; font-size: 15px">预算信息：</span>
+        <span style="font-weight: bolder; font-size: 17px">预算信息：</span>
       </el-row>
       <el-row  style="padding-top: 10px">
         <el-col >
@@ -82,7 +82,7 @@
         </el-col>
       </el-row>
       <el-row style="margin-top: 10px">
-        <span style="font-weight: bolder; font-size: 15px">评审配置：</span>
+        <span style="font-weight: bolder; font-size: 17px">评审配置：</span>
 <!--        <span>{{projectDetails.assessScore.dimensionName}}</span>-->
       </el-row>
       <div class="dimension_container">
@@ -162,7 +162,7 @@
         <el-col :span="8">
           <div class="single">
             <div class="biaoqian">
-              <span style="font-weight: bolder">项目方案：</span>
+              <span style="font-weight: bolder;font-size: 17px">项目方案：</span>
               <el-button type="text" >查看附件</el-button>
             </div>
           </div>
@@ -171,7 +171,7 @@
       <el-divider />
       <div style="margin-bottom: 10px">
         <el-row>
-          <span style="font-weight: 700">科研处意见:</span>
+          <span style="font-weight: 700;font-size: 17px">科研处意见:</span>
           <span>{{projectDetails.assessDesc}}</span>
         </el-row>
       </div>
@@ -385,7 +385,7 @@ import {getProjectApplyInfosAuditedRecord, getProjectApplyInfoAuditedRecordDetai
 .detailName {
   float: left;
   /*display: inline-block;*/
-  width: 100px;
+  width: 130px;
   /*height: 20px;*/
   /*line-height: 20px;*/
   font-weight: 700

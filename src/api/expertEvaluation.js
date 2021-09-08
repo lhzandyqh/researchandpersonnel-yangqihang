@@ -54,4 +54,13 @@ export function arrangeProjectMidTerm(parems) {
     data: parems
   })
 }
+//主管根据批次获取当前批次评审排名
+export function getProjectAssessOrderByBatch(parems) {
+  return request({
+    url: '/ExpertAssessController/getProjectAssessOrderByBatch',
+    method: 'get',
+    params: parems
+  })
+}
+
 

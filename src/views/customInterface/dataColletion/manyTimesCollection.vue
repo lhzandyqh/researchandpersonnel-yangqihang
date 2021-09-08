@@ -1,29 +1,23 @@
 <template>
   <div class="app-container">
     <el-tabs >
-      <el-tab-pane label="学术论文">
+      <el-tab-pane label="核心期刊论文">
         <el-row :gutter="5">
           <el-col :span="3">
             <div class="shenpiselect">
-              <span style="font-size: 16px;font-weight: bolder">选择论文类型：</span>
+              <span style="font-size: 16px;font-weight: bolder">选择期刊类型：</span>
             </div>
           </el-col>
           <el-col :span="6">
             <div class="select">
-              <el-select v-model="type_select_paper" @change="selectOne" placeholder="请选择您的学术论文类型" >
+              <el-select v-model="type_select_paper" @change="selectOne" placeholder="请选择您的核心期刊类型" >
 <!--                <el-option @click="selectOne" label="中文核心论文" value="中文核心论文"/>-->
-                <el-option label="中文核心论文" value="中文核心论文"/>
-                <el-option label="三大检索论文" value="三大检索论文"/>
+                <el-option label="北大核心" value="北大核心"/>
+                <el-option label="南大核心" value="南大核心"/>
                 <el-option label="其他" value="其他"/>
               </el-select>
             </div>
           </el-col>
-<!--          <el-row v-if="type_select_paper === '中文核心论文'">-->
-<!--          </el-row>-->
-<!--          <el-row v-if="type_select_paper === '三大检索论文'">-->
-<!--          </el-row>-->
-<!--          <el-row v-if="type_select_paper === '其他'">-->
-<!--          </el-row>-->
         </el-row>
         <el-button @click="openDialog" style="float: right;margin-right: 15px" type="text">新增</el-button>
 <!--        <el-button @click="handleUpdate(scope.row)" style="float: right;margin-right: 15px" type="text">修改</el-button>-->
@@ -34,31 +28,43 @@
         >
           <el-table-column
             prop="paperName"
-            label="论文名称"
+            label="论文题目"
             />
+          <el-table-column
+            prop="publishJournal"
+            label="期刊名称"
+          />
+          <el-table-column
+            prop="journalType"
+            label="期刊类型"
+          />
           <el-table-column
             prop="ifFirstAuthor"
             label="是否第一作者"
             />
           <el-table-column
-            prop="paperType"
-            label="论文类型"
+            prop="firstUnit"
+            label="论文第一单位"
           />
           <el-table-column
-            prop="publishJournal"
-            label="发表刊物"
-            />
-          <el-table-column
-            prop="publisher"
-            label="出版社"
+            prop="otherAuthor"
+            label="其他作者"
           />
+<!--          <el-table-column-->
+<!--            prop="publishJournal"-->
+<!--            label="发表刊物"-->
+<!--            />-->
+<!--          <el-table-column-->
+<!--            prop="publisher"-->
+<!--            label="出版社"-->
+<!--          />-->
           <el-table-column
             prop="publishTime"
             label="发表时间"
             />
           <el-table-column
             prop="attachment"
-            label="附件"
+            label="论文佐证"
             />
           <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
             <template slot-scope="scope">
@@ -90,8 +96,9 @@
           <el-col :span="6">
             <div class="select">
               <el-select v-model="type_select_project" @change="selectTwo" placeholder="请选择您的项目类型" >
-                <el-option label="国家级项目" value="国家级项目"/>
-                <el-option label="省级项目" value="省级项目"/>
+                <el-option label="一般" value="一般"/>
+                <el-option label="基金" value="基金"/>
+                <el-option label="重点" value="重点"/>
                 <el-option label="其他" value="其他"/>
               </el-select>
             </div>
@@ -104,28 +111,48 @@
             style="width: 100%"
           stripe>
             <el-table-column
+              prop="projectId"
+              label="项目编号"
+            />
+            <el-table-column
               prop="projectName"
               label="项目名称"
             />
             <el-table-column
-              prop="projectRole"
-              label="项目角色"
+              prop="applyType"
+              label="申报类型"
             />
             <el-table-column
               prop="projectLevel"
-              label="项目级别"
-              />
+              label="项目类别"
+            />
             <el-table-column
               prop="projectPerson"
               label="项目负责人"
-              />
+            />
             <el-table-column
-              prop="declarationDate"
-              label="申报时间"
-              />
+              prop="projectSource"
+              label="项目来源"
+            />
+            <el-table-column
+              prop="contactInformation"
+              label="联系方式"
+            />
+            <el-table-column
+              prop="auditDate"
+              label="立项时间"
+            />
+            <el-table-column
+              prop="closingDate"
+              label="结项时间"
+            />
+            <el-table-column
+              prop="funds"
+              label="经费"
+            />
             <el-table-column
               prop="attachment"
-              label="附件"
+              label="立项证明"
             />
             <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
               <template slot-scope="scope">
@@ -175,24 +202,37 @@
             label="专利名称"
           />
           <el-table-column
-            prop="patentNumber"
-            label="专利编号"
-          />
-          <el-table-column
-            prop="patentApplicant"
-            label="申请人(单位)"
-          />
-          <el-table-column
             prop="patentType"
             label="专利类型"
           />
           <el-table-column
-            prop="applyTime"
-            label="申请时间"
+            prop="department"
+            label="所属部门"
           />
           <el-table-column
-            prop="attachment"
-            label="附件"
+            prop="firstInventor"
+            label="第一发明人"
+          />
+          <el-table-column
+            prop="contactInformation"
+            label="联系方式"
+          />
+          <el-table-column
+            prop="otherInventor"
+            label="其他发明人"
+          />
+          <el-table-column
+            prop="patentType"
+            label="发明人类型"
+          />
+          <el-table-column
+            prop="inventorType"
+            label="知识产权保护申请表"
+            width="150"
+          />
+          <el-table-column
+            prop="patentWord"
+            label="专利说明书"
           />
           <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
             <template slot-scope="scope">
@@ -226,24 +266,42 @@
             label="专著名称"
             />
           <el-table-column
-            prop="monographField"
-            label="专著类型"
-            />
-          <el-table-column
-            prop="publication"
-            label="发表刊物"
-            />
+            prop="publishTime"
+            label="出版日期"
+          />
           <el-table-column
             prop="publisher"
             label="出版社"
-           />
+          />
           <el-table-column
-            prop="publishTime"
-            label="发表时间"
+            prop="publication"
+            label="作者"
+          />
+          <el-table-column
+            prop="supportProjectSource"
+            label="依托项目来源"
+          />
+          <el-table-column
+            prop="supportProjectName"
+            label="依托项目名称"
+            />
+          <el-table-column
+            prop="totalWords"
+            label="专著出版总字数（万字）"
+            width="180"
+            />
+          <el-table-column
+            prop="achievementBasis"
+            label="成果依据"
            />
           <el-table-column
             prop="attachment"
-            label="附件"
+            label="论文佐证材料"
+           />
+          <el-table-column
+            prop="monographWord"
+            label="专著word版本"
+            width="110"
           />
           <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
             <template slot-scope="scope">
@@ -264,19 +322,12 @@
           />
         </div>
       </el-tab-pane>
-
     </el-tabs>
     <div>
       <el-dialog :visible.sync="dialogVisiblePatent" :title="title">
         <el-form ref="form" :model="form" label-width="120px">
           <el-form-item label="专利名称">
             <el-input v-model="form.patentName"/>
-          </el-form-item>
-          <el-form-item label="专利编号">
-            <el-input v-model="form.patentNumber"/>
-          </el-form-item>
-          <el-form-item label="申请人（单位）">
-            <el-input v-model="form.patentApplicant"/>
           </el-form-item>
           <el-form-item label="专利类型">
             <el-select v-model="form.patentType">
@@ -285,12 +336,31 @@
               <el-option label="软件著作权" value="软件著作权"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="申请时间">
-            <el-col :span="11">
-              <el-date-picker v-model="form.applyTime" value-format=" yyyy-MM-dd " format="yyyy-MM-dd " type="date" placeholder="选择日期" style="width: 60%;"/>
-            </el-col>
+          <el-form-item label="所属部门">
+            <el-input v-model="form.department"/>
           </el-form-item>
-          <el-form-item label="附件">
+          <el-form-item label="第一发明人">
+            <el-input v-model="form.firstInventor"/>
+          </el-form-item>
+          <el-form-item label="联系方式">
+            <el-input v-model="form.contactInformation"/>
+          </el-form-item>
+          <el-form-item label="其他发明人">
+            <el-input v-model="form.otherInventor"/>
+          </el-form-item>
+          <el-form-item label="发明人类型">
+            <el-select v-model="form.inventorType">
+              <el-option label="只有教师" value="只有教师"></el-option>
+              <el-option label="只有学生" value="只有学生"></el-option>
+              <el-option label="师生共同参与" value="师生共同参与"></el-option>
+            </el-select>
+          </el-form-item>
+<!--          <el-form-item label="申请时间">-->
+<!--            <el-col :span="11">-->
+<!--              <el-date-picker v-model="form.applyTime" value-format=" yyyy-MM-dd " format="yyyy-MM-dd " type="date" placeholder="选择日期" style="width: 60%;"/>-->
+<!--            </el-col>-->
+<!--          </el-form-item>-->
+          <el-form-item label="知识产权保护申请表" label-width="180px">
               <el-upload
                 class="upload-demo"
                 name="files"
@@ -303,9 +373,25 @@
                 :on-success="handleSubmitSuccess1"
                 :auto-upload="false"
               >
-                <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+                <el-button slot="trigger" size="small" type="primary">盖章扫描上传</el-button>
                 <!--              <el-button style="margin-left: 10px;background: #42b983" size="small" type="success" @click="submit">上传</el-button>-->
               </el-upload>
+          </el-form-item>
+          <el-form-item label="专利说明书（word）" label-width="180px">
+            <el-upload
+              class="upload-demo"
+              name="files"
+              :limit="1"
+              :file-list="fileList"
+              ref="batchUpload"
+              action="http://58.119.112.15:11002/upload/fileUpload"
+              :on-remove="handleRemove"
+              :before-remove="beforeRemove"
+              :on-success="handleSubmitSuccess1"
+              :auto-upload="false"
+            >
+              <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+            </el-upload>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -316,28 +402,39 @@
     </div>
     <div>
       <el-dialog :visible.sync="dialogVisibleMonographs" title="专著登记">
-        <el-form ref="form" :model="form" label-width="100px">
+        <el-form ref="form" :model="form" label-width="120px">
           <el-form-item label="专著名称">
-            <el-input v-model="form.monographName"/>
+            <el-input v-model="form.monographName" />
           </el-form-item>
-          <el-form-item label="专著类型">
-            <el-input v-model="form.monographField"/>
-          </el-form-item>
-          <el-form-item label="负责人">
-            <el-input v-model="form.monographAuthor"/>
-          </el-form-item>
-          <el-form-item label="出版刊物">
-            <el-input v-model="form.publication"/>
+          <el-form-item label="出版日期">
+<!--            <el-input v-model="form.publishTime"/>-->
+            <el-date-picker v-model="form.publishTime" value-format=" yyyy-MM-dd " format="yyyy-MM-dd " type="date" placeholder="选择日期" style="width: 60%;"/>
           </el-form-item>
           <el-form-item label="出版社">
             <el-input v-model="form.publisher"/>
           </el-form-item>
-          <el-form-item label="发表时间">
-            <el-col :span="11">
-              <el-date-picker v-model="form.publishTime" value-format=" yyyy-MM-dd " format="yyyy-MM-dd " type="date" placeholder="选择日期" style="width: 60%;"/>
-            </el-col>
+          <el-form-item label="作者">
+            <el-input v-model="form.publication"/>
           </el-form-item>
-          <el-form-item label="附件">
+          <el-form-item label="依托项目来源">
+            <el-input v-model="form.supportProjectSource"/>
+          </el-form-item>
+          <el-form-item label="依托项目名称">
+            <el-input v-model="form.supportProjectName"/>
+          </el-form-item>
+          <el-form-item label="专著出版总字数（万字）" label-width="180px">
+            <el-input v-model="form.totalWords" style="width: 300px"/>
+<!--            <el-input v-model="form.monographName"/>-->
+          </el-form-item>
+          <el-form-item label="成果依据">
+            <el-input v-model="form.achievementBasis"/>
+          </el-form-item>
+<!--          <el-form-item label="发表时间">-->
+<!--            <el-col :span="11">-->
+<!--              <el-date-picker v-model="form.publishTime" value-format=" yyyy-MM-dd " format="yyyy-MM-dd " type="date" placeholder="选择日期" style="width: 60%;"/>-->
+<!--            </el-col>-->
+<!--          </el-form-item>-->
+          <el-form-item label="论文佐证资料上传" label-width="200">
               <el-upload
                 class="upload-demo"
                 name="files"
@@ -351,8 +448,23 @@
                 :auto-upload="false"
               >
                 <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-                <!--              <el-button style="margin-left: 10px;background: #42b983" size="small" type="success" @click="submit">上传</el-button>-->
               </el-upload>
+          </el-form-item>
+          <el-form-item label="专著word版本上传" label-width="200">
+            <el-upload
+              class="upload-demo"
+              name="files"
+              :limit="1"
+              :file-list="fileList"
+              ref="batchUpload"
+              action="http://58.119.112.15:11002/upload/fileUpload"
+              :on-remove="handleRemove"
+              :before-remove="beforeRemove"
+              :on-success="handleSubmitSuccess1"
+              :auto-upload="false"
+            >
+              <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+            </el-upload>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -364,31 +476,74 @@
     <div>
       <el-dialog :visible.sync="dialogVisibleThrees" :title="title">
         <el-form ref="form" :model="form" label-width="100px">
-          <el-form-item label="项目课题名称">
+          <el-form-item label="项目编号">
+            <el-input v-model="form.projectId"/>
+          </el-form-item>
+          <el-form-item label="项目名称">
             <el-input v-model="form.projectName"/>
           </el-form-item>
-          <el-form-item label="项目角色">
-            <el-select v-model="form.projectRole" style="width: 310px" placeholder="请选择">
-              <el-option label="主持" value="主持"></el-option>
-              <el-option label="参与" value="参与"></el-option>
-            </el-select>
+          <el-form-item label="申报类型">
+            <el-input v-model="form.applyType"/>
           </el-form-item>
-          <el-form-item label="项目级别">
+          <el-form-item label="项目类别">
             <el-select v-model="form.projectLevel" style="width: 310px" placeholder="请选择">
-              <el-option label="国家级项目" value="国家级项目"></el-option>
-              <el-option label="省级项目" value="省级项目"></el-option>
+              <el-option label="一般" value="一般"></el-option>
+              <el-option label="基金" value="基金"></el-option>
+              <el-option label="重点" value="重点"></el-option>
               <el-option label="其他" value="其他"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="项目负责人">
             <el-input v-model="form.projectPerson"/>
           </el-form-item>
-          <el-form-item label="发表时间">
-            <el-col :span="11">
-              <el-date-picker v-model="form.declarationDate" value-format=" yyyy-MM-dd " format="yyyy-MM-dd " type="date" placeholder="选择日期" style="width: 60%;"/>
-            </el-col>
+          <el-form-item label="项目来源">
+            <el-input v-model="form.projectSource"/>
           </el-form-item>
-          <el-form-item label="附件">
+          <el-form-item label="其他来源">
+          <el-input v-model="form.otherSource"/>
+        </el-form-item>
+          <el-form-item label="联系方式">
+          <el-input v-model="form.contactInformation"/>
+        </el-form-item>
+          <el-form-item label="课题组成员">
+          <el-input v-model="form.groupMembers"/>
+        </el-form-item>
+          <el-form-item label="立项时间">
+            <el-col :span="11">
+                            <el-date-picker v-model="form.auditDate" value-format=" yyyy-MM-dd " format="yyyy-MM-dd " type="date" placeholder="选择日期" style="width: 60%;"/>
+                          </el-col>
+          </el-form-item>
+          <el-form-item label="结项时间">
+            <el-col :span="11">
+                            <el-date-picker v-model="form.closingDate" value-format=" yyyy-MM-dd " format="yyyy-MM-dd " type="date" placeholder="选择日期" style="width: 60%;"/>
+                          </el-col>
+        </el-form-item>
+          <el-form-item label="经费">
+            <el-input v-model="form.funds"/>
+          </el-form-item>
+
+<!--          <el-form-item label="项目角色">-->
+<!--            <el-select v-model="form.projectRole" style="width: 310px" placeholder="请选择">-->
+<!--              <el-option label="主持" value="主持"></el-option>-->
+<!--              <el-option label="参与" value="参与"></el-option>-->
+<!--            </el-select>-->
+<!--          </el-form-item>-->
+<!--          <el-form-item label="项目级别">-->
+<!--            <el-select v-model="form.projectLevel" style="width: 310px" placeholder="请选择">-->
+<!--              <el-option label="国家级项目" value="国家级项目"></el-option>-->
+<!--              <el-option label="省级项目" value="省级项目"></el-option>-->
+<!--              <el-option label="其他" value="其他"></el-option>-->
+<!--            </el-select>-->
+<!--          </el-form-item>-->
+<!--          <el-form-item label="项目负责人">-->
+<!--            <el-input v-model="form.projectPerson"/>-->
+<!--          </el-form-item>-->
+<!--          <el-form-item label="发表时间">-->
+<!--            <el-col :span="11">-->
+<!--              <el-date-picker v-model="form.declarationDate" value-format=" yyyy-MM-dd " format="yyyy-MM-dd " type="date" placeholder="选择日期" style="width: 60%;"/>-->
+<!--            </el-col>-->
+<!--          </el-form-item>-->
+          <el-form-item label="立项证明">
             <el-upload
             class="upload-demo"
             name="files"
@@ -414,38 +569,47 @@
     </div>
     <div>
       <el-dialog :visible.sync="dialogVisibleOne" :title="title">
-        <el-form ref="form" :model="paperForm1" label-width="100px">
-          <el-form-item label="论文名称">
+        <el-form ref="form" :model="paperForm1" label-width="110px">
+          <el-form-item label="论文题目">
             <el-input v-model="paperForm1.paperName"/>
           </el-form-item>
-          <el-form-item label="是否第一作者">
-            <el-select v-model="paperForm1.ifFirstAuthor" style="width: 310px" placeholder="请选择">
-              <el-option label="是" value="是"></el-option>
-              <el-option label="否" value="否"></el-option>
-            </el-select>
+          <el-form-item label="期刊名称">
+            <el-input v-model="paperForm1.publishJournal"/>
           </el-form-item>
-          <el-form-item label="论文类型">
-            <el-select v-model="paperForm1.paperType" placeholder="请选择您的学术论文类型" >
-              <el-option label="中文核心论文" value="中文核心论文"/>
-              <el-option label="三大检索论文" value="三大检索论文"/>
+          <el-form-item label="期刊类型" style="width: 310px">
+            <el-select v-model="paperForm1.journalType" placeholder="请选择您的学术论文类型" >
+              <el-option label="北大核心" value="北大核心"/>
+              <el-option label="南大核心" value="南大核心"/>
               <el-option label="其他" value="其他"/>
 <!--              <el-option label="中文核心论文" value="1"/>-->
 <!--              <el-option label="三大检索论文" value="2"/>-->
 <!--              <el-option label="其他" value="3"/>-->
             </el-select>
           </el-form-item>
-          <el-form-item label="发表刊物">
-            <el-input v-model="paperForm1.publishJournal"/>
+          <el-form-item label="是否第一作者">
+            <el-select v-model="paperForm1.ifFirstAuthor" style="width: 250px" placeholder="请选择">
+              <el-option label="是" value="是"></el-option>
+              <el-option label="否" value="否"></el-option>
+            </el-select>
           </el-form-item>
-          <el-form-item label="出版社">
-              <el-input v-model="paperForm1.publisher"/>
+          <el-form-item label="论文第一单位">
+            <el-input v-model="paperForm1.firstUnit"/>
           </el-form-item>
+          <el-form-item label="其他作者" >
+            <el-input v-model="paperForm1.otherAuthor" placeholder="请注明通讯作者"/>
+          </el-form-item>
+<!--          <el-form-item label="发表刊物">-->
+<!--            <el-input v-model="paperForm1.publishJournal"/>-->
+<!--          </el-form-item>-->
+<!--          <el-form-item label="出版社">-->
+<!--              <el-input v-model="paperForm1.publisher"/>-->
+<!--          </el-form-item>-->
           <el-form-item label="发表时间">
             <el-col :span="11">
               <el-date-picker v-model="paperForm1.publishTime" value-format=" yyyy-MM-dd " format="yyyy-MM-dd " type="date" placeholder="选择日期" style="width: 60%;"/>
             </el-col>
           </el-form-item>
-          <el-form-item label="附件">
+          <el-form-item label="论文佐证">
 <!--            <el-upload-->
 <!--              v-model="paperForm1.enclosure"-->
 <!--              name = 'files'-->
@@ -481,38 +645,41 @@
     </div>
     <div>
       <el-dialog :visible.sync="dialogVisibleTwo" :title="title">
-        <el-form ref="form" :model="paperForm2" label-width="100px">
-          <el-form-item label="论文名称">
-            <el-input v-model="paperForm2.paperName"/>
+        <el-form ref="form" :model="paperForm2" label-width="100px" >
+          <el-form-item label="论文题目">
+            <el-input v-model="paperForm1.paperName"/>
           </el-form-item>
-          <el-form-item label="是否第一作者">
-            <el-select v-model="paperForm2.ifFirstAuthor" style="width: 310px" placeholder="请选择">
-              <el-option label="是" value="是"></el-option>
-              <el-option label="否" value="否"></el-option>
-            </el-select>
+          <el-form-item label="期刊名称">
+            <el-input v-model="paperForm1.publishJournal"/>
           </el-form-item>
-          <el-form-item label="论文类型">
-            <el-select v-model="paperForm2.paperType" placeholder="请选择您的学术论文类型" >
-              <el-option label="中文核心论文" value="中文核心论文"/>
-              <el-option label="三大检索论文" value="三大检索论文"/>
+          <el-form-item label="期刊类型">
+            <el-select v-model="paperForm1.journalType" placeholder="请选择您的学术论文类型" >
+              <el-option label="北大核心" value="北大核心"/>
+              <el-option label="南大核心" value="南大核心"/>
               <el-option label="其他" value="其他"/>
               <!--              <el-option label="中文核心论文" value="1"/>-->
               <!--              <el-option label="三大检索论文" value="2"/>-->
               <!--              <el-option label="其他" value="3"/>-->
             </el-select>
           </el-form-item>
-          <el-form-item label="发表刊物">
-            <el-input v-model="paperForm2.publishJournal"/>
+          <el-form-item label="是否第一作者">
+            <el-select v-model="paperForm1.ifFirstAuthor" style="width: 310px" placeholder="请选择">
+              <el-option label="是" value="是"></el-option>
+              <el-option label="否" value="否"></el-option>
+            </el-select>
           </el-form-item>
-          <el-form-item label="出版社">
-            <el-input v-model="paperForm2.publisher"/>
+          <el-form-item label="论文第一单位">
+            <el-input v-model="paperForm1.firstUnit"/>
+          </el-form-item>
+          <el-form-item label="其他作者" >
+            <el-input v-model="paperForm1.otherAuthor" placeholder="请注明通讯作者"/>
           </el-form-item>
           <el-form-item label="发表时间">
             <el-col :span="11">
-              <el-date-picker v-model="paperForm2.publishTime" value-format=" yyyy-MM-dd " format="yyyy-MM-dd " type="date" placeholder="选择日期" style="width: 60%;"/>
+              <el-date-picker v-model="paperForm1.publishTime" value-format=" yyyy-MM-dd " format="yyyy-MM-dd " type="date" placeholder="选择日期" style="width: 60%;"/>
             </el-col>
           </el-form-item>
-          <el-form-item label="附件">
+          <el-form-item label="论文佐证">
             <el-upload
               v-model="paperForm2.enclosure"
               ref="upload"
@@ -802,7 +969,7 @@ export default {
     handleUpdate(row) {
       this.dialogVisibleTwo = true;
       this.paperForm2 = row;
-      this.title = "修改学术论文";
+      this.title = "修改核心期刊论文";
       this.editId = row.id
     },
     submitUpload() {
@@ -810,7 +977,7 @@ export default {
     },
     openDialog: function() {
       console.log('我点了')
-      this.title = "新增学术论文";
+      this.title = "新增核心期刊论文";
       this.dialogVisibleOne = true;
       this.reset()
     },

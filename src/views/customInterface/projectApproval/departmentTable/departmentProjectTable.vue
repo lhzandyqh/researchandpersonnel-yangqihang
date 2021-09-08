@@ -91,7 +91,7 @@
         <el-button type="primary" @click="keyandialogPvVisible = false">关闭</el-button>
       </span>
     </el-dialog>
-    <el-dialog :visible.sync="xiangmudialogVisible" title="科研项目立项评分"   width="35%">
+    <el-dialog :visible.sync="xiangmudialogVisible" title="科研项目立项评分"   width="38%">
       <div class="dimension_container" v-for="(item, key) in dimensionData" :key="key">
         <div class="dimension_title">
           <span style="font-weight: bold">{{item.dimensionName}}</span>

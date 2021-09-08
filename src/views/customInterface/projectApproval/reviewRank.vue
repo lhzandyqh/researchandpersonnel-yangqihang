@@ -2,18 +2,18 @@
   <div class="app-container">
     <div class="con_header">
       <div class="function_item">
-        <span>评审年度:</span>
-        <el-select v-model="value" placeholder="请选择">
+        <span>项目批次:</span>
+        <el-select v-model="batchValue" placeholder="请选择" >
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            v-for="item in batchData"
+            :key="item.batch"
+            :label="item.batch"
+            :value="item.batch">
           </el-option>
         </el-select>
       </div>
       <div class="function_item left_control">
-        <el-button type="primary">搜索</el-button>
+        <el-button type="primary" @click="getProjectAssessOrderByBatch">搜索</el-button>
       </div>
       <div class="function_item right_control">
         <el-button type="primary" @click="nextVisible=true">安排中期</el-button>
@@ -94,7 +94,7 @@
         <div class="dimension_title">
           <span style="font-weight: bold;color: #8c939d">{{item.dimensionName}}</span>
           <el-divider></el-divider>
-          <div class="dimension_item clearfix" v-for="(value, k) in item.children" :key="key">
+          <div class="dimension_item clearfix" v-for="(value, key) in item.children" :key="key">
             <div>
               <div class="dimension_name">
                 <span>{{value.dimensionName}}:</span>
@@ -116,13 +116,25 @@
       :visible.sync="nextVisible"
       width="60%"
       :before-close="handleClose">
-      <span style="font-weight: bolder">项目时间批次：</span>
-      <span>2021-1-1&#8195;至&#8195;2021-4-4</span>
+      <div class="function_item">
+        <span>项目批次:</span>
+        <el-select v-model="batchValueOther" placeholder="请选择" >
+          <el-option
+            v-for="item in batchData"
+            :key="item.batch"
+            :label="item.batch"
+            :value="item.batch">
+          </el-option>
+        </el-select>
+      </div>
+      <div class="function_item left_control">
+        <el-button type="primary" @click="getProjectAssessOrderByBatchOther">查看排名</el-button>
+      </div>
       <div class="main_table">
         <div class="table_container">
           <el-table
             ref="multipleTable"
-            :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+            :data="tableDataOther.slice((currentPage-1)*pagesize,currentPage*pagesize)"
             tooltip-effect="dark"
             style="width: 100%"
             @selection-change="handleSelectionChange"
@@ -172,7 +184,7 @@
               :page-size="pagesize1"
               :page-sizes="[5, 10]"
               layout="total, sizes, prev, pager, next, jumper"
-              :total="tableData.length ">
+              :total="tableDataOther.length ">
             </el-pagination>
           </div>
         </div>
@@ -187,7 +199,8 @@
 
 <script>
 import rankScoreEchart from "./echarts/rankScoreEchart";
-import { directorGetAuditingRank, directorGetAuditingScoreDetails, arrangeProjectMidTerm } from '@/api/expertEvaluation'
+import {getAllProjectApplyBatch} from '@/api/personnalSettings'
+import { directorGetAuditingRank, directorGetAuditingScoreDetails, arrangeProjectMidTerm ,getProjectAssessOrderByBatch} from '@/api/expertEvaluation'
 export default {
 name: "reviewRank",
   data() {
@@ -271,13 +284,19 @@ name: "reviewRank",
           date: '2020-08-13'
         }
       ],
+      tableDataOther: [],
       detailrow: {},
       scoreDetails: [],
-      multipleSelection: []
+      multipleSelection: [],
+      batchData: [],
+      batchValue: '',
+      batchValueOther: ''
+
     }
   },
   mounted() {
     this.getAllData()
+    this.getAllProjectApplyBatch()
   },
   methods: {
     //安排中期多选
@@ -300,13 +319,14 @@ name: "reviewRank",
     arrangeMiddle () {
       // console.log(this.multipleSelection)
       const prams = this.multipleSelection
+      console.log(prams)
       arrangeProjectMidTerm(prams).then(response =>{
         console.log('测试主管安排项目中期接口')
         console.log(response.data)
       })
       this.nextVisible = false;
     },
-  //fenye
+  //分页
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
       // this.currentPage = 1;
@@ -340,6 +360,7 @@ name: "reviewRank",
         console.log('测试科研主管获取项目申报评审排名接口')
         console.log(response.data)
         this.tableData = response.data.data
+        this.tableDataOther = response.data.data
       })
     },
     //查看得分详情
@@ -356,6 +377,40 @@ name: "reviewRank",
         console.log(response.data)
         this.scoreDetails = response.data.data.assessScore.children
         console.log(this.scoreDetails)
+      })
+    },
+    //获取所有项目批次
+    getAllProjectApplyBatch () {
+      getAllProjectApplyBatch().then(response => {
+        console.log('测试获取所有项目批次接口')
+        console.log(response.data)
+        this.batchData = response.data.data
+        console.log(this.batchData )
+      })
+    },
+    //根据项目批次获取当前批次评审排名
+    getProjectAssessOrderByBatch () {
+      console.log(this.batchValue)
+      const prams = {
+        tecUsername: localStorage.getItem('loginName') ,
+        batch: this.batchValue
+      }
+      getProjectAssessOrderByBatch(prams).then(response => {
+        console.log('测试根据筛选框获取当前批次接口')
+        console.log(response.data)
+        this.tableData = response.data.data
+      })
+    },
+    getProjectAssessOrderByBatchOther () {
+      // console.log(this.batchValue)
+      const prams = {
+        tecUsername: localStorage.getItem('loginName') ,
+        batch: this.batchValueOther
+      }
+      getProjectAssessOrderByBatch(prams).then(response => {
+        console.log('测试根据筛选框获取当前批次接口')
+        console.log(response.data)
+        this.tableDataOther = response.data.data
       })
     }
   },

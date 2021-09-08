@@ -35,7 +35,7 @@
         layout="total, sizes, prev, pager, next, jumper"
       />
     </div>
-    <el-dialog :visible.sync="hexinVisible" :data='detailTable' title="学术论文审核详情" style="width: 110%">
+    <el-dialog :visible.sync="hexinVisible" :data='detailTable' title="期刊论文审核详情" style="width: 110%">
       <el-row :gutter="20" style="padding-top: 10px">
         <el-col :span="8">
           <div class="single">

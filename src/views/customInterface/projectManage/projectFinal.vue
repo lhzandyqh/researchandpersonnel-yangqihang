@@ -981,7 +981,7 @@ export default {
   .detailValue {
     float: left;
     /*display: inline-block;*/
-    width: 180px;
+    width: 160px;
     font-weight: 400
   }
   .resultTitle {

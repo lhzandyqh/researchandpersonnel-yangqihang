@@ -123,6 +123,14 @@ export default {
     handleClick(tab, event) {
       console.log(tab, event)
     },
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done();
+        })
+        .catch(_ => {});
+    },
+    //分页
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
@@ -131,6 +139,7 @@ export default {
       console.log(`当前页: ${val}`)
       this.currentPage4 = val
     },
+    //评审进度 1——立项    2——专管审核通过  3——主管审核不通过  4——不能中期  5——可以中期  6之后计划是项目进度，加上中期和结题的进度
     getReviewSchedule: function () {
       const prams = {
         tecUsername: localStorage.getItem('loginName')

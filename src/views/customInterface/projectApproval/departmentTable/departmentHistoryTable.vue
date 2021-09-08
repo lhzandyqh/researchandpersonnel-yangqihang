@@ -56,21 +56,38 @@
       </el-pagination>
     </div>
     <el-dialog
-      title="评审详情"
+      title="评审得分"
       :visible.sync="dialogVisible"
-      width="40%"
+      width="30%"
       :before-close="handleClose">
-      <span>这是一段信息</span>
+      <!--      <rank-score-echart></rank-score-echart>-->
+      <div class="dimension_container" v-for="(item, key) in scoreDetails" :key="key">
+        <div class="dimension_title">
+          <span style="font-weight: bold;color: #8c939d">{{item.dimensionName}}</span>
+<!--          <el-divider></el-divider>-->
+          <div style="margin-top: 20px" v-for="(value, key) in item.children" :key="key">
+            <div>
+              <div class="dimension_name">
+                <span>{{value.dimensionName}}:</span>
+                <span style="font-weight: bold;">{{value.evaluationScore}}</span>
+                <span style="float: right">该维度评价总分值：{{value.basicScore}}分</span>
+                <!--                <el-input v-model="value.number" @change="addScore(value.id,value.number)" style="width: 150px;margin-left: 15px" placeholder="请输入评审分值" />-->
+              </div>
+            </div>
+          </div>
+          <el-divider></el-divider>
+        </div>
+      </div>
       <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible = false">取 消</el-button>
     <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
   </span>
     </el-dialog>
-
   </div>
 </template>
 
 <script>
+import { directorGetAuditingScoreDetails } from '@/api/expertEvaluation'
 import { expertGetAuditingHistory } from '@/api/expertEvaluation'
     export default {
         name: "departmentHistoryTable",
@@ -80,7 +97,8 @@ import { expertGetAuditingHistory } from '@/api/expertEvaluation'
             currentPage: 1,
             pagesize:5,
             currentPage4: '',
-            tableData:[]
+            tableData:[],
+            scoreDetails: []
           }
       },
       mounted() {
@@ -103,18 +121,31 @@ import { expertGetAuditingHistory } from '@/api/expertEvaluation'
           console.log(`当前页: ${val}`);
           this.currentPage = val;
         },
-          getHistory: function () {
-            const prams = {
-              tecUsername: localStorage.getItem('loginName')
-            }
-            expertGetAuditingHistory(prams).then(response => {
-              console.log('测试获取审核历史接口')
-              console.log(response.data)
-              this.tableData = response.data.data
-            })
-          },
+        getHistory: function () {
+          const prams = {
+            tecUsername: localStorage.getItem('loginName')
+          }
+          expertGetAuditingHistory(prams).then(response => {
+            console.log('测试获取审核历史接口')
+            console.log(response.data)
+            this.tableData = response.data.data
+          })
+        },
+        //查看得分详情
         lookDetails: function (row) {
           this.dialogVisible = true
+          this.detailrow = row
+          console.log(row)
+          const prams = {
+            applyTecUsername: this.detailrow.applyTecUsername,
+            times: this.detailrow.times
+          }
+          directorGetAuditingScoreDetails(prams).then(response => {
+            console.log('测试获取打分详情接口')
+            console.log(response.data)
+            this.scoreDetails = response.data.data.assessScore.children
+            console.log(this.scoreDetails)
+          })
         }
       }
     }

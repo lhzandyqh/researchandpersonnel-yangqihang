@@ -311,7 +311,7 @@ export default {
         password: '123456',
         // username: '',
         // password: '',
-        role: ''
+        role: '教师'
       },
       // loginRules: {
       //   username: [{ required: true, trigger: 'blur', validator: validateUsername }],

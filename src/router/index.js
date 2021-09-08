@@ -214,9 +214,9 @@ export const asyncRoutes = [
         }
       },
       {
-        path: 'manytimes',
+        path: 'approvalProgress',
         component: () => import('@/views/customInterface/circulationApproval/approvalProgress'),
-        name: 'manytimes',
+        name: 'approvalProgress',
         meta: {
           title: '评审进度',
           roles: ['管理员', '教师'] // or you can only set roles in sub nav

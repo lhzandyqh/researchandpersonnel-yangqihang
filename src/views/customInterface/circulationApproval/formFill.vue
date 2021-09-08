@@ -17,9 +17,9 @@
                   :on-success="uploadSuccess"
                   multiple
                   :limit="3"
-                  :on-exceed="handleExceed"
                   :file-list="fileList"
                 >
+<!--                  :on-exceed="handleExceed"  上传文件限制文件个数 函数-->
                   <el-button size="small" type="primary">上传申报书</el-button>
                   <!--                  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
                 </el-upload>
@@ -32,7 +32,8 @@
               <div class="basic_item" v-for="(item, key) in basicData" :key="key">
                 <div v-if="item.content_type === '短文本'">
                   <span>{{item.content_name}}：</span>
-                  <el-input @input="getBaiscDataInputData" v-model="item.value" style="width: 200px" placeholder="请输入内容" />
+<!--                  <el-input @input="getBaiscDataInputData" v-model="item.value" style="width: 200px" placeholder="请输入内容" /> 注释掉每一次输入打印的方法-->
+                  <el-input v-model="item.value" style="width: 200px" placeholder="请输入内容" />
                 </div>
                 <div v-if="item.content_type === '选择器'">
                   <span>{{item.content_name}}：</span>
@@ -141,7 +142,7 @@
           </div>
           <div class="button_container">
             <div style="float: right">
-<!--              <el-button size="small" type="success">重置</el-button>   //重置功能未实现-->
+              <el-button size="small" type="success" @click="reset()">重置</el-button>
               <el-button size="small" type="primary" @click="submitVisible = true">下一步</el-button>
             </div>
           </div>
@@ -248,7 +249,8 @@ export default {
       submitData: [],
       directorList: [],
       remakes: '',
-      deptArray: []
+      deptArray: [],
+      ruleForm: {}
     }
   },
   mounted() {
@@ -259,7 +261,7 @@ export default {
   methods: {
     getPeopleList: function () {
       getDirectorList().then(response => {
-        console.log('测试获取名单接口')
+        console.log('测试获取专家名单接口')
         console.log(response.data)
         this.directorList = response.data.data
       })
@@ -419,6 +421,7 @@ export default {
       console.log('输入框输入值，查看当前basicData状态')
       console.log(this.basicData);
     },
+    //文件上传部分
     uploadSuccess: function (response) {
       console.log('测试文件上传接口')
       console.log(response.data)
@@ -434,6 +437,38 @@ export default {
           message: '请重试',
           type: 'warning'
         });
+      }
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+    // handleExceed(files, fileList) {
+    //   this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+    // },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${ file.name }？`);
+    },
+    //立项表已填数据重置功能
+    reset(){
+      // this.$refs[formName].resetFields();
+      // this.basicData.item.value = '';
+      // this.projectData.item.value = '';
+      // this.budgetData.item.value = '';
+      for(let key in this.basicData) {
+        // this.projectData[key].value = ''
+        // console.log(this.basicData[key].value)
+        this.basicData[key].value = ''
+      }
+      for(let key in this.projectData) {
+        // console.log(this.basicData[key].value)
+        this.projectData[key].value = ''
+      }
+      for(let key in this.budgetData) {
+        // console.log(this.basicData[key].value)
+        this.budgetData[key].value = ''
       }
     }
   }
